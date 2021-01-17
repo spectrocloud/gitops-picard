@@ -1,7 +1,7 @@
 terraform {
   required_version = ">= 0.12.0"
   backend "etcdv3" {
-    lock = true
+    lock   = true
     prefix = "/spectrocloud/"
   }
 
