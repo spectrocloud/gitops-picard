@@ -64,25 +64,6 @@ resource "spectrocloud_cluster_profile" "profile" {
   type        = "cluster"
 
   pack {
-    name   = "spectro-byo-manifest"
-    tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.byom.id
-    values = <<-EOT
-      manifests:
-        byo-manifest:
-          contents: |
-            # Add manifests here
-            apiVersion: v1
-            kind: Namespace
-            metadata:
-              labels:
-                app: wordpress
-                app3: wordpress5
-              name: wordpress
-    EOT
-  }
-
-  pack {
     name   = "csi-vsphere-volume"
     tag    = "1.0.x"
     uid    = data.spectrocloud_pack.csi.id
