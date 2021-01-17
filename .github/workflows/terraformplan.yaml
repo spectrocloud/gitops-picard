@@ -10,6 +10,7 @@ on:
 
 env:
   SPECTROCLOUD_TF_PATH: terraform-test
+  SPECTROCLOUD_WORKSPACE: dev
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,6 +33,10 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init -backend-config="endpoints=[\"35.203.171.218:2379\"]"
+
+    - name: Terraform Workspace
+      id: workspace
+      run: terraform workspace select ${{ env.SPECTROCLOUD_WORKSPACE }}
 
     - name: Terraform Validate
       id: validate
