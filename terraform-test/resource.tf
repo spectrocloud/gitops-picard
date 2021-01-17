@@ -77,7 +77,7 @@ resource "spectrocloud_cluster_profile" "profile" {
             metadata:
               labels:
                 app: wordpress
-                app3: wordpress4
+                app3: wordpress5
               name: wordpress
     EOT
   }
