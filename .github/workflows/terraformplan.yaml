@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: terraform-test
+        working-directory: ./terraform-test
     steps:
-    - run: pwd
     - uses: actions/checkout@v2
+    - run: pwd
     - uses: hashicorp/setup-terraform@v1
 
     - name: Terraform fmt
