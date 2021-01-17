@@ -52,7 +52,7 @@ jobs:
           #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
           #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
 
-          <details><summary>Show Plan</summary>
+          <details open><summary>Show Plan</summary>
 
           \`\`\`${process.env.PLAN}\`\`\`
 
