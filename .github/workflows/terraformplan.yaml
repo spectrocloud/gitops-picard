@@ -59,7 +59,7 @@ jobs:
 
           <details open><summary>Show Plan</summary>
 
-          \`\`\`yaml
+          \`\`\`hcl
           ${process.env.PLAN}
           \`\`\`
 
