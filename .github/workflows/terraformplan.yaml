@@ -9,7 +9,7 @@ on:
     types: [edited, opened, synchronize, reopened]
 
 env:
-  SPECTROCLOUD_TF_PATH: terraform-test
+  SPECTROCLOUD_TF_PATH: sandbox
   SPECTROCLOUD_WORKSPACE: dev
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
