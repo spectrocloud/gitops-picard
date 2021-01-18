@@ -9,4 +9,4 @@ Make sure to specify the Github action secrets for Spectro Cloud in Github Setti
     SC_PASSWORD: {{ Spectro Cloud user / service account password }}
     SC_PROJECT_NAME: {{ Spectro Cloud Project name, e.g: Default }}
 
-....
+The `.github/workflows` directory contains Github Action Workflow to show the plan.
