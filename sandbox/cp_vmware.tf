@@ -39,7 +39,7 @@ resource "spectrocloud_cluster_profile" "vsphere1" {
   pack {
     name   = "spectro-byo-manifest"
     tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.byom.id
+    uid    = data.spectrocloud_pack.byom-vsphere.id
     values = <<-EOT
       manifests:
         byo-manifest:
@@ -58,29 +58,29 @@ resource "spectrocloud_cluster_profile" "vsphere1" {
   pack {
     name   = "csi-vsphere-volume"
     tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.csi.id
-    values = data.spectrocloud_pack.csi.values
+    uid    = data.spectrocloud_pack.csi-vsphere.id
+    values = data.spectrocloud_pack.csi-vsphere.values
   }
 
   pack {
     name   = "cni-calico"
     tag    = "3.16.x"
-    uid    = data.spectrocloud_pack.cni.id
-    values = data.spectrocloud_pack.cni.values
+    uid    = data.spectrocloud_pack.cni-vsphere.id
+    values = data.spectrocloud_pack.cni-vsphere.values
   }
 
   pack {
     name   = "kubernetes"
     tag    = "1.18.x"
-    uid    = data.spectrocloud_pack.k8s.id
-    values = data.spectrocloud_pack.k8s.values
+    uid    = data.spectrocloud_pack.k8s-vsphere.id
+    values = data.spectrocloud_pack.k8s-vsphere.values
   }
 
   pack {
     name   = "ubuntu-vsphere"
     tag    = "LTS__18.4.x"
-    uid    = data.spectrocloud_pack.ubuntu.id
-    values = data.spectrocloud_pack.ubuntu.values
+    uid    = data.spectrocloud_pack.ubuntu-vsphere.id
+    values = data.spectrocloud_pack.ubuntu-vsphere.values
   }
 
 }
@@ -94,29 +94,29 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
   pack {
     name   = "csi-vsphere-volume"
     tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.csi.id
-    values = data.spectrocloud_pack.csi.values
+    uid    = data.spectrocloud_pack.csi-vsphere.id
+    values = data.spectrocloud_pack.csi-vsphere.values
   }
 
   pack {
     name   = "cni-calico"
     tag    = "3.16.x"
-    uid    = data.spectrocloud_pack.cni.id
-    values = data.spectrocloud_pack.cni.values
+    uid    = data.spectrocloud_pack.cni-vsphere.id
+    values = data.spectrocloud_pack.cni-vsphere.values
   }
 
   pack {
     name   = "kubernetes"
     tag    = "1.18.x"
-    uid    = data.spectrocloud_pack.k8s.id
-    values = data.spectrocloud_pack.k8s.values
+    uid    = data.spectrocloud_pack.k8s-vsphere.id
+    values = data.spectrocloud_pack.k8s-vsphere.values
   }
 
   pack {
     name   = "ubuntu-vsphere"
     tag    = "LTS__18.4.x"
-    uid    = data.spectrocloud_pack.ubuntu.id
-    values = data.spectrocloud_pack.ubuntu.values
+    uid    = data.spectrocloud_pack.ubuntu-vsphere.id
+    values = data.spectrocloud_pack.ubuntu-vsphere.values
   }
 
 }
