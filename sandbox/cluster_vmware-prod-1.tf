@@ -30,23 +30,25 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   # To override or specify values for a cluster:
 
-  # pack {
-  #   name   = "spectro-byo-manifest"
-  #   tag    = "1.0.x"
-  #   values = <<-EOT
-  #     manifests:
-  #       byo-manifest:
-  #         contents: |
-  #           # Add manifests here
-  #           apiVersion: v1
-  #           kind: Namespace
-  #           metadata:
-  #             labels:
-  #               app: wordpress
-  #               app2: wordpress2
-  #             name: wordpress
-  #   EOT
-  # }
+  pack {
+    name   = "lb-metallb"
+    tag    = "0.8.x"
+    values = <<-EOT
+      manifests:
+        metallb:
+
+          #The namespace to use for deploying MetalLB
+          namespace: "metallb-system"
+
+          #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
+          avoidBuggyIps: true
+
+          # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
+          # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
+          addresses:
+          - 10.10.182.10-10.10.182.18
+    EOT
+  }
 
   machine_pool {
     control_plane           = true

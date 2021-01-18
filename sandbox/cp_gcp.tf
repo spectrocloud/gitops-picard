@@ -59,39 +59,3 @@ resource "spectrocloud_cluster_profile" "prod-gcp" {
     values = data.spectrocloud_pack.ubuntu-gcp.values
   }
 }
-
-resource "spectrocloud_cluster_profile" "dev-gcp" {
-  name        = "DevGCP"
-  description = "basic cp"
-  cloud       = "gcp"
-  type        = "cluster"
-
-
-  pack {
-    name   = "csi-gcp"
-    tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.csi-gcp.id
-    values = data.spectrocloud_pack.csi-gcp.values
-  }
-
-  pack {
-    name   = "cni-calico"
-    tag    = "3.16.x"
-    uid    = data.spectrocloud_pack.cni-gcp.id
-    values = data.spectrocloud_pack.cni-gcp.values
-  }
-
-  pack {
-    name   = "kubernetes"
-    tag    = "1.18.x"
-    uid    = data.spectrocloud_pack.k8s-gcp.id
-    values = data.spectrocloud_pack.k8s-gcp.values
-  }
-
-  pack {
-    name   = "ubuntu-gcp"
-    tag    = "LTS__18.4.x"
-    uid    = data.spectrocloud_pack.ubuntu-gcp.id
-    values = data.spectrocloud_pack.ubuntu-gcp.values
-  }
-}
