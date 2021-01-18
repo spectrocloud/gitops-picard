@@ -5,6 +5,11 @@
 # }
 
 
+data "spectrocloud_pack" "nginx-vsphere" {
+  name    = "nginx"
+  version = "0.26.1"
+}
+
 data "spectrocloud_pack" "hipster-vsphere" {
   name    = "sapp-hipster"
   version = "2.0.0"
@@ -141,6 +146,13 @@ resource "spectrocloud_cluster_profile" "devvmware" {
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
+
+  pack {
+    name   = "nginx"
+    tag    = "0.26.x"
+    uid    = data.spectrocloud_pack.nginx-vsphere.id
+    values = data.spectrocloud_pack.nginx-vsphere.values
+  }
 
   pack {
     name   = "lb-metallb"
