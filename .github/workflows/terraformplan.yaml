@@ -32,7 +32,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config="endpoints=[\"35.203.171.218:2379\"]"
+      run: terraform init -backend-config="endpoints=[\"${{ secrets.SC_ETCD_ENDPOINT }}\"]"
 
     - name: Terraform Workspace
       id: workspace
