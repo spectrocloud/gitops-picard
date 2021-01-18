@@ -6,18 +6,18 @@
 
 
 data "spectrocloud_pack" "hipster-vsphere" {
-  name = "sapp-hipster"
-  version  = "2.0.0"
+  name    = "sapp-hipster"
+  version = "2.0.0"
 }
 
 data "spectrocloud_pack" "lbmetal-vsphere" {
-  name = "lb-metallb"
-  version  = "0.8.3"
+  name    = "lb-metallb"
+  version = "0.8.3"
 }
 
 data "spectrocloud_pack" "istio-vsphere" {
-  name = "istio"
-  version  = "1.6.2"
+  name    = "istio"
+  version = "1.6.2"
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
