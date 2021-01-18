@@ -1,7 +1,5 @@
-# Locals and cloud accounts defined in cluster_vmware-prod-1.tf
-
-resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
-  name               = "vmware-prod-2"
+resource "spectrocloud_cluster_vsphere" "comp-1" {
+  name               = "vmware-comp-1"
   cluster_profile_id = spectrocloud_cluster_profile.prodvmware.id
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
 
@@ -33,9 +31,10 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
           # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
           # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
           addresses:
-          - 10.10.182.20-10.10.182.29
+          - 10.10.182.100-10.10.182.109
     EOT
   }
+
 
   machine_pool {
     control_plane           = true
@@ -44,9 +43,9 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
     count                   = 1
 
     placement {
-      cluster       = "cluster1"
-      resource_pool = ""
-      datastore     = "datastore55"
+      cluster       = "cluster2"
+      resource_pool = "rpool2"
+      datastore     = "datastore56"
       network       = "VM Network"
     }
     instance_type {
@@ -61,9 +60,9 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
     count = 2
 
     placement {
-      cluster       = "cluster1"
-      resource_pool = ""
-      datastore     = "datastore55"
+      cluster       = "cluster2"
+      resource_pool = "rpool2"
+      datastore     = "datastore56"
       network       = "VM Network"
     }
     instance_type {
