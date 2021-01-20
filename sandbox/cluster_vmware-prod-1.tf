@@ -57,7 +57,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     count                   = 1
 
     placement {
-      cluster       = "cluster1"
+      cluster       = "cluster2"
       resource_pool = ""
       datastore     = "datastore55"
       network       = "VM Network"
@@ -74,7 +74,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     count = 2
 
     placement {
-      cluster       = "cluster1"
+      cluster       = "cluster2"
       resource_pool = ""
       datastore     = "datastore55"
       network       = "VM Network"
