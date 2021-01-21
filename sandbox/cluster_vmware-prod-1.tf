@@ -46,7 +46,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
           # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
           # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
           addresses:
-          - 10.10.182.10-10.10.182.18
+          - 10.10.182.10-10.10.182.19
     EOT
   }
 
@@ -71,7 +71,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   machine_pool {
     name  = "worker-basic"
-    count = 2
+    count = 4
 
     placement {
       cluster       = "cluster2"
