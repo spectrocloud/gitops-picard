@@ -1,5 +1,5 @@
-resource "spectrocloud_cluster_vsphere" "comp-1" {
-  name               = "vmware-comp-1"
+resource "spectrocloud_cluster_vsphere" "comp-3" {
+  name               = "vmware-comp-3"
   cluster_profile_id = spectrocloud_cluster_profile.devvmware.id
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
 
