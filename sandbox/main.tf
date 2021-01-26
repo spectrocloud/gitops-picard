@@ -4,9 +4,9 @@ terraform {
     lock        = true
     prefix      = "/spectrocloud/"
     #endpoints   = ["ip:2379"] # Passed in from terraform
-    cacert_path = "creds/ca.crt"
-    cert_path   = "creds/client.crt"
-    key_path    = "creds/client.key"
+    cacert_path = "certs/ca.crt"
+    cert_path   = "certs/client.crt"
+    key_path    = "certs/client.key"
   }
 
   required_providers {
