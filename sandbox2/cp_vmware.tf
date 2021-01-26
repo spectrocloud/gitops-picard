@@ -51,26 +51,26 @@ resource "spectrocloud_cluster_profile" "foo" {
   cloud       = "vsphere"
   type        = "cluster"
 
-  pack {
-    name   = "lb-metallb"
-    tag    = "0.8.x"
-    uid    = data.spectrocloud_pack.lbmetal-vsphere.id
-    values = <<-EOT
-      manifests:
-        metallb:
+  #pack {
+  #  name   = "lb-metallb"
+  #  tag    = "0.8.x"
+  #  uid    = data.spectrocloud_pack.lbmetal-vsphere.id
+  #  values = <<-EOT
+  #    manifests:
+  #      metallb:
 
-          #The namespace to use for deploying MetalLB
-          namespace: "metallb-system"
+  #        #The namespace to use for deploying MetalLB
+  #        namespace: "metallb-system"
 
-          #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
-          avoidBuggyIps: true
+  #        #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
+  #        avoidBuggyIps: true
 
-          # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
-          # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
-          addresses:
-          - 10.10.182.0-10.10.182.9
-    EOT
-  }
+  #        # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
+  #        # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
+  #        addresses:
+  #        - 10.10.182.0-10.10.182.9
+  #  EOT
+  #}
 
   pack {
     name   = "sapp-hipster"
