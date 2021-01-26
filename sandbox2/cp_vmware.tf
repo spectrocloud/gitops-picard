@@ -46,7 +46,7 @@ data "spectrocloud_pack" "ubuntu-vsphere" {
 }
 
 resource "spectrocloud_cluster_profile" "foo" {
-  name        = "Foo2VMware"
+  name        = "Foo3VMware"
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
