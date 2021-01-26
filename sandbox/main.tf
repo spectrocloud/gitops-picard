@@ -3,10 +3,10 @@ terraform {
   backend "etcdv3" {
     lock        = true
     prefix      = "/spectrocloud/"
-    #endpoints   = ["ip:2379"] # Passed in from terraform
     cacert_path = "certs/ca.crt"
     cert_path   = "certs/client.crt"
     key_path    = "certs/client.key"
+    #endpoints   = ["ip:2379"] # Passed in from terraform
   }
 
   required_providers {
