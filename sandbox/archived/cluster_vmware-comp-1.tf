@@ -45,7 +45,7 @@ resource "spectrocloud_cluster_vsphere" "comp-1" {
     control_plane           = true
     control_plane_as_worker = true
     name                    = "master-pool"
-    count                   = 3
+    count                   = 1
 
     placement {
       cluster           = "cluster1"
@@ -70,38 +70,6 @@ resource "spectrocloud_cluster_vsphere" "comp-1" {
     }
     instance_type {
       disk_size_gb = 61
-      memory_mb    = 4096
-      cpu          = 2
-    }
-  }
-
-  machine_pool {
-    name  = "worker-pool"
-    count = 3
-
-    placement {
-      cluster           = "cluster1"
-      resource_pool     = ""
-      datastore         = "datastore54"
-      network           = "VM Network"
-      static_ip_pool_id = local.vmware_static_pool_id
-    }
-    placement {
-      cluster           = "cluster2"
-      resource_pool     = ""
-      datastore         = "datastore55"
-      network           = "VM Network"
-      static_ip_pool_id = local.vmware_static_pool_id
-    }
-    placement {
-      cluster           = "cluster3"
-      resource_pool     = ""
-      datastore         = "datastore56"
-      network           = "VM Network"
-      static_ip_pool_id = local.vmware_static_pool_id
-    }
-    instance_type {
-      disk_size_gb = 62
       memory_mb    = 4096
       cpu          = 2
     }

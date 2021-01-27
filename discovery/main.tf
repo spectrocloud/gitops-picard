@@ -1,13 +1,13 @@
 terraform {
   required_version = ">= 0.12.0"
-  backend "etcdv3" {
-    lock        = true
-    prefix      = "/s2/"
-    endpoints   = ["35.203.171.218:2379"]
-    cacert_path = "certs/ca.crt"
-    cert_path   = "certs/client.crt"
-    key_path    = "certs/client.key"
-  }
+  # backend "etcdv3" {
+  #   lock        = true
+  #   prefix      = "/s2/"
+  #   endpoints   = ["35.203.171.218:2379"]
+  #   cacert_path = "certs/ca.crt"
+  #   cert_path   = "certs/client.crt"
+  #   key_path    = "certs/client.key"
+  # }
 
   required_providers {
     spectrocloud = {
