@@ -63,7 +63,7 @@ resource "spectrocloud_cluster_profile" "prod-gcp" {
       kubeadmconfig:
         apiServer:
           extraArgs:
-            oidc-issuer-url: https://dev-6428100.okta.com
+            oidc-issuer-url: https://dev-6428100.okta.com/oauth2/default
             oidc-client-id: 0oa4fe1y3zjc2W2nc5d6
             oidc-username-claim: email
             oidc-username-prefix: "-"
