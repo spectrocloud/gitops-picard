@@ -9,7 +9,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
     ssh_key = local.cluster_ssh_public_key
 
     datacenter = local.datacenter
-    folder     = "Demo/spc-prod-vmware-1"
+    folder     = "Demo/spc-prod-vmware-2"
 
     network_type          = "DDNS"
     network_search_domain = local.cluster_network_search
