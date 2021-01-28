@@ -132,7 +132,7 @@ resource "spectrocloud_cluster_vsphere" "discover-2" {
 
   machine_pool {
     name  = "worker-pool"
-    count = 1
+    count = 6
 
     placement {
       cluster           = "cluster1"
@@ -140,6 +140,13 @@ resource "spectrocloud_cluster_vsphere" "discover-2" {
       datastore         = "datastore54"
       network           = "VM Network 2"
       static_ip_pool_id = local.vmware_static_pool_id_1
+    }
+    placement {
+      cluster           = "cluster2"
+      resource_pool     = ""
+      datastore         = "datastore55"
+      network           = "VM Network 2"
+      static_ip_pool_id = local.vmware_static_pool_id_2
     }
     instance_type {
       disk_size_gb = 62
