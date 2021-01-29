@@ -53,7 +53,7 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
 
   pack {
     name   = "lb-metallb"
-    tag    = "0.8.x"
+    tag    = "0.9.x"
     uid    = data.spectrocloud_pack.lbmetal-vsphere.id
     values = <<-EOT
       manifests:
@@ -74,41 +74,9 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
 
   pack {
     name   = "sapp-hipster"
-    tag    = "2.0.x"
+    tag    = "2.0.1"
     uid    = data.spectrocloud_pack.hipster-vsphere.id
     values = data.spectrocloud_pack.hipster-vsphere.values
-  }
-
-  pack {
-    name   = "istio"
-    tag    = "1.6.x"
-    uid    = data.spectrocloud_pack.istio-vsphere.id
-    values = <<-EOT
-      charts:
-        istio-operator:
-          hub: docker.io/istio
-          tag: 1.6.2
-          operatorNamespace: istio-operator
-          istioNamespace: istio-system
-        istio-controlplane:
-          namespace: istio-system
-          controlPlaneName: istio-controlplane
-          ############################################ ISTIO PROFILES #################################################
-          # default: generally for production (istiod, prometheus, ingress gateway)
-          # demo: enable everything for production (istiod, prometheus, ingress gateway, egress, kiali, tracing)
-          # remote: remote cluster of a multicluster mesh, with a shared control plane
-          ############################################################################################################
-          spec:
-            profile: demo
-            # Disable Pod disruption budget for the additional components. Otherwise, pods will get stuck when node is drained
-            values:
-              kiali:
-                service:
-                  type: LoadBalancer
-              global:
-                defaultPodDisruptionBudget:
-                  enabled: false
-    EOT
   }
 
   pack {
