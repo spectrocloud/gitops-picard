@@ -8,6 +8,17 @@ locals {
   aws_region_az    = "us-west-2a"
 }
 
+resource "local_file" "kubeconfig" {
+  content              = spectrocloud_cluster_aws.cluster.kubeconfig
+  filename             = "kubeconfig_aws-2"
+  file_permission      = "0644"
+  directory_permission = "0755"
+}
+
+output "cluster_kubeconfig" {
+  value = spectrocloud_cluster_aws.cluster.kubeconfig
+}
+
 resource "spectrocloud_cluster_aws" "cluster" {
   name               = "aws-picard-3"
   cluster_profile_id = spectrocloud_cluster_profile.prodaws.id
@@ -56,16 +67,4 @@ resource "spectrocloud_cluster_aws" "cluster" {
   }
 
 }
-
-
-# resource "local_file" "kubeconfig" {
-#   content              = spectrocloud_cluster_aws.cluster.kubeconfig
-#   filename             = "kubeconfig_aws-2"
-#   file_permission      = "0644"
-#   directory_permission = "0755"
-# }
-
-# output "cluster_kubeconfig" {
-#   value = spectrocloud_cluster_aws.cluster.kubeconfig
-# }
 
