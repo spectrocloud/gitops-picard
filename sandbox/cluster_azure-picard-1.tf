@@ -14,7 +14,7 @@ locals {
 
 
 resource "spectrocloud_cluster_azure" "cluster" {
-  name               = "az-picard-1"
+  name               = "az-picard-2"
   cluster_profile_id = spectrocloud_cluster_profile.azure.id
   cloud_account_id   = data.spectrocloud_cloudaccount_azure.picard.id
 
