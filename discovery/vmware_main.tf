@@ -1,3 +1,8 @@
+data "spectrocloud_pack" "prometheus-vsphere" {
+  name    = "prometheus-operator"
+  version = "9.7.2"
+}
+
 data "spectrocloud_pack" "nginx-vsphere" {
   name    = "nginx"
   version = "0.26.1"
