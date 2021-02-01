@@ -18,8 +18,8 @@
 #   # version  = "1.0.x"
 # }
 
-resource "spectrocloud_cluster_profile" "prodvmware2" {
-  name        = "ProdVMware2"
+resource "spectrocloud_cluster_profile" "tmovmware" {
+  name        = "ProdTMo"
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
