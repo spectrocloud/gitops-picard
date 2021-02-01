@@ -17,9 +17,9 @@ data "spectrocloud_cloudaccount_vsphere" "this" {
   name = "demo"
 }
 
-resource "spectrocloud_cluster_vsphere" "discover-1" {
-  name               = "vmware-discovery-1"
-  cluster_profile_id = spectrocloud_cluster_profile.devvmware.id
+resource "spectrocloud_cluster_vsphere" "cluster-1" {
+  name               = "vmware-cluster-1"
+  cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.this.id
 
   cloud_config {
@@ -122,68 +122,3 @@ resource "spectrocloud_cluster_vsphere" "discover-1" {
     }
   }
 }
-
-#resource "spectrocloud_cluster_vsphere" "discover-2" {
-#  name               = "vmware-discovery-2"
-#  cluster_profile_id = spectrocloud_cluster_profile.devvmware.id
-#  cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.this.id
-
-#  cloud_config {
-#    ssh_key = local.cluster_ssh_public_key
-
-#    datacenter = local.datacenter
-#    folder     = "Demo/spc-vmware-discovery-2"
-
-#    static_ip = true
-
-#    #network_type          = "VIP"
-#    #network_search_domain = local.cluster_network_search
-#  }
-
-#  # To override or specify values for a cluster:
-
-#  machine_pool {
-#    control_plane           = true
-#    control_plane_as_worker = true
-#    name                    = "master-pool"
-#    count                   = 1
-
-#    placement {
-#      cluster           = "cluster1"
-#      resource_pool     = ""
-#      datastore         = "datastore54"
-#      network           = "VM Network 2"
-#      static_ip_pool_id = local.vmware_static_pool_id_1
-#    }
-#    instance_type {
-#      disk_size_gb = 61
-#      memory_mb    = 4096
-#      cpu          = 2
-#    }
-#  }
-
-#  machine_pool {
-#    name  = "worker-pool"
-#    count = 6
-
-#    placement {
-#      cluster           = "cluster1"
-#      resource_pool     = ""
-#      datastore         = "datastore54"
-#      network           = "VM Network 2"
-#      static_ip_pool_id = local.vmware_static_pool_id_1
-#    }
-#    placement {
-#      cluster           = "cluster2"
-#      resource_pool     = ""
-#      datastore         = "datastore55"
-#      network           = "VM Network 2"
-#      static_ip_pool_id = local.vmware_static_pool_id_2
-#    }
-#    instance_type {
-#      disk_size_gb = 62
-#      memory_mb    = 4096
-#      cpu          = 2
-#    }
-#  }
-#}
