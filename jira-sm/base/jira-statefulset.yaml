@@ -39,6 +39,11 @@ spec:
         volumeMounts:
         - name: local-home
           mountPath: /var/atlassian/application-data/jira
+      initContainers:
+      - name: init-myservice
+        image: busybox:1.28
+        # TODO do this better
+        command: ['sh', '-c', "echo waiting for db && sleep 300"]
   volumeClaimTemplates:
   - metadata:
       name: local-home
