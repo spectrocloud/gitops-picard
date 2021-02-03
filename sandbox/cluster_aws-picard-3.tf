@@ -65,5 +65,5 @@ resource "spectrocloud_cluster_aws" "cluster" {
     instance_type = "t3.large"
     azs           = [local.aws_region_az]
   }
-  
+
 }
