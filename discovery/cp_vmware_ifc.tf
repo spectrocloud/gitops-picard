@@ -11,6 +11,13 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
   cloud       = "vsphere"
   type        = "cluster"
 
+  # pack {
+  #   name   = "vault"
+  #   tag    = "0.6.x"
+  #   uid    = data.spectrocloud_pack.vault.id
+  #   values = data.spectrocloud_pack.vault.values
+  # }
+
   pack {
     name   = "prometheus-operator"
     tag    = "9.7.x"
@@ -2035,7 +2042,8 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             ## E.g. to specify the default SSL certificate you can use
             ## extraArgs:
             ##   default-ssl-certificate: "<namespace>/<secret_name>"
-            extraArgs: {}
+            extraArgs:
+              default-ssl-certificate: "nginx/default-tls"
 
             ## Additional environment variables to set
             extraEnvs: []
