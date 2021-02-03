@@ -1,3 +1,8 @@
+data "spectrocloud_pack" "vault" {
+  name    = "vault"
+  version = "0.6.0"
+}
+
 data "spectrocloud_pack" "prometheus-vsphere" {
   name    = "prometheus-operator"
   version = "9.7.2"
