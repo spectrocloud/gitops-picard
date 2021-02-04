@@ -65,4 +65,11 @@ resource "spectrocloud_cluster_azure" "cluster" {
     azs           = []
   }
 
+  machine_pool {
+    name          = "worker-basic"
+    count         = 2
+    instance_type = "Standard_D2_v3"
+    azs           = []
+  }
+
 }
