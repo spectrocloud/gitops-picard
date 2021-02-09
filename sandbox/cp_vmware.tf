@@ -7,7 +7,7 @@
 
 data "spectrocloud_pack" "nginx-vsphere" {
   name    = "nginx"
-  version = "0.26.1"
+  version = "0.43.0"
 }
 
 data "spectrocloud_pack" "hipster-vsphere" {
@@ -70,6 +70,13 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
           addresses:
           - 10.10.182.0-10.10.182.9
     EOT
+  }
+
+  pack {
+    name   = "nginx"
+    tag    = "0.43.0"
+    uid    = data.spectrocloud_pack.nginx-vsphere.id
+    values = data.spectrocloud_pack.nginx-vsphere.values
   }
 
   pack {
