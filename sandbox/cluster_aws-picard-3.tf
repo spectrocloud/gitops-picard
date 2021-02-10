@@ -65,5 +65,12 @@ resource "spectrocloud_cluster_aws" "cluster" {
     instance_type = "t3.large"
     azs           = [local.aws_region_az]
   }
+  
+    machine_pool {
+    name          = "worker-demo"
+    count         = 1
+    instance_type = "t3.medium"
+    azs           = [local.aws_region_az]
+  }
 
 }
