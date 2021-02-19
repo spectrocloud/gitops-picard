@@ -1967,7 +1967,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             # Required for use with CNI based kubernetes installations (such as ones set up by kubeadm),
             # since CNI and hostport don't mix yet. Can be deprecated once https://github.com/kubernetes/kubernetes/issues/23920
             # is merged
-            hostNetwork: true
+            hostNetwork: false
 
             # Optionally change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.
             # By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
@@ -2042,8 +2042,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             ## E.g. to specify the default SSL certificate you can use
             ## extraArgs:
             ##   default-ssl-certificate: "<namespace>/<secret_name>"
-            extraArgs:
-              default-ssl-certificate: "nginx/default-tls"
+            extraArgs: {}
 
             ## Additional environment variables to set
             extraEnvs: []
@@ -2056,7 +2055,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
 
             ## DaemonSet or Deployment
             ##
-            kind: DaemonSet
+            kind: Deployment
 
             ## Annotations to be added to the controller deployment
             ##
@@ -2077,9 +2076,11 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             ## Node tolerations for server scheduling to nodes with taints
             ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
             ##
-            tolerations:
-             - key: "node-role.kubernetes.io/master"
-               effect: "NoSchedule"
+            tolerations: []
+            #  - key: "key"
+            #    operator: "Equal|Exists"
+            #    value: "value"
+            #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
 
             ## Affinity and anti-affinity
             ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -2116,9 +2117,8 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             ## Node labels for controller pod assignment
             ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
             ##
-            nodeSelector:
-              node-role.kubernetes.io/master: ""
-            
+            nodeSelector: {}
+
             ## Liveness and readiness probe values
             ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
             ##
@@ -2166,7 +2166,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
               configMapKey: ""
 
             service:
-              enabled: false
+              enabled: true
 
               annotations: {}
               labels: {}
@@ -2307,7 +2307,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
                 type: ClusterIP
 
               serviceMonitor:
-                enabled: true
+                enabled: false
                 additionalLabels: {}
                 namespace: ""
                 namespaceSelector: {}
@@ -2481,7 +2481,6 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
           ##
           udp: {}
           #  53: "kube-system/kube-dns:53"
-    EOT
   }
 
   #pack {
