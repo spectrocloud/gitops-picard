@@ -2481,6 +2481,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
           ##
           udp: {}
           #  53: "kube-system/kube-dns:53"
+    EOT
   }
 
   #pack {
