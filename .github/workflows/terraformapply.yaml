@@ -19,7 +19,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
-  plan:
+  apply:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     defaults:
@@ -63,7 +63,7 @@ jobs:
     - uses: actions/github-script@v3
       if: success() && steps.findPr.outputs.number
       env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        PLAN: "terraform\n${{ steps.apply.outputs.stdout }}"
         PR: ${{ steps.findPr.outputs.pr }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
           const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
           #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
-          #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
+          #### Terraform Apply 📖 \`${{ steps.apply.outcome }}\`
 
           <details open><summary>Show Plan</summary>
 
