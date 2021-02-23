@@ -1,0 +1,84 @@
+# This is a basic workflow that is manually triggered
+
+name: Terraform Apply
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  # but only for the main branch
+  push:
+    branches:
+    - main
+  #pull_request:
+    #types: [edited, opened, synchronize, reopened]
+
+env:
+  SPECTROCLOUD_TF_PATH: sandbox
+  SPECTROCLOUD_WORKSPACE: default
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  plan:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config="endpoints=[\"${{ secrets.SC_ETCD_ENDPOINT }}\"]"
+
+    - name: Terraform Workspace
+      id: workspace
+      run: terraform workspace select ${{ env.SPECTROCLOUD_WORKSPACE }}
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: apply
+      run: |
+        terraform apply -no-color -input=false \
+        -var 'sc_host=${{ secrets.SC_HOST }}' \
+        -var 'sc_project_name=${{ secrets.SC_PROJECT_NAME }}' \
+        -var 'sc_username=${{ secrets.SC_USERNAME }}' \
+        -var 'sc_password=${{ secrets.SC_PASSWORD }}'
+      continue-on-error: true
+    - uses: actions/github-script@v3
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
+          #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
+
+          <details open><summary>Show Plan</summary>
+
+          \`\`\`hcl
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
