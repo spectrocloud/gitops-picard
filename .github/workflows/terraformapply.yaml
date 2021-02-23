@@ -48,7 +48,7 @@ jobs:
     
 
           
-    - name: Terraform Plan
+    - name: Terraform Apply
       id: apply
       run: |
         terraform apply -no-color -input=false \
