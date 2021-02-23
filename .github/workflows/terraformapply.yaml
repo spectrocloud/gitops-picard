@@ -45,7 +45,9 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
+    
 
+          
     - name: Terraform Plan
       id: apply
       run: |
@@ -55,9 +57,14 @@ jobs:
         -var 'sc_username=${{ secrets.SC_USERNAME }}' \
         -var 'sc_password=${{ secrets.SC_PASSWORD }}'
       continue-on-error: true
+    - uses: jwalton/gh-find-current-pr@v1
+      id: findPr
+  
     - uses: actions/github-script@v3
+      if: success() && steps.findPr.outputs.number
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        PR: ${{ steps.findPr.outputs.pr }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -77,7 +84,7 @@ jobs:
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
           github.issues.createComment({
-            issue_number: context.issue.number,
+            issue_number: ${process.env.PR},
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
