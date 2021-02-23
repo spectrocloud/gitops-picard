@@ -61,7 +61,7 @@ resource "spectrocloud_cluster_aws" "cluster" {
 
   machine_pool {
     name          = "worker-basic"
-    count         = 3
+    count         = 2
     instance_type = "t3.large"
     azs           = [local.aws_region_az]
   }
