@@ -51,6 +51,7 @@ resource "spectrocloud_cluster_profile" "prodaws" {
     values = <<-EOT
       pack:
         k8sHardening: True
+
         #CIDR Range for Pods in cluster
         # Note : This must not overlap with any of the host or service network
         podCIDR: "192.168.0.0/16"

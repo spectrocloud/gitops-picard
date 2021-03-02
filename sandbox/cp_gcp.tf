@@ -68,6 +68,8 @@ resource "spectrocloud_cluster_profile" "prod-gcp" {
             oidc-username-claim: email
             oidc-username-prefix: "-"
             oidc-groups-claim: groups
+            # Note : secure-port flag is used during kubeadm init. Do not change this flag on a running cluster
+            secure-port: "6443"
             anonymous-auth: "true"
             insecure-port: "0"
             profiling: "false"
@@ -99,11 +101,9 @@ resource "spectrocloud_cluster_profile" "prod-gcp" {
             pod-eviction-timeout: "1m0s"
             use-service-account-credentials: "true"
             feature-gates: "RotateKubeletServerCertificate=true"
-            address: "0.0.0.0"
         scheduler:
           extraArgs:
             profiling: "false"
-            address: "0.0.0.0"
         kubeletExtraArgs:
           read-only-port : "0"
           event-qps: "0"
