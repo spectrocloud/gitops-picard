@@ -4,7 +4,7 @@ data "spectrocloud_cloudaccount_azure" "picard" {
 
 locals {
   azure_subscription_id = "8710ff2b-e468-434a-9a84-e522999f6b81"
-  azure_resource_group  = "picard-west-us"
+  azure_resource_group  = "picard"
   azure_region          = "westus"
 
   # cluster_ssh_public_key = <<-EOT

@@ -58,7 +58,6 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
     values = <<-EOT
       manifests:
         metallb:
-
           #The namespace to use for deploying MetalLB
           namespace: "metallb-system"
 
