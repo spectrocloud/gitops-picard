@@ -17,6 +17,18 @@ terraform {
   }
 }
 
+locals {
+  oidc_args = {
+    oidc-issuer-url : "https://dev-6428100.okta.com/oauth2/default"
+    oidc-client-id : "0oa4fe1y3zjc2W2nc5d6"
+    oidc-username-claim : "email"
+    oidc-username-prefix : "-"
+    oidc-groups-claim : "groups"
+  }
+
+  oidc_args_string = join("\n", [for k, v in local.oidc_args : format("%s: \"%s\"", k, v)])
+}
+
 variable "sc_host" {}
 variable "sc_username" {}
 variable "sc_password" {}
