@@ -24,6 +24,14 @@ data "spectrocloud_pack" "ubuntu-azure" {
   # version  = "1.0.x"
 }
 
+locals {
+  azure_k8s_values = replace(
+    data.spectrocloud_pack.k8s-azure.values,
+    "/apiServer:\\n\\s+extraArgs:/",
+    indent(6, "$0\n${local.oidc_args_string}")
+  )
+}
+
 resource "spectrocloud_cluster_profile" "azure" {
   name        = "ProdAzure"
   description = "basic cp"
@@ -31,10 +39,17 @@ resource "spectrocloud_cluster_profile" "azure" {
   type        = "cluster"
 
   pack {
-    name   = "csi-azure"
-    tag    = "1.0.x"
-    uid    = data.spectrocloud_pack.csi-azure.id
-    values = data.spectrocloud_pack.csi-azure.values
+    name   = "ubuntu-azure"
+    tag    = "LTS__18.4.x"
+    uid    = data.spectrocloud_pack.ubuntu-azure.id
+    values = data.spectrocloud_pack.ubuntu-azure.values
+  }
+
+  pack {
+    name   = "kubernetes"
+    tag    = "1.18.15"
+    uid    = data.spectrocloud_pack.k8s-azure.id
+    values = local.azure_k8s_values
   }
 
   pack {
@@ -45,16 +60,12 @@ resource "spectrocloud_cluster_profile" "azure" {
   }
 
   pack {
-    name   = "kubernetes"
-    tag    = "1.18.x"
-    uid    = data.spectrocloud_pack.k8s-azure.id
-    values = data.spectrocloud_pack.k8s-azure.values
+    name   = "csi-azure"
+    tag    = "1.0.x"
+    uid    = data.spectrocloud_pack.csi-azure.id
+    values = data.spectrocloud_pack.csi-azure.values
   }
 
-  pack {
-    name   = "ubuntu-azure"
-    tag    = "LTS__18.4.x"
-    uid    = data.spectrocloud_pack.ubuntu-azure.id
-    values = data.spectrocloud_pack.ubuntu-azure.values
-  }
+
+
 }
