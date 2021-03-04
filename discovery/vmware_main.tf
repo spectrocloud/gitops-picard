@@ -1,7 +1,13 @@
 locals {
-  vmware_static_pool_id_1 = "601229dfc6fdece29d6dc124"
-  vmware_static_pool_id_2 = "601229fa8102177f12cf8dda"
-  vmware_static_pool_id_3 = "60122a31c6fdece2a1fe826a"
+  oidc_args = {
+    oidc-issuer-url : "https://%ISSUER_URL%"
+    oidc-client-id : "0oa4fe1y3zjc2W2nc5d6"
+    oidc-username-claim : "email"
+    oidc-username-prefix : "-"
+    oidc-groups-claim : "groups"
+  }
+
+  oidc_args_string = join("\n", [for k, v in local.oidc_args : format("%s: \"%s\"", k, v)])
 
   datacenter = "Datacenter"
   folder     = "Demo"
@@ -17,9 +23,14 @@ data "spectrocloud_cloudaccount_vsphere" "this" {
   name = "vcenter2"
 }
 
-data "spectrocloud_pack" "vault" {
-  name    = "vault"
-  version = "0.6.0"
+data "spectrocloud_pack" "dex" {
+  name    = "dex"
+  version = "2.25.0"
+}
+
+data "spectrocloud_pack" "byom" {
+  name    = "spectro-byo-manifest"
+  version = "1.0.0"
 }
 
 data "spectrocloud_pack" "prometheus-vsphere" {

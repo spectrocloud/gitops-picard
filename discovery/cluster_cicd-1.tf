@@ -13,13 +13,27 @@
 #  EOT
 #}
 
-#data "spectrocloud_cloudaccount_vsphere" "this" {
-#  name = "demo"
-#}
+# data "spectrocloud_cloudaccount_vsphere" "this" {
+#   name = "demo"
+# }
+
+locals {
+  ip_cluster-1 = "10.10.137.235"
+}
+
+locals {
+  oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.ip_cluster-1)
+  k8s_values_cluster-1 = replace(
+    data.spectrocloud_pack.k8s-vsphere.values,
+    "/apiServer:\\n\\s+extraArgs:/",
+    indent(6, "$0\n${local.oidc_cluster-1}")
+  )
+}
 
 resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
   name               = "vmware-cicd-1"
   cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
+  #cluster_profile_id = "603e551f39ea6effca77fb07"
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.this.id
 
   cloud_config {
@@ -34,28 +48,11 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
     network_search_domain = local.cluster_network_search
   }
 
-  # To override or specify values for a cluster:
-
-  #pack {
-  #  name   = "lb-metallb"
-  #  tag    = "0.8.x"
-  #  values = <<-EOT
-  #    manifests:
-  #      metallb:
-
-  #        #The namespace to use for deploying MetalLB
-  #        namespace: "metallb-system"
-
-  #        #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
-  #        avoidBuggyIps: true
-
-  #        # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
-  #        # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
-  #        addresses:
-  #        - 10.10.182.100-10.10.182.109
-  #  EOT
-  #}
-
+  pack {
+    name   = "kubernetes"
+    tag    = "1.18.13"
+    values = local.k8s_values_cluster-1
+  }
 
   machine_pool {
     control_plane           = true
