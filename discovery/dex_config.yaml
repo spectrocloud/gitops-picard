@@ -1,0 +1,314 @@
+pack:
+  #The namespace (on the target cluster) to install this chart
+  #When not found, a new namespace will be created
+  namespace: "dex"
+
+charts:
+  dex:
+    # Default values for dex
+    # This is a YAML-formatted file.
+    # Declare name/value pairs to be passed into your templates.
+    # name: value
+
+    image: quay.io/dexidp/dex
+    imageTag: "v2.25.0"
+    imagePullPolicy: "IfNotPresent"
+    imagePullSecrets: {}
+
+    inMiniKube: false
+
+    nodeSelector: {}
+
+    podLabels:
+      spectrocloud.com/connection: proxy
+
+    podAnnotations: {}
+
+    priorityClassName: ""
+
+    initContainers: []
+
+    tolerations: []
+      # - key: CriticalAddonsOnly
+      #   operator: Exists
+      # - key: foo
+      #   operator: Equal
+      #   value: bar
+      #   effect: NoSchedule
+
+    securityContext:
+      # Rejecting containers trying to run with root privileges
+      # runAsNonRoot: true
+      # Preventing privilege escalation to root privileges
+      # allowPrivilegeEscalation: false
+      # Set the user ID used to run the container
+      # runAsUser: 1001
+      # Set the primary group ID used to run all processes within any container of the pod
+      # runAsGroup: 1001
+      # Set the group ID associated with the container
+      # fsGroup: 1001
+
+    replicas: 1
+
+    # resources:
+      # limits:
+        # cpu: 100m
+        # memory: 50Mi
+      # requests:
+        # cpu: 100m
+        # memory: 50Mi
+
+    # grpc support
+    grpc: false
+
+    # https termination by dex itself
+    https: false
+
+    # expose prometheus metrics ?
+    telemetry: false
+
+    ports:
+      web:
+        containerPort: 5556
+        # for service.type: NodePort
+        nodePort: 32000
+        servicePort: 32000
+    # Relevant only when grpc support is enabled
+      grpc:
+        containerPort: 5000
+        # for service.type: NodePort
+        nodePort: 33000
+        servicePort: 35000
+      telemetry:
+        containerPort: 5558
+        # for service.type: NodePort
+        nodePort: 34000
+        servicePort: 37000
+
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 1
+      failureThreshold: 1
+      httpPath: "/healthz"
+      periodSeconds: 10
+      timeoutSeconds: 1
+
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 1
+      failureThreshold: 1
+      httpPath: "/healthz"
+      periodSeconds: 10
+      timeoutSeconds: 1
+
+    service:
+      type: NodePort
+      # Override IP for the Service Type: LoadBalancer.
+      # This feature depends on whether the underlying cloud-provider supports specifying the loadBalancerIP when a load balancer is created.
+      # loadBalancerIP: 127.0.0.1
+      annotations: {}
+
+    ingress:
+      enabled: false
+      annotations: {}
+        # kubernetes.io/ingress.class: nginx
+        # kubernetes.io/tls-acme: "true"
+      path: /
+      hosts:
+        - dex.example.com
+      tls: []
+      #  - secretName: dex-example-tls
+      #    hosts:
+      #      - dex.example.com
+
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    certs:
+      securityContext:
+        enabled: true
+        runAsUser: 65534
+        fsGroup: 65534
+      image: gcr.io/google_containers/kubernetes-dashboard-init-amd64
+      imageTag: "v1.0.0"
+      imagePullPolicy: "IfNotPresent"
+      # Section below is relevant only when https termination is enabled
+      web:
+        create: false
+        activeDeadlineSeconds: 300
+        caDays: 10000
+        certDays: 10000
+        altNames:
+          - dex.example.com
+        altIPs: {}
+        secret:
+          tlsName: dex-tls
+          caName: dex-web-server-ca
+        pod:
+          annotations: {}
+      # Section below is relevant only when grpc support is enabled
+      grpc:
+        create: false
+        activeDeadlineSeconds: 300
+        altNames:
+          - dex.example.com
+        altIPs: {}
+        secret:
+          serverTlsName: dex-grpc-server-tls
+          clientTlsName: dex-grpc-client-tls
+          caName: dex-grpc-ca
+        pod:
+          annotations: {}
+
+    env:
+    - name: BINDPW
+      valueFrom:
+        secretKeyRef:
+          name: ldap-secret
+          key: bindpw
+    - name: BINDDN
+      value: uid=spectro,ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+
+    rbac:
+      # Specifies whether RBAC resources should be created
+      create: true
+
+    crd:
+      # Specifies whether dex's CRDs are already present (if not cluster role and cluster role binding will be created
+      # to enable dex to create them). Depends on rbac.create
+      present: false
+
+    serviceAccount:
+      # Specifies whether a ServiceAccount should be created
+      create: true
+      # The name of the ServiceAccount to use.
+      # If not set and create is true, a name is generated using the fullname template
+      name:
+
+    affinity: {}
+      # podAntiAffinity:
+      #   preferredDuringSchedulingIgnoredDuringExecution:
+      #   - weight: 5
+      #     podAffinityTerm:
+      #       topologyKey: "kubernetes.io/hostname"
+      #       labelSelector:
+      #         matchLabels:
+      #           app: {{ template "dex.name" . }}
+      #           release: "{{ .Release.Name }}"
+
+    podDisruptionBudget: {}
+      # maxUnavailable: 1
+
+    config:
+      issuer: http://10.10.137.225:32000
+      storage:
+        type: kubernetes
+        config:
+          inCluster: true
+      logger:
+        level: debug
+      web:
+        # port is taken from ports section above
+        address: 0.0.0.0
+        tlsCert: /etc/dex/tls/https/server/tls.crt
+        tlsKey: /etc/dex/tls/https/server/tls.key
+        allowedOrigins: []
+    # Section below is relevant only when grpc support is enabled
+      grpc:
+        # port is taken from ports section above
+        address: 127.0.0.1
+        tlsCert: /etc/dex/tls/grpc/server/tls.crt
+        tlsKey: /etc/dex/tls/grpc/server/tls.key
+        tlsClientCA: /etc/dex/tls/grpc/ca/tls.crt
+      connectors:
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: 7f680506c20456197282
+          clientSecret: 4de214bebfff588c5f58a9c07e5af702f7f13862
+          redirectURI: https://dex.app.picard.spectrocloud.com:32000/callback
+          org: kubernetes
+      # - type: oidc
+      #   id: okta
+      #   name: Okta
+      #   config:
+      #     issuer: https://spectrocloud-sandbox.okta.com
+      #     clientID: 0oa7z0l4lQSSUKq9j5d5
+      #     clientSecret: BMTj4t-pFsOAh6R0vb1VvFHVDNw71AXzYQOCBqz8
+      #     redirectURI: https://dex.app.picard.spectrocloud.com:32000/callback
+      #     insecureSkipEmailVerified: true
+      - type: ldap
+        # Required field for connector id.
+        id: ldap
+        # Required field for connector name.
+        name: LDAP (Okta-Sandbox2)
+        config:
+          host: spectrocloud-sandbox2.ldap.okta.com:636
+          #rootCA: /etc/dex/ldap.ca
+          bindDN: uid=spectro,ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+          bindPW: "$BINDPW"
+            # User search maps a username and password entered by a user to a LDAP entry.
+          userSearch:
+            # BaseDN to start the search from. It will translate to the query
+            # "(&(objectClass=person)(uid=<username>))".
+            baseDN: ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+            # Optional filter to apply when searching the directory.
+            filter: "(objectClass=person)"
+
+            # username attribute used for comparing user entries. This will be translated
+            # and combined with the other filter as "(<attr>=<username>)".
+            username: uid
+            # The following three fields are direct mappings of attributes on the user entry.
+            # String representation of the user.
+            idAttr: DN
+            # Required. Attribute to map to Email.
+            emailAttr: mail
+            # Maps to display name of users. No default value.
+            nameAttr: cn
+
+          # Group search queries for groups given a user entry.
+          groupSearch:
+            # BaseDN to start the search from. It will translate to the query
+            # "(&(objectClass=group)(member=<user uid>))".
+            baseDN: ou=groups,dc=spectrocloud-sandbox2,dc=okta,dc=com
+            # Optional filter to apply when searching the directory.
+            #filter: "(objectClass=group)"
+
+            # Following list contains field pairs that are used to match a user to a group. It adds an additional
+            # requirement to the filter that an attribute in the group must match the user's
+            # attribute value.
+            userMatchers:
+            - userAttr: DN
+              groupAttr: uniqueMember
+
+            # Represents group name.
+            nameAttr: cn
+      oauth2:
+        alwaysShowLoginScreen: true
+        skipApprovalScreen: true
+        passwordConnector: ldap
+      staticClients:
+      - id: kubernetes
+        redirectURIs:
+          - http://127.0.0.1:5555/callback
+          - http://localhost:8000
+          - http://localhost:18000
+          - urn:ietf:wg:oauth:2.0:oob
+        name: 'Kubernetes 1'
+        secret: k8s
+
+    #  expiry:
+    #    signingKeys: "6h"
+    #    idTokens: "24h"
+    #
+      enablePasswordDB: false
+    #  staticPasswords:
+    #   - email: "admin@example.com"
+    #     # bcrypt hash of the string "password"
+    #     hash: "$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W"
+    #     username: "admin"
+    #     userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+
+      frontend:
+        logoURL: "marketing-assets.spectrocloud.com/static/media/header-logo.974a4dc7.png"

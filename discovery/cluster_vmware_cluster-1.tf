@@ -7,7 +7,7 @@ resource "spectrocloud_privatecloudgateway_ippool" "cluster-1" {
   ip_end_range               = "10.10.242.34"
   prefix                     = 18
   gateway                    = "10.10.192.1"
-  nameserver_addresses       = ["10.10.128.8","8.8.8.8"]
+  nameserver_addresses       = ["10.10.128.8", "8.8.8.8"]
   restrict_to_single_cluster = false
   #nameserver_search_suffix = ["test.com"]
 }
