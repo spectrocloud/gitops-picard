@@ -18,11 +18,12 @@
 # }
 
 locals {
-  ip_cluster-1 = "10.10.137.235"
+  # ip_cluster-1 = "10.10.137.235"
+  issuer_cluster-1 = "dex.cluster1.discovery.spectrocloud.com"
 }
 
 locals {
-  oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.ip_cluster-1)
+  oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-1)
   k8s_values_cluster-1 = replace(
     data.spectrocloud_pack.k8s-vsphere.values,
     "/apiServer:\\n\\s+extraArgs:/",
@@ -34,7 +35,7 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
   name               = "vmware-cicd-1"
   cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
   #cluster_profile_id = "603e551f39ea6effca77fb07"
-  cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.this.id
+  cloud_account_id = data.spectrocloud_cloudaccount_vsphere.this.id
 
   cloud_config {
     ssh_key = local.cluster_ssh_public_key
@@ -50,8 +51,28 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
 
   pack {
     name   = "kubernetes"
-    tag    = "1.18.13"
+    tag    = "1.18.15"
     values = local.k8s_values_cluster-1
+  }
+
+  pack {
+    name   = "dex"
+    tag    = "2.25.0"
+    values = templatefile("dex_config.yaml", {issuer: local.issuer_cluster-1})
+  }
+
+  # Not in T-Mo
+  pack {
+    name   = "lb-metallb"
+    tag    = "0.9.5"
+    values = <<-EOT
+      manifests:
+        metallb:
+          namespace: "metallb-system"
+          avoidBuggyIps: true
+          addresses:
+          - 10.10.182.100-10.10.182.109
+    EOT
   }
 
   machine_pool {

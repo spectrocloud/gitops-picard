@@ -72,7 +72,7 @@ charts:
         containerPort: 5556
         # for service.type: NodePort
         nodePort: 32000
-        servicePort: 32000
+        servicePort: 5556
     # Relevant only when grpc support is enabled
       grpc:
         containerPort: 5000
@@ -102,21 +102,21 @@ charts:
       timeoutSeconds: 1
 
     service:
-      type: NodePort
+      type: ClusterIP
       # Override IP for the Service Type: LoadBalancer.
       # This feature depends on whether the underlying cloud-provider supports specifying the loadBalancerIP when a load balancer is created.
       # loadBalancerIP: 127.0.0.1
       annotations: {}
 
     ingress:
-      enabled: false
+      enabled: true
       annotations: {}
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       path: /
       hosts:
-        - dex.example.com
-      tls: []
+      - ${issuer}
+      # tls: []
       #  - secretName: dex-example-tls
       #    hosts:
       #      - dex.example.com
@@ -167,7 +167,7 @@ charts:
           name: ldap-secret
           key: bindpw
     - name: BINDDN
-      value: uid=spectro,ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+      value: uid=spectro,ou=users,dc=dev-6428100,dc=okta,dc=com
 
     rbac:
       # Specifies whether RBAC resources should be created
@@ -200,7 +200,7 @@ charts:
       # maxUnavailable: 1
 
     config:
-      issuer: http://10.10.137.225:32000
+      issuer: https://${issuer}
       storage:
         type: kubernetes
         config:
@@ -221,38 +221,21 @@ charts:
         tlsKey: /etc/dex/tls/grpc/server/tls.key
         tlsClientCA: /etc/dex/tls/grpc/ca/tls.crt
       connectors:
-      - type: github
-        id: github
-        name: GitHub
-        config:
-          clientID: 7f680506c20456197282
-          clientSecret: 4de214bebfff588c5f58a9c07e5af702f7f13862
-          redirectURI: https://dex.app.picard.spectrocloud.com:32000/callback
-          org: kubernetes
-      # - type: oidc
-      #   id: okta
-      #   name: Okta
-      #   config:
-      #     issuer: https://spectrocloud-sandbox.okta.com
-      #     clientID: 0oa7z0l4lQSSUKq9j5d5
-      #     clientSecret: BMTj4t-pFsOAh6R0vb1VvFHVDNw71AXzYQOCBqz8
-      #     redirectURI: https://dex.app.picard.spectrocloud.com:32000/callback
-      #     insecureSkipEmailVerified: true
       - type: ldap
         # Required field for connector id.
         id: ldap
         # Required field for connector name.
-        name: LDAP (Okta-Sandbox2)
+        name: LDAP (Okta-Dex)
         config:
-          host: spectrocloud-sandbox2.ldap.okta.com:636
+          host: dev-6428100.ldap.okta.com
           #rootCA: /etc/dex/ldap.ca
-          bindDN: uid=spectro,ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+          bindDN: "$BINDDN"
           bindPW: "$BINDPW"
             # User search maps a username and password entered by a user to a LDAP entry.
           userSearch:
             # BaseDN to start the search from. It will translate to the query
             # "(&(objectClass=person)(uid=<username>))".
-            baseDN: ou=users,dc=spectrocloud-sandbox2,dc=okta,dc=com
+            baseDN: ou=users,dc=dev-6428100,dc=okta,dc=com
             # Optional filter to apply when searching the directory.
             filter: "(objectClass=person)"
 
@@ -271,7 +254,7 @@ charts:
           groupSearch:
             # BaseDN to start the search from. It will translate to the query
             # "(&(objectClass=group)(member=<user uid>))".
-            baseDN: ou=groups,dc=spectrocloud-sandbox2,dc=okta,dc=com
+            baseDN: ou=groups,dc=dev-6428100,dc=okta,dc=com
             # Optional filter to apply when searching the directory.
             #filter: "(objectClass=group)"
 
@@ -289,14 +272,14 @@ charts:
         skipApprovalScreen: true
         passwordConnector: ldap
       staticClients:
-      - id: kubernetes
+      - id: spectrocloud
+        name: 'Spectro Cloud'
+        public: true
         redirectURIs:
-          - http://127.0.0.1:5555/callback
-          - http://localhost:8000
-          - http://localhost:18000
-          - urn:ietf:wg:oauth:2.0:oob
-        name: 'Kubernetes 1'
-        secret: k8s
+        - http://127.0.0.1:5555/callback
+        - http://localhost:8000
+        - http://localhost:18000
+        - urn:ietf:wg:oauth:2.0:oob
 
     #  expiry:
     #    signingKeys: "6h"
@@ -310,5 +293,5 @@ charts:
     #     username: "admin"
     #     userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
 
-      frontend:
-        logoURL: "marketing-assets.spectrocloud.com/static/media/header-logo.974a4dc7.png"
+      #frontend:
+      #logoURL: "marketing-assets.spectrocloud.com/static/media/header-logo.974a4dc7.png"
