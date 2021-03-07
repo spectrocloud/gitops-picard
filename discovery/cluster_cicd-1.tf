@@ -58,7 +58,7 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
   pack {
     name   = "dex"
     tag    = "2.25.0"
-    values = templatefile("dex_config.yaml", {issuer: local.issuer_cluster-1})
+    values = templatefile("config/dex_config.yaml", {issuer: local.issuer_cluster-1})
   }
 
   # Not in T-Mo

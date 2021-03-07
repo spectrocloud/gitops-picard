@@ -1,7 +1,7 @@
 locals {
   oidc_args = {
     oidc-issuer-url : "https://%ISSUER_URL%"
-    oidc-client-id : "0oa4fe1y3zjc2W2nc5d6"
+    oidc-client-id : "spectrocloud"
     oidc-username-claim : "email"
     oidc-username-prefix : "-"
     oidc-groups-claim : "groups"
