@@ -18,18 +18,18 @@
 # }
 
 locals {
-  # ip_cluster-1 = "10.10.137.235"
-  issuer_cluster-1 = "dex.cluster1.discovery.spectrocloud.com"
+  # ip_cluster-9 = "10.10.137.235"
+  issuer_cluster-9 = "dex.cluster1.discovery.spectrocloud.com"
   # TODO remove
-  # issuer_cluster-1 = "localhost:32000"
+  # issuer_cluster-9 = "localhost:32000"
 }
 
 locals {
-  oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-1)
-  k8s_values_cluster-1 = replace(
+  oidc_cluster-9 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-9)
+  k8s_values_cluster-9 = replace(
     data.spectrocloud_pack.k8s-vsphere.values,
     "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_cluster-1}")
+    indent(6, "$0\n${local.oidc_cluster-9}")
   )
 }
 
@@ -54,13 +54,13 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
   pack {
     name   = "kubernetes"
     tag    = "1.18.15"
-    values = local.k8s_values_cluster-1
+    values = local.k8s_values_cluster-9
   }
 
   pack {
     name   = "dex"
     tag    = "2.25.0"
-    values = templatefile("config/dex_config.yaml", {issuer: local.issuer_cluster-1})
+    values = templatefile("config/dex_config.yaml", { issuer : local.issuer_cluster-9 })
   }
 
   # Not in T-Mo
