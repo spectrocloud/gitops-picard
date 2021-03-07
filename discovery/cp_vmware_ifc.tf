@@ -107,7 +107,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
     name   = "ubuntu-vsphere"
     tag    = "LTS__18.4.x"
     uid    = data.spectrocloud_pack.ubuntu-vsphere.id
-    values = data.spectrocloud_pack.ubuntu-vsphere.values
+    values = file("config/os_ubuntu.yaml")
   }
 
 }
