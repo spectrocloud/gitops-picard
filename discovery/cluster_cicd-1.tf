@@ -20,6 +20,8 @@
 locals {
   # ip_cluster-1 = "10.10.137.235"
   issuer_cluster-1 = "dex.cluster1.discovery.spectrocloud.com"
+  # TODO remove
+  # issuer_cluster-1 = "localhost:32000"
 }
 
 locals {
