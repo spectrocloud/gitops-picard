@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12.0"
+  required_version = ">= 0.13"
   # backend "etcdv3" {
   #   lock        = true
   #   prefix      = "/s2/"
@@ -13,6 +13,11 @@ terraform {
     spectrocloud = {
       version = "~> 0.2.0"
       source  = "spectrocloud/spectrocloud"
+    }
+
+    citrixadc = {
+      source  = "citrix.com/test/citrixadc"
+      version = "0.12.43"
     }
   }
 }
@@ -28,4 +33,14 @@ provider "spectrocloud" {
   password                  = var.sc_password
   project_name              = var.sc_project_name
   ignore_insecure_tls_error = true
+}
+
+variable "ns_user" {}
+variable "ns_password" {}
+variable "ns_endpoint" {}
+
+provider "citrixadc" {
+  username = var.ns_user
+  password = var.ns_password
+  endpoint = var.ns_endpoint
 }

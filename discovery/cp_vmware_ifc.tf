@@ -5,11 +5,38 @@
 # }
 
 
+locals {
+  nginx_default_tls = <<-EOT
+    extraArgs:
+      default-ssl-certificate: "nginx/default-tls"
+  EOT
+  nginx_values = replace(
+    data.spectrocloud_pack.nginx-vsphere.values,
+    "/##   default-ssl-certificate: \"<namespace>/<secret_name>\"\\n\\s+extraArgs: {}\\n/",
+    indent(6, local.nginx_default_tls)
+  )
+}
+
 resource "spectrocloud_cluster_profile" "ifcvmware" {
   name        = "IFCVMware"
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
+
+  # Not in T-Mo
+  pack {
+    name   = "lb-metallb"
+    tag    = "0.9.5"
+    uid    = data.spectrocloud_pack.lbmetal-vsphere.id
+    values    = data.spectrocloud_pack.lbmetal-vsphere.values
+  }
+
+  pack {
+    name   = "nginx"
+    tag    = "0.43.0"
+    uid    = data.spectrocloud_pack.nginx-vsphere.id
+    values = local.nginx_values
+  }
 
   pack {
     name   = "spectro-byo-manifest"
@@ -33,7 +60,8 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
     name   = "dex"
     tag    = "2.25.0"
     uid    = data.spectrocloud_pack.dex.id
-    values = templatefile("dex_config.yaml", {})
+    values = data.spectrocloud_pack.dex.values
+    # values = templatefile("dex_config.yaml", {})
   }
 
   pack {
@@ -67,9 +95,10 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
     values = data.spectrocloud_pack.cni-vsphere.values
   }
 
+  # This becomes modified in T-Mo with a hardcoded issuer
   pack {
     name   = "kubernetes"
-    tag    = "1.18.13"
+    tag    = "1.18.15"
     uid    = data.spectrocloud_pack.k8s-vsphere.id
     values = data.spectrocloud_pack.k8s-vsphere.values
   }

@@ -40,7 +40,7 @@ data "spectrocloud_pack" "prometheus-vsphere" {
 
 data "spectrocloud_pack" "nginx-vsphere" {
   name    = "nginx"
-  version = "0.26.1"
+  version = "0.43.0"
 }
 
 data "spectrocloud_pack" "hipster-vsphere" {
@@ -50,7 +50,7 @@ data "spectrocloud_pack" "hipster-vsphere" {
 
 data "spectrocloud_pack" "lbmetal-vsphere" {
   name    = "lb-metallb"
-  version = "0.8.3"
+  version = "0.9.5"
 }
 
 data "spectrocloud_pack" "istio-vsphere" {
@@ -70,7 +70,7 @@ data "spectrocloud_pack" "cni-vsphere" {
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.18.13"
+  version = "1.18.15"
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
