@@ -28,7 +28,7 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
     name   = "lb-metallb"
     tag    = "0.9.5"
     uid    = data.spectrocloud_pack.lbmetal-vsphere.id
-    values    = data.spectrocloud_pack.lbmetal-vsphere.values
+    values = data.spectrocloud_pack.lbmetal-vsphere.values
   }
 
   pack {
