@@ -25,7 +25,7 @@ data "spectrocloud_cloudaccount_vsphere" "this" {
 
 data "spectrocloud_pack" "dex" {
   name    = "dex"
-  version = "2.25.0"
+  version = "2.28.0"
 }
 
 data "spectrocloud_pack" "byom" {

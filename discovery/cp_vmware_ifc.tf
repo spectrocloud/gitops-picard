@@ -23,6 +23,14 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
   cloud       = "vsphere"
   type        = "cluster"
 
+  pack {
+    name   = "dex"
+    tag    = "2.28.0"
+    uid    = data.spectrocloud_pack.dex.id
+    values = data.spectrocloud_pack.dex.values
+    # values = templatefile("dex_config.yaml", {})
+  }
+
   # Not in T-Mo
   pack {
     name   = "lb-metallb"
@@ -54,14 +62,6 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
             data:
               bindpw: QWJjMTIzNDUh
     EOT
-  }
-
-  pack {
-    name   = "dex"
-    tag    = "2.25.0"
-    uid    = data.spectrocloud_pack.dex.id
-    values = data.spectrocloud_pack.dex.values
-    # values = templatefile("dex_config.yaml", {})
   }
 
   pack {
