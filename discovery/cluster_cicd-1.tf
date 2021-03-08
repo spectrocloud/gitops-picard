@@ -59,7 +59,7 @@ resource "spectrocloud_cluster_vsphere" "cluster-cicd-1" {
 
   pack {
     name   = "dex"
-    tag    = "2.25.0"
+    tag    = "2.28.0"
     values = templatefile("config/dex_config.yaml", { issuer : local.issuer_cluster-9 })
   }
 
