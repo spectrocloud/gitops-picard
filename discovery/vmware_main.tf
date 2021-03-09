@@ -27,11 +27,6 @@ locals {
   EOT
 }
 
-locals {
-
-
-}
-
 data "spectrocloud_cloudaccount_vsphere" "this" {
   name = "vcenter2"
 }
