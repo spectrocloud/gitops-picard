@@ -3,20 +3,6 @@
 #################################################################################################
 
 locals {
-  # Network
-  global_pcg_id                       = "603e528439ea6effbcd224d8"
-  global_network_prefix               = 18
-  global_network_gateway              = "10.10.192.1"
-  global_network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
-
-  # VM properties
-  global_vm_folder      = "Demo"
-  global_ssh_public_key = <<-EOT
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAUaBODDNpQxJJqXz/Q+afauM5EPFp4oDRrWzK/cGd92N+exkd+tEZdO7n3R+WAx0XTcPiVvfKctzekNS6f/ZMrFb5HAPvFJtnGNIE2sm+eryEnAH+Sc7ppZha3/MaSp/A2dm2IobYRvwl04sEi4w1K+I8Rtt+fBe3gV3wnP3E3yOiRx4G2XFC3T6x8MjdOkjO2v6fBluw1M1H2etp1m/n4D70UkeyVJyipcntz0ubHweU7yPNdNS3YkpExYIGhm97C4dyESHEw9PZVdLs1FBL6mW5Yb4qVbg5FkLljLFynh9jL8IAYal0pibAAH+Sk/Nd4865lVJ3lrm8nhBnjs1OEFA487rcxyInxJk/WwLEHvo88Ku9IlYq15Alr8N/JHHackV4kAH0yJNeLtwAysK2gI7Mb5uGnMTPrz73IZqXSxFqnU34Ow+vwu8fXBtXmHA5cUHyz0ARzpgx8A0e8L8SjdY/6dsFhSzGo7JoCElN7sEMo7iI4Wdo8CYdlT+OXizBf3pnM/wxRZclCeRDJpLtd6jl5swv7J5ocINEh1r3BllCyV8L7Xp5gw8IKT3ohz6rliGJwwlq/emqY52eB3wweTLRm30z3h3aQa3YeAR+2JgvWlrJ3YWsYYCLRhSQTfYmpgUkoZIcfB2xkZzp6cyooM0i5Obz313HsxwBHOmNrw== spectro@spectro
-  EOT
-}
-
-locals {
   # Cluster
   issuer_cluster-1   = "dex.cluster-1.discovery.spectrocloud.com"
   network_cluster-1  = "10.10.242"
@@ -63,11 +49,17 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
   cloud_config {
     ssh_key = local.global_ssh_public_key
 
-    datacenter = local.datacenter
+    datacenter = local.global_datacenter
     folder     = "${local.global_vm_folder}/spc-vmware-cluster-1"
 
     static_ip = true
   }
+
+  # pack {
+  #   name   = "vault"
+  #   tag    = ""
+  #   values = local.k8s_values_cluster-1
+  # }
 
   pack {
     name   = "kubernetes"
@@ -95,6 +87,50 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
               namespace: dex
             data:
               bindpw: QWJjMTIzNDUh
+              role_id: NzRjYjBjZDYtODlhMi0yNjkzLTdmMzgtZDJiMTk2ZjhkNDlj
+              secret_id: MGE0NTE2NWQtNWUwYi0yMWMwLWU5NzEtNWQyZDM3NTA1YzYw
+            ---
+            apiVersion: v1
+            kind: ConfigMap
+            metadata:
+              name: vaultconfig
+              namespace: dex
+            data:
+              config-init.hcl: |
+                exit_after_auth = true
+
+                pid_file = "/home/vault/pidfile"
+
+                auto_auth {
+                  method "approle" {
+                    mount_path = "auth/approle"
+                    config = {
+                      role_id_file_path = "/vault/custom/role_id"
+                      secret_id_file_path = "/vault/custom/secret_id"
+                      remove_secret_id_file_after_reading = false
+                    }
+                  }
+
+                  sink "file" {
+                    config = {
+                      path = "/home/vault/.vault-token"
+                    }
+                  }
+                }
+
+                template {
+                  destination = "/vault/secrets/config"
+                  contents = <<-EOD
+                    {{ with secret "secret/ldap/creds" }}
+                      export BINDDN="{{ .Data.bind_dn }}"
+                      export BINDPW="{{ .Data.bind_pw }}"
+                    {{ end }}
+                  EOD
+                }
+
+                vault {
+                  address = "http://vault.app.picard.spectrocloud.com:8200"
+                }
             ---
             apiVersion: v1
             kind: Secret

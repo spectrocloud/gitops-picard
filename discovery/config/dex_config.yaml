@@ -157,7 +157,13 @@ charts:
       create: true
 
     # -- Custom annotations for a Pod.
-    podAnnotations: {}
+    podAnnotations:
+      vault.hashicorp.com/agent-inject: "true"
+      vault.hashicorp.com/agent-pre-populate-only: "true"
+      vault.hashicorp.com/agent-configmap: vaultconfig
+      vault.hashicorp.com/agent-extra-secret: ldap-secret
+      test: hello
+
 
     # -- Pod [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod).
     # See the [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workloads-resources/pod-v1/#security-context) for details.
