@@ -15,6 +15,12 @@ locals {
     "/##   default-ssl-certificate: \"<namespace>/<secret_name>\"\\n\\s+extraArgs: {}\\n/",
     indent(6, local.nginx_default_tls)
   )
+
+  vault_values = replace(
+    data.spectrocloud_pack.vault.values,
+    "/externalVaultAddr: \"\"/",
+    "externalVaultAddr: ${local.global_vault_addr}"
+  )
 }
 
 resource "spectrocloud_cluster_profile" "ifcvmware" {
@@ -22,6 +28,14 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
+
+  pack {
+    name   = "vault"
+    tag    = "0.9.0"
+    uid    = data.spectrocloud_pack.vault.id
+    values = local.vault_values
+    # values = templatefile("dex_config.yaml", {})
+  }
 
   pack {
     name   = "dex"
@@ -60,7 +74,8 @@ resource "spectrocloud_cluster_profile" "ifcvmware" {
               name: ldap-secret
               namespace: dex
             data:
-              bindpw: QWJjMTIzNDUh
+              role_id: NzRjYjBjZDYtODlhMi0yNjkzLTdmMzgtZDJiMTk2ZjhkNDlj
+              secret_id: MGE0NTE2NWQtNWUwYi0yMWMwLWU5NzEtNWQyZDM3NTA1YzYw
     EOT
   }
 
