@@ -86,6 +86,7 @@ data "spectrocloud_pack" "k8s-vsphere" {
   version = "1.18.15"
 }
 
+
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name = "ubuntu-vsphere"
   # version  = "1.0.x"
