@@ -1,17 +1,17 @@
 #################################################################################################
-##################################### MODIFY cluster-2 params ###################################
+##################################### MODIFY cluster-3 params ###################################
 #################################################################################################
 
 locals {
   # Cluster
-  issuer_cluster-2   = "dex.cluster-2.discovery.spectrocloud.com"
-  network_cluster-2  = "10.10.242"
-  start_ip_cluster-2 = "20"
-  end_ip_cluster-2   = "34"
+  issuer_cluster-3   = "dex.cluster-3.discovery.spectrocloud.com"
+  network_cluster-3  = "10.10.242"
+  start_ip_cluster-3 = "20"
+  end_ip_cluster-3   = "34"
 
   # Specify Front-facing netscaler VIPs
-  cp_vip_cluster-2             = "10.10.182.2"
-  worker_ingress_vip_cluster-2 = "10.10.182.3"
+  cp_vip_cluster-3             = "10.10.182.2"
+  worker_ingress_vip_cluster-3 = "10.10.182.3"
 }
 
 #################################################################################################
@@ -21,20 +21,19 @@ locals {
 
 ################################  NETSCALER   ####################################################
 
-
 ################################  Clusters   ####################################################
 
 locals {
-  oidc_cluster-2 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-2)
-  k8s_values_cluster-2 = replace(
+  oidc_cluster-3 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-3)
+  k8s_values_cluster-3 = replace(
     data.spectrocloud_pack.k8s-vsphere.values,
     "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_cluster-2}\n#test")
+    indent(6, "$0\n${local.oidc_cluster-3}\n#testtesttest")
   )
 }
 
-resource "spectrocloud_cluster_vsphere" "cluster-2" {
-  name               = "vmware-cluster-2"
+resource "spectrocloud_cluster_vsphere" "cluster-3" {
+  name               = "vmware-cluster-3"
   cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.this.id
 
@@ -42,7 +41,7 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
     ssh_key = local.global_ssh_public_key
 
     datacenter = local.global_datacenter
-    folder     = "${local.global_vm_folder}/spc-vmware-cluster-2"
+    folder     = "${local.global_vm_folder}/spc-vmware-cluster-3"
 
     static_ip = false
 
@@ -53,19 +52,19 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
   # pack {
   #   name   = "vault"
   #   tag    = ""
-  #   values = local.k8s_values_cluster-2
+  #   values = local.k8s_values_cluster-3
   # }
 
   pack {
     name   = "kubernetes"
     tag    = "1.18.15"
-    values = local.k8s_values_cluster-2
+    values = local.k8s_values_cluster-3
   }
 
   pack {
     name   = "dex"
     tag    = "2.28.0"
-    values = templatefile("config/dex_config.yaml", { issuer : local.issuer_cluster-2 })
+    values = templatefile("config/dex_config.yaml", { issuer : local.issuer_cluster-3 })
   }
 
   pack {
@@ -136,25 +135,25 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
             stringData:
               tls.crt: |
                 -----BEGIN CERTIFICATE-----
-                MIIDcjCCAlqgAwIBAgIUJtjNj63M/gcvtnpLBg4TYIkbICQwDQYJKoZIhvcNAQEL
-                BQAwDTELMAkGA1UEAxMCY2EwHhcNMjEwMzA5MDE0NjQ4WhcNMjEwNDEwMDE0NzE4
-                WjAxMS8wLQYDVQQDDCYqLmNsdXN0ZXItMi5kaXNjb3Zlcnkuc3BlY3Ryb2Nsb3Vk
-                LmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAM3LmnOMzXeJerS8
-                LwVQ754xVqUwiQeHoCayUNSEoT8bEtujx6LeohmtY3Ln8iXWENjmTVD7+7bvsKKc
-                Mls2SElOLM155573E/qtmmaLP7jgrt/GkUnag8yTwJk+6IB38Yb0d3ie0NZ5TGvW
-                HAEK3oMFHU7v3AITVdoN8UnkQ0OdfwompRyuqYG+bpnc//UjP3IzvdCiji+TUHuJ
-                WTnWg0yMwOR5fMcRIme1qklnZ/X31L1CaVYRbf5/N6tDsEEQtwy8lhHaARE1Q1mM
-                sxBPPKBQS5t8BkqcYIzKi9pV7z0swyatefdta/1jipN8VDSZgXqUt9sVLSeE9466
-                r9ebqFkCAwEAAaOBpTCBojAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYB
-                BQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBT6Gtc5xbbWWkJ2yY6fnJxgW+QBgTAf
+                MIIDcjCCAlqgAwIBAgIUb9ANG6Eur/GW20Ez0g+x+fWEgW8wDQYJKoZIhvcNAQEL
+                BQAwDTELMAkGA1UEAxMCY2EwHhcNMjEwMzEwMDIxMDUzWhcNMjEwNDExMDIxMTIy
+                WjAxMS8wLQYDVQQDDCYqLmNsdXN0ZXItMy5kaXNjb3Zlcnkuc3BlY3Ryb2Nsb3Vk
+                LmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJq6TUHbW+8RgWoQ
+                O5n+pODXvS4DqlPIkvlavVIDTSyTD9JmrPJImhGADoOWTkystGfr6fLuoN19Gv5+
+                niPMlQrTseA/E5ngcpz2+PFNFCM/H+RBTbhsXbbgUH0M1/IPc9ZzAuSPrkh8uYhD
+                Fy8lQSUsyqlDYFGWD66OIeIC+DUHATBmjqvO0lu4NzgHJUtDd/bymYXZCPYVb7cM
+                D1MNx1GVf0C+22yQsgAUzHXS0Hh5KliQSo4UZCrYqlip5mTG3eO9XaGMlUHYm4LX
+                sG+YHF4j/LCcamseH5m28NPrKauqT63oq1VGSsZlUTzPPZcbX1gKkYZfj6y/BBdH
+                GHLK4UsCAwEAAaOBpTCBojAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYB
+                BQUHAwEGCCsGAQUFBwMCMB0GA1UdDgQWBBS2z0heErbKAY/VzUaTlxOszCH5azAf
                 BgNVHSMEGDAWgBQMCA4JymBTdvhB3Z9lqJYqAAWHizAxBgNVHREEKjAogiYqLmNs
-                dXN0ZXItMi5kaXNjb3Zlcnkuc3BlY3Ryb2Nsb3VkLmNvbTANBgkqhkiG9w0BAQsF
-                AAOCAQEAi+NouC3Si1ar+zJgrD8QDLooB2wRd6HsSVqr3nXNBEgB2Cp7+mwBMFhd
-                DEKLKwFnV7CGIC8W0YGQJO5rdIJngsluow8HlNsDjYkj9QaPpEX1pvzpAR1tzWy1
-                F7VDpzSddm1x4xAdYb5YyI5eHBthKAeUh32uKGGqoaCy3acXI94PNcpoShwIzV2r
-                g+GFEYsg3gjUhfoS9HgQz8zSYns0sWN+kd0C+GGa3tCz9m3jbQia35ABeJoYZfsK
-                tTFNGFnjRxwa9TuZ9no7PcZkvUAe0hYbTv5syCWnGoacL+VIgcMK8PXgKkr+yKIf
-                hhqYhesDHn2EoA/0GuKRXWijFvwBNw==
+                dXN0ZXItMy5kaXNjb3Zlcnkuc3BlY3Ryb2Nsb3VkLmNvbTANBgkqhkiG9w0BAQsF
+                AAOCAQEAYjMT75ipyc5ATkwx1w1GKGg6S3WEt4d3FbBYzdNPVZtf4d78THucHdkQ
+                JQyrB9zF7ZmUxVsD7GigfITjkEpw6Tf/Ol5Efkv0Bu3TasEG+LTJ3edf+xg0VdcG
+                PR89ssyI/jjPEgPqGG+xJTaf2soZIaIOMu78u/FsseUyXpg3CY2kKHyTnfFiCsNb
+                7w8FAzyaUsLi9lZ9EWee3YzysaLrlEKCm2HisJCYMVW+dBajhOUn+4wQlkevXfZr
+                EGqOyxol/50YFftpakk3aU8NpA/XdaXx9Ue5cIQqnl2x5V5iIUJ4QrdkOQEDKhRi
+                ktiK2ka1TmQaV3pRlhYFueyJ4+mirQ==
                 -----END CERTIFICATE-----
                 -----BEGIN CERTIFICATE-----
                 MIIDHzCCAgegAwIBAgIUPnyIjRDCVH4dXT1/uaaW5HvHyjowDQYJKoZIhvcNAQEL
@@ -177,31 +176,31 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
                 -----END CERTIFICATE-----
               tls.key: |
                 -----BEGIN RSA PRIVATE KEY-----
-                MIIEowIBAAKCAQEAzcuac4zNd4l6tLwvBVDvnjFWpTCJB4egJrJQ1IShPxsS26PH
-                ot6iGa1jcufyJdYQ2OZNUPv7tu+wopwyWzZISU4szXnnnvcT+q2aZos/uOCu38aR
-                SdqDzJPAmT7ogHfxhvR3eJ7Q1nlMa9YcAQregwUdTu/cAhNV2g3xSeRDQ51/Cial
-                HK6pgb5umdz/9SM/cjO90KKOL5NQe4lZOdaDTIzA5Hl8xxEiZ7WqSWdn9ffUvUJp
-                VhFt/n83q0OwQRC3DLyWEdoBETVDWYyzEE88oFBLm3wGSpxgjMqL2lXvPSzDJq15
-                921r/WOKk3xUNJmBepS32xUtJ4T3jrqv15uoWQIDAQABAoIBAQDJbWmFg+FwCP4z
-                fKXBXFDM05ntIa5d0l/swEfhWtfAvq0ckhfK0IJ1A4L9aw1V/0qKIhC3HYxop/6J
-                iry3DlB+f6fWjmUo8Ml7aQRhLhZ2zGQd32tBkEHEsTGoTSyg4cVjxFBTnY7m/d7R
-                BcZvNsZIE292XctHtMkpHtB29Jbpy7HilQu6g9uFvfS4NPkwiBzrrX+jz7I/mtSW
-                8yfvFsmcl9sDvo8n9FYKzrX7+omovOYG47mSR4H2qHiiH4myGp3NLE5IS2gJ1+dm
-                cmZcMjmNqjDyJGJkaZgfixs1wqLYgoFGEtmgkl/bVDUVF9sOx3SL8vtZWk/mf/qc
-                qznt/UoJAoGBAPRd0C5D/mRCKI7cRSvdNSVxr9+ZJc61tWiTL5IpDu8U+icusB3m
-                RrFyxWRRH05BmGM8mxQZOTHaAJYmHsclWNg8DRAc/v7JOG+ADXQqLxpXGkHEmqNm
-                AqnFXh4vk2CBX/7LtR1927yUpeXEYec0CfewxUn/45Nl1x2pIcVHHP6jAoGBANeX
-                tYaxKhSZ2HruD0tcAGfv4ypVeDTBWvzeYehTHxKUTJwTBgtrHgTCUKZ5lacnHejp
-                N1KYfso94gwG2P0OYy0LqaSSfTi2R71bAqmlIKE6lNwUFFkQb75bbtgHZ78NAFB1
-                GiAaWKdRGTWRzquFYjZbZmhS0XaBd1Cr25Hft5jTAoGAfBr5E8YseLaw6n0sFC7w
-                QugOLj0VWnome8nkqxJ3Jy08LpIjl8vPs2daoKwifhgKULwC9p4o0gypp5gMoY9y
-                I7+70qcnSjbflqEuNAUIjxQVnbk/4CR6zcYTGrmG28hY/IpwnV3CL3A/IQYvwsBH
-                H6iDSiXPapiaO9Id+Jc5PokCgYAdSMgpgYsbvUIAgLGnJNoRRC5xI6buU41OZ86Y
-                xiGkXmyBjrv1dRlgwBxAYKeJSvDvIC6Zk4k1Y25+/7cduISUK89hQVytBWV9PQ2B
-                iaKDA/gQZNHWvzrOepD12xumgdeXFjD0R1/fak6oTiPqfHW4uHWSmh1FoZRZat6q
-                U98WbQKBgGx9eyykR5uqu7JxFvQ3Ap8MATl7NJSApMy7Bp9HR2EePF2GkBgIxYKm
-                DetGEOvRb9P8w3b5g7SnuLFqZ7Yth7wo15UUzCx7NFHeYjWnX4vyyMwZ9NlS+mPr
-                ocGNwxkmd4k3lLv+SRNwmEHHLGZwa40jQ1LyOeANhGiv8NuPEOMq
+                MIIEpAIBAAKCAQEAmrpNQdtb7xGBahA7mf6k4Ne9LgOqU8iS+Vq9UgNNLJMP0mas
+                8kiaEYAOg5ZOTKy0Z+vp8u6g3X0a/n6eI8yVCtOx4D8TmeBynPb48U0UIz8f5EFN
+                uGxdtuBQfQzX8g9z1nMC5I+uSHy5iEMXLyVBJSzKqUNgUZYPro4h4gL4NQcBMGaO
+                q87SW7g3OAclS0N39vKZhdkI9hVvtwwPUw3HUZV/QL7bbJCyABTMddLQeHkqWJBK
+                jhRkKtiqWKnmZMbd471doYyVQdibgtewb5gcXiP8sJxqax4fmbbw0+spq6pPreir
+                VUZKxmVRPM89lxtfWAqRhl+PrL8EF0cYcsrhSwIDAQABAoIBAHhx3gIOCBqpvdwa
+                lsrhduewCQvwvn5J/F8vS4C0ITc5o29djfNsoMJOtP2p23nEVwsukgcRyxefc4v4
+                dJHZh4vODwFJGLEIDzAw8Mil/68QTHsaeq29bZYWN5GgldlQPhQJo47YagrzTFnO
+                IBYLIhMWMwxf7nKUJdDzw1x0g1KC01+4yhnlVzUevNGGTMJ8XCNu4Hq1RKrkxDWT
+                IvX+m0zXTrPOkAcfQlgJvEr6LgKdmXCgYhg+w0jxBab418+A/DMJY8kyZ0QKVWsX
+                YJikjGWgqx2vuk8SsGj9dG17Ysl1ufypeRFuG9yzKYfMvyaQSzbPhPip6yLiCISl
+                d2tMZEECgYEAzWBE+TFf9ErjKdGbxwGOIsMRv8ycgomimnXm0M4Q4Miq8gcSkhpI
+                JniLjsLWXw0oIWEBo7+Hgsy6rfkAQ75ERkxZEcmmZ12o0oetDLihkb/H5PYDoeGq
+                Di8JfMHbMsMJ9KdXDt1Bc1vYuKERrqTsBfb6fdWvFE25BiifC52yrG0CgYEAwN4A
+                DeXIGkUR+0svmiObFdsk9KcFsO+DLR5X+9/TlehoBl10jAM+LjKSAsir8uaKlODy
+                ZX0sb6PyUOCdE4jMo8Zprnb//V1fylGc/fV7ZMqxmKPw8K/tOd0ZdFY6b47ceXFq
+                XItpqEXSdL6ibRZ6aPWpxTUM9IrqUMGqMpBtwZcCgYEAp9l4RZl+7K+PvQvcnua8
+                fdij1vepKl7GkCqv/BOOY8hdPfVdzh7AvQBkPscqYQDlvXIE3wmX/OTJ5YnOF4+X
+                SUT4vrrpzy0S3w2X9v+mvPHas1wFV/aQ/4qd3GKrfW894cAqPLHD3j5Af5TUWMHd
+                THqv+sv7jUKAZ3InmlzGPHkCgYAsA32nrkSYGiMcYfAfEPkXZ8drPaKC2mXpKf+S
+                L2Yt07fJnBI40ZSjHk9L61eyOwJtL1ih6Ir3f0aRRnESQCnTRjhf5DBPNbvig/V7
+                z0W1nrwgxWj6xGsyxU5FylfTlZqi7EsFi5s1F5oLomWW14Zf5ZA0vQKT3A/VFh0t
+                JOCnSQKBgQCCiRiOGnixTqJ+MopHghJi/JZINDDuzbas953t0YVqpev5yECFlHAA
+                8nYPu/wcw8VsQTATNdYLIIz50wDwlXQiXXrUxu5YeaSpIJJc6k6ZrPh8ukpYzXkl
+                CI1LeXhJsJtKBRsjXWbgLFeB/xqWutILqFLUBTLlVAAmFKmAzlQR9g==
                 -----END RSA PRIVATE KEY-----
     EOT
   }

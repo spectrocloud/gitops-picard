@@ -131,9 +131,9 @@ charts:
 
     # -- Pass environment variables directly to a Pod.
     # See the [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workloads-resources/container/#environment-variables) for details.
-    env:
-      BINDDN: uid=spectro,ou=users,dc=dev-6428100,dc=okta,dc=com
-      BINDPW: Abc12345!
+    # env:
+    #   BINDDN: uid=spectro,ou=users,dc=dev-6428100,dc=okta,dc=com
+    #   BINDPW: <redacted>
     # - name: BINDPW
     #   valueFrom:
     #     secretKeyRef:
