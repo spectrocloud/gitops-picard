@@ -4,26 +4,103 @@
 
 locals {
   # Cluster
-  issuer_cluster-1   = "dex.cluster-1.discovery.spectrocloud.com"
+  fqdn_cluster-1     = "cluster-1.discovery.spectrocloud.com"
+  issuer_cluster-1   = "dex.${local.fqdn_cluster-1}"
   network_cluster-1  = "10.10.242"
   start_ip_cluster-1 = "20"
   end_ip_cluster-1   = "34"
 
   # Specify Front-facing netscaler VIPs
-  cp_vip_cluster-1             = "10.10.182.2"
-  worker_ingress_vip_cluster-1 = "10.10.182.3"
+  cp_vip_cluster-1       = "10.10.182.2"
+  nodeport_vip_cluster-1 = "10.10.182.3"
+  ingress_vip_cluster-1  = "10.10.182.4"
 }
 
 #################################################################################################
 ##################################### DO NOT MODIFY BELOW #######################################
 #################################################################################################
 
+
+################################  NETSCALER API/CP  ##############################################
+
+resource "citrixadc_lbvserver" "cp-cluster-1" {
+  name        = "cluster-1_tke_api"
+  ipv46       = local.cp_vip_cluster-1
+  port        = 8443
+  servicetype = "TCP"
+  lbmethod    = "LEASTCONNECTION"
+}
+
+resource "citrixadc_servicegroup" "cp-cluster-1" {
+  servicegroupname = "cluster-1_tke_api"
+  servicetype      = "TCP"
+  lbvservers       = [citrixadc_lbvserver.cp-cluster-1.name]
+  lbmonitor        = "tcp"
+  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
+  servicegroupmembers = formatlist(
+    "${local.network_cluster-1}.%d:6443:1",
+    range(local.start_ip_cluster-1, local.start_ip_cluster-1 + 5)
+  )
+}
+
+################################  NETSCALER NODE PORT  ###########################################
+
+resource "citrixadc_lbvserver" "nodeport-cluster-1" {
+  name        = "cluster-1_tke_nodeport"
+  ipv46       = local.nodeport_vip_cluster-1
+  port        = 65535
+  servicetype = "TCP"
+  lbmethod    = "LEASTCONNECTION"
+}
+
+resource "citrixadc_servicegroup" "nodeport-cluster-1" {
+  servicegroupname = "cluster-1_tke_nodeport"
+  servicetype      = "TCP"
+  lbvservers       = [citrixadc_lbvserver.nodeport-cluster-1.name]
+  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
+  servicegroupmembers = formatlist(
+    "${local.network_cluster-1}.%d:65535:1",
+    range(local.start_ip_cluster-1 + 5, local.end_ip_cluster-1 + 1)
+  )
+}
+
+################################  NETSCALER INGRESS  ###########################################
+
+resource "citrixadc_lbvserver" "ingress-cluster-1" {
+  name        = "cluster-1_tke_ingress"
+  ipv46       = local.ingress_vip_cluster-1
+  port        = 443
+  servicetype = "TCP"
+  lbmethod    = "LEASTCONNECTION"
+}
+
+resource "citrixadc_servicegroup" "ingress-cluster-1" {
+  servicegroupname = "cluster-1_tke_ingress"
+  servicetype      = "TCP"
+  lbvservers       = [citrixadc_lbvserver.ingress-cluster-1.name]
+  lbmonitor        = "tcp"
+  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
+  servicegroupmembers = formatlist(
+    "${local.network_cluster-1}.%d:30000:1",
+    range(local.start_ip_cluster-1 + 5, local.end_ip_cluster-1 + 1)
+  )
+}
+
+
+################################  Clusters   ####################################################
+
 locals {
   oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-1)
   k8s_values_cluster-1 = replace(
     data.spectrocloud_pack.k8s-vsphere.values,
     "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_cluster-1}")
+    indent(2, <<-EOT
+      apiServer:
+        certSANs: ["${local.fqdn_cluster-1}"]
+        extraArgs:
+          ${indent(4, local.oidc_cluster-1)}
+      EOT
+    )
   )
 }
 
