@@ -18,23 +18,18 @@ locals {
 ##################################### DO NOT MODIFY BELOW #######################################
 #################################################################################################
 
-resource "citrixadc_lbvserver" "cp-cluster-2" {
-  name = "cp-cluster-2"
-  ipv46 = local.cp_vip_cluster-2
-  port = 6443
-  servicetype = "SSL_BRIDGE"
-  lbmethod = "ROUNDROBIN"
-  #persistencetype = "COOKIEINSERT"
-  # sslcertkey = "${citrixadc_sslcertkey.foo.certkey}"
-  # sslprofile = "ns_default_ssl_profile_secure_frontend"
-}
+
+################################  NETSCALER   ####################################################
+
+
+################################  Clusters   ####################################################
 
 locals {
   oidc_cluster-2 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-2)
   k8s_values_cluster-2 = replace(
     data.spectrocloud_pack.k8s-vsphere.values,
     "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_cluster-2}")
+    indent(6, "$0\n${local.oidc_cluster-2}\n#test")
   )
 }
 
