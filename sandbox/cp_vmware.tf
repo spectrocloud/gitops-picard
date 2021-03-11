@@ -46,11 +46,13 @@ data "spectrocloud_pack" "ubuntu-vsphere" {
 }
 
 locals {
-  vsphere_k8s_values = replace(
-    data.spectrocloud_pack.k8s-vsphere.values,
-    "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_args_string}")
-  )
+  # vsphere_k8s_values = replace(
+  #   data.spectrocloud_pack.k8s-vsphere.values,
+  #   "/apiServer:\\n\\s+extraArgs:/",
+  #   indent(6, "$0\n${local.oidc_args_string}")
+  # )
+
+  vsphere_k8s_values = data.spectrocloud_pack.k8s-vsphere.values
 }
 
 resource "spectrocloud_cluster_profile" "prodvmware" {
