@@ -17,7 +17,7 @@ terraform {
 
     citrixadc = {
       source  = "citrix.com/test/citrixadc"
-      version = "0.12.43"
+      version = "~> 0.12.44"
     }
   }
 }
