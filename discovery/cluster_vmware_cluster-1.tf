@@ -36,10 +36,9 @@ resource "citrixadc_servicegroup" "cp-cluster-1" {
   servicetype      = "TCP"
   lbvservers       = [citrixadc_lbvserver.cp-cluster-1.name]
   lbmonitor        = "tcp"
-  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
   servicegroupmembers = formatlist(
     "${local.network_cluster-1}.%d:6443:1",
-    range(local.start_ip_cluster-1, local.start_ip_cluster-1 + 5)
+    range(local.start_ip_cluster-1 + 1, local.start_ip_cluster-1 + 5)
   )
 }
 
@@ -57,7 +56,6 @@ resource "citrixadc_servicegroup" "nodeport-cluster-1" {
   servicegroupname = "cluster-1_tke_nodeport"
   servicetype      = "TCP"
   lbvservers       = [citrixadc_lbvserver.nodeport-cluster-1.name]
-  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
   servicegroupmembers = formatlist(
     "${local.network_cluster-1}.%d:65535:1",
     range(local.start_ip_cluster-1 + 5, local.end_ip_cluster-1 + 1)
@@ -79,7 +77,6 @@ resource "citrixadc_servicegroup" "ingress-cluster-1" {
   servicetype      = "TCP"
   lbvservers       = [citrixadc_lbvserver.ingress-cluster-1.name]
   lbmonitor        = "tcp"
-  #servicegroupmembers = ["172.20.0.20:200:50","172.20.0.101:80:10",  "172.20.0.10:80:40"]
   servicegroupmembers = formatlist(
     "${local.network_cluster-1}.%d:30000:1",
     range(local.start_ip_cluster-1 + 5, local.end_ip_cluster-1 + 1)
