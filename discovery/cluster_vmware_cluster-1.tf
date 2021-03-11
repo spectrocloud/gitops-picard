@@ -5,6 +5,7 @@
 locals {
   # Cluster
   fqdn_cluster-1     = "cluster-1.discovery.spectrocloud.com"
+  api_cluster-1      = "api-${local.fqdn_cluster-1}"
   issuer_cluster-1   = "dex.${local.fqdn_cluster-1}"
   network_cluster-1  = "10.10.242"
   start_ip_cluster-1 = "20"
@@ -93,7 +94,7 @@ locals {
     "/apiServer:\\n\\s+extraArgs:/",
     indent(2, <<-EOT
       apiServer:
-        certSANs: ["${local.fqdn_cluster-1}"]
+        certSANs: ["${local.api_cluster-1}"]
         extraArgs:
           ${indent(4, local.oidc_cluster-1)}
       EOT
