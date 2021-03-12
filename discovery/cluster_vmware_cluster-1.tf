@@ -161,7 +161,6 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
               name: ldap-secret
               namespace: dex
             data:
-              bindpw: QWJjMTIzNDUh
               role_id: NzRjYjBjZDYtODlhMi0yNjkzLTdmMzgtZDJiMTk2ZjhkNDlj
               secret_id: MGE0NTE2NWQtNWUwYi0yMWMwLWU5NzEtNWQyZDM3NTA1YzYw
             ---
