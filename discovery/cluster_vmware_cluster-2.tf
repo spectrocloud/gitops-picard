@@ -33,6 +33,15 @@ locals {
   )
 }
 
+resource "vault_generic_secret" "kubeconfig_cluster-2" {
+  path      = "pe/secret/tke/admin_creds/admin_conf_cluster-2"
+  data_json = <<-EOT
+    {
+      "kubeconfig" : "${replace(spectrocloud_cluster_vsphere.cluster-2.kubeconfig, "\n", "\\n")}"
+    }
+  EOT
+}
+
 resource "spectrocloud_cluster_vsphere" "cluster-2" {
   name               = "vmware-cluster-2"
   cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
@@ -69,11 +78,11 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
   }
 
   pack {
-    name   = "spectro-byo-manifest"
-    tag    = "1.0.0"
+    name = "spectro-byo-manifest"
+    tag  = "1.0.0"
     values = templatefile("config/byom_v1.yaml", {
       vault_addr : local.global_vault_addr,
-      certkey: <<-EOT
+      certkey : <<-EOT
         tls.crt: |
           -----BEGIN CERTIFICATE-----
           MIIDcjCCAlqgAwIBAgIUJtjNj63M/gcvtnpLBg4TYIkbICQwDQYJKoZIhvcNAQEL

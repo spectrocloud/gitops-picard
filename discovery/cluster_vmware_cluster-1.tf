@@ -18,8 +18,8 @@ locals {
 }
 
 #################################################################################################
-##################################### DO NOT MODIFY BELOW #######################################
-#################################################################################################
+####################################  DO NOT MODIFY BELOW   #####################################
+####################################  (Other than versions) #####################################
 
 
 ################################  NETSCALER API/CP  ##############################################
@@ -116,6 +116,15 @@ resource "spectrocloud_privatecloudgateway_ippool" "cluster-1" {
   #nameserver_search_suffix = ["test.com"]
 }
 
+resource "vault_generic_secret" "kubeconfig_cluster-1" {
+  path      = "pe/secret/tke/admin_creds/admin_conf_cluster-1"
+  data_json = <<-EOT
+    {
+      "kubeconfig" : "${replace(spectrocloud_cluster_vsphere.cluster-1.kubeconfig, "\n", "\\n")}"
+    }
+  EOT
+}
+
 resource "spectrocloud_cluster_vsphere" "cluster-1" {
   name               = "vmware-cluster-1"
   cluster_profile_id = spectrocloud_cluster_profile.ifcvmware.id
@@ -149,11 +158,11 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
   }
 
   pack {
-    name   = "spectro-byo-manifest"
-    tag    = "1.0.0"
+    name = "spectro-byo-manifest"
+    tag  = "1.0.0"
     values = templatefile("config/byom_v1.yaml", {
       vault_addr : local.global_vault_addr,
-      certkey: <<-EOT
+      certkey : <<-EOT
         tls.crt: |
           -----BEGIN CERTIFICATE-----
           MIIDcjCCAlqgAwIBAgIUFAxr8A9CrFKy36utGf5LbiJk0ucwDQYJKoZIhvcNAQEL

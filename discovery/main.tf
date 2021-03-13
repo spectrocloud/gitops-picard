@@ -32,7 +32,7 @@ variable "vault_approle_role_id" {}
 variable "vault_approle_secret_id" {}
 
 provider "vault" {
-  address = local.global_vault_addr
+  address               = local.global_vault_addr
   max_lease_ttl_seconds = 3 * 60 * 60
   auth_login {
     path = "auth/approle/login"
@@ -51,7 +51,7 @@ data "vault_generic_secret" "sc_mgmt" {
 provider "spectrocloud" {
   username = data.vault_generic_secret.sc_mgmt.data.username
   password = data.vault_generic_secret.sc_mgmt.data.password
-  host = data.vault_generic_secret.sc_mgmt.data.host
+  host     = data.vault_generic_secret.sc_mgmt.data.host
 
   project_name              = "Default"
   ignore_insecure_tls_error = true
