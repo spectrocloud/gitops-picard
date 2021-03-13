@@ -10,6 +10,11 @@ terraform {
   # }
 
   required_providers {
+    vault = {
+      version = "~> 2.18.0"
+      source  = "hashicorp/vault"
+    }
+
     spectrocloud = {
       version = "~> 0.2.1"
       source  = "spectrocloud/spectrocloud"
@@ -22,6 +27,25 @@ terraform {
   }
 }
 
+
+variable "vault_approle_role_id" {}
+variable "vault_approle_secret_id" {}
+
+provider "vault" {
+  address = local.global_vault_addr
+  auth_login {
+    path = "auth/approle/login"
+
+    parameters = {
+      role_id   = var.vault_approle_role_id
+      secret_id = var.vault_approle_secret_id
+    }
+  }
+}
+
+data "vault_generic_secret" "netscaler" {
+  path = "pe/ci/tke/px-npe2/shared/netscaler"
+}
 variable "sc_host" {}
 variable "sc_username" {}
 variable "sc_password" {}
@@ -35,12 +59,9 @@ provider "spectrocloud" {
   ignore_insecure_tls_error = true
 }
 
-variable "ns_user" {}
-variable "ns_password" {}
-variable "ns_endpoint" {}
-
 provider "citrixadc" {
-  username = var.ns_user
-  password = var.ns_password
-  endpoint = var.ns_endpoint
+  # T-Mo might need to remove the `.data` (?)
+  username = data.vault_generic_secret.netscaler.data.username
+  password = data.vault_generic_secret.netscaler.data.password
+  endpoint = data.vault_generic_secret.netscaler.data.endpoint
 }
