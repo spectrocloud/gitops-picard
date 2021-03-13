@@ -33,6 +33,7 @@ variable "vault_approle_secret_id" {}
 
 provider "vault" {
   address = local.global_vault_addr
+  max_lease_ttl_seconds = 3 * 60 * 60
   auth_login {
     path = "auth/approle/login"
 
@@ -43,22 +44,22 @@ provider "vault" {
   }
 }
 
-data "vault_generic_secret" "netscaler" {
-  path = "pe/ci/tke/px-npe2/shared/netscaler"
+data "vault_generic_secret" "sc_mgmt" {
+  path = "pe/ci/tke/px-npe2/tke-px-npe2002/mgmt-cluster"
 }
-variable "sc_host" {}
-variable "sc_username" {}
-variable "sc_password" {}
-variable "sc_project_name" {}
 
 provider "spectrocloud" {
-  host                      = var.sc_host
-  username                  = var.sc_username
-  password                  = var.sc_password
-  project_name              = var.sc_project_name
+  username = data.vault_generic_secret.sc_mgmt.data.username
+  password = data.vault_generic_secret.sc_mgmt.data.password
+  host = data.vault_generic_secret.sc_mgmt.data.host
+
+  project_name              = "Default"
   ignore_insecure_tls_error = true
 }
 
+data "vault_generic_secret" "netscaler" {
+  path = "pe/ci/tke/px-npe2/shared/netscaler"
+}
 provider "citrixadc" {
   # T-Mo might need to remove the `.data` (?)
   username = data.vault_generic_secret.netscaler.data.username
