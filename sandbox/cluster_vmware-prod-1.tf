@@ -54,7 +54,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     control_plane           = true
     control_plane_as_worker = true
     name                    = "master-pool"
-    count                   = 1
+    count                   = 3
 
     placement {
       cluster       = "cluster2"
