@@ -36,3 +36,18 @@ kubeadmconfig:
         53AYhXzfdNFSQu+DEKQEuDha2t/P6O/3faonwRbsTjkDt64bw8f1i3bXGEMV6cXs
         e+r71NOzxebWScL2SSZfVqpTgsckgSA5DQ==
         -----END CERTIFICATE-----
+    - targetPath: /etc/kubernetes/data-encryption.config
+      targetOwner: "root:root"
+      targetPermissions: "0644"
+      content: |
+        apiVersion: apiserver.config.k8s.io/v1
+        kind: EncryptionConfiguration
+        resources:
+          - resources:
+            - secrets
+            providers:
+            - aescbc:
+                keys:
+                - name: key1
+                  secret: 5BvsKhnGgks5YCNfEGwuo4RkDlBM731YnhFeJr6Z7jE=
+            - identity: {}

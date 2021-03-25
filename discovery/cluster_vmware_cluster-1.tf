@@ -21,7 +21,6 @@ locals {
 ####################################  DO NOT MODIFY BELOW   #####################################
 ####################################  (Other than versions) #####################################
 
-
 ################################  NETSCALER API/CP  ##############################################
 
 resource "citrixadc_lbvserver" "cp-cluster-1" {
@@ -90,15 +89,27 @@ resource "citrixadc_servicegroup" "ingress-cluster-1" {
 locals {
   oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-1)
   k8s_values_cluster-1 = replace(
-    data.spectrocloud_pack.k8s-vsphere.values,
-    "/apiServer:\\n\\s+extraArgs:/",
-    indent(2, <<-EOT
-      apiServer:
-        certSANs: ["${local.api_cluster-1}"]
-        extraArgs:
-          ${indent(4, local.oidc_cluster-1)}
+    replace(
+      data.spectrocloud_pack.k8s-vsphere.values,
+      "/apiServer:\\n\\s+extraArgs:/",
+      indent(2, <<-EOT
+        apiServer:
+          certSANs: ["${local.api_cluster-1}"]
+          extraArgs:
+            ${indent(4, local.oidc_cluster-1)}
+        EOT
+      )
+    ),
+    "/extraVolumes:/",
+    indent(6, trimspace(<<-EOT
+      extraVolumes:
+      - name: encryption-config
+        hostPath: /etc/kubernetes/data-encryption.config
+        mountPath: /etc/kubernetes/data-encryption.config
+        readOnly: true
+        pathType: File
       EOT
-    )
+    ))
   )
 }
 
@@ -239,7 +250,7 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
   # # Intermittently during initial install the Vault agent MutatingWebHook is installed _after_ dex is already started
   # # During initial install only, force the dex pod to restart after cluster is "RUNNING" (all packs up and running)
   # provisioner "local-exec" {
-  #   command     = "kubectl --kubeconfig <(echo \"${self.kubeconfig}\") -n dex delete pod -l app.kubernetes.io/name=dex"
+  #   command     = "./binaries/kubectl --kubeconfig <(echo \"${self.kubeconfig}\") -n dex delete pod -l app.kubernetes.io/name=dex"
   #   interpreter = ["bash", "-c"]
   # }
 
