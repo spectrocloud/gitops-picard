@@ -6,6 +6,7 @@ locals {
     oidc-username-claim : "email"
     oidc-username-prefix : "-"
     oidc-groups-claim : "groups"
+    encryption-provider-config: "/etc/kubernetes/data-encryption.config"
   }
 
   oidc_args_string = join("\n", [for k, v in local.oidc_args : format("%s: \"%s\"", k, v)])
