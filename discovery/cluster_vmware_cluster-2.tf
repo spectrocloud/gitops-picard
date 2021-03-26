@@ -4,7 +4,9 @@
 
 locals {
   # Cluster
-  issuer_cluster-2   = "dex.cluster-2.discovery.spectrocloud.com"
+  fqdn_cluster-2     = "cluster-2.discovery.spectrocloud.com"
+  api_cluster-2      = "api-${local.fqdn_cluster-2}"
+  issuer_cluster-2   = "dex.${local.fqdn_cluster-2}"
   network_cluster-2  = "10.10.242"
   start_ip_cluster-2 = "20"
   end_ip_cluster-2   = "34"
@@ -27,11 +29,30 @@ locals {
 locals {
   oidc_cluster-2 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-2)
   k8s_values_cluster-2 = replace(
-    data.spectrocloud_pack.k8s-vsphere.values,
-    "/apiServer:\\n\\s+extraArgs:/",
-    indent(6, "$0\n${local.oidc_cluster-2}\n#test")
+    replace(
+      data.spectrocloud_pack.k8s-vsphere.values,
+      "/apiServer:\\n\\s+extraArgs:/",
+      indent(2, <<-EOT
+        apiServer:
+          certSANs: ["${local.api_cluster-2}"]
+          extraArgs:
+            ${indent(4, local.oidc_cluster-2)}
+        EOT
+      )
+    ),
+    "/extraVolumes:/",
+    indent(6, trimspace(<<-EOT
+      extraVolumes:
+      - name: encryption-config
+        hostPath: /etc/kubernetes/data-encryption.config
+        mountPath: /etc/kubernetes/data-encryption.config
+        readOnly: true
+        pathType: File
+      EOT
+    ))
   )
 }
+
 
 resource "vault_generic_secret" "kubeconfig_cluster-2" {
   path      = "pe/secret/tke/admin_creds/admin_conf_cluster-2"
