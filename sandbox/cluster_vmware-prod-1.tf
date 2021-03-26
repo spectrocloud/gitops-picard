@@ -59,7 +59,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55"
+      datastore     = "datastore55_2"
       network       = "VM Network"
     }
     instance_type {
@@ -76,7 +76,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55"
+      datastore     = "datastore55_2"
       network       = "VM Network"
     }
     instance_type {
@@ -93,7 +93,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55"
+      datastore     = "datastore55_2"
       network       = "VM Network"
     }
     instance_type {
