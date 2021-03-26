@@ -249,10 +249,10 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
 
   # # Intermittently during initial install the Vault agent MutatingWebHook is installed _after_ dex is already started
   # # During initial install only, force the dex pod to restart after cluster is "RUNNING" (all packs up and running)
-  # provisioner "local-exec" {
-  #   command     = "./binaries/kubectl --kubeconfig <(echo \"${self.kubeconfig}\") -n dex delete pod -l app.kubernetes.io/name=dex"
-  #   interpreter = ["bash", "-c"]
-  # }
+  provisioner "local-exec" {
+    command     = "./binaries/kubectl --kubeconfig <(echo \"${self.kubeconfig}\") -n dex delete pod -l app.kubernetes.io/name=dex"
+    interpreter = ["bash", "-c"]
+  }
 
 
   # Not in T-Mo

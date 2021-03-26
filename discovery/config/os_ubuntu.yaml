@@ -46,8 +46,8 @@ kubeadmconfig:
           - resources:
             - secrets
             providers:
+            - identity: {}
             - aescbc:
                 keys:
                 - name: key1
                   secret: 5BvsKhnGgks5YCNfEGwuo4RkDlBM731YnhFeJr6Z7jE=
-            - identity: {}
