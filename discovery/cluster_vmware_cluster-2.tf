@@ -26,34 +26,6 @@ locals {
 
 ################################  Clusters   ####################################################
 
-locals {
-  oidc_cluster-2 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-2)
-  k8s_values_cluster-2 = replace(
-    replace(
-      data.spectrocloud_pack.k8s-vsphere.values,
-      "/apiServer:\\n\\s+extraArgs:/",
-      indent(2, <<-EOT
-        apiServer:
-          certSANs: ["${local.api_cluster-2}"]
-          extraArgs:
-            ${indent(4, local.oidc_cluster-2)}
-        EOT
-      )
-    ),
-    "/extraVolumes:/",
-    indent(6, trimspace(<<-EOT
-      extraVolumes:
-      - name: encryption-config
-        hostPath: /etc/kubernetes/data-encryption.config
-        mountPath: /etc/kubernetes/data-encryption.config
-        readOnly: true
-        pathType: File
-      EOT
-    ))
-  )
-}
-
-
 resource "vault_generic_secret" "kubeconfig_cluster-2" {
   path      = "pe/secret/tke/admin_creds/admin_conf_cluster-2"
   data_json = <<-EOT
@@ -89,8 +61,12 @@ resource "spectrocloud_cluster_vsphere" "cluster-2" {
   pack {
     name   = "kubernetes"
     tag    = "1.18.15"
-    values = local.k8s_values_cluster-2
+    values = templatefile("config/k8s.yaml", {
+      certSAN: local.api_cluster-2,
+      issuerURL: local.issuer_cluster-2,
+    })
   }
+
 
   pack {
     name   = "dex"

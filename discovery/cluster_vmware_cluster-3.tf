@@ -4,7 +4,9 @@
 
 locals {
   # Cluster
-  issuer_cluster-3   = "dex.cluster-3.discovery.spectrocloud.com"
+  fqdn_cluster-3     = "cluster-3.discovery.spectrocloud.com"
+  api_cluster-3      = "api-${local.fqdn_cluster-3}"
+  issuer_cluster-3   = "dex.${local.fqdn_cluster-3}"
   network_cluster-3  = "10.10.242"
   start_ip_cluster-3 = "20"
   end_ip_cluster-3   = "34"
@@ -23,30 +25,6 @@ locals {
 
 
 ################################  Clusters   ####################################################
-
-locals {
-  oidc_cluster-3 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-3)
-  encryption_cluster-3 = trimspace(<<-EOT
-      - name: encryption-config
-        hostPath: /etc/kubernetes/data-encryption.config
-        mountPath: /etc/kubernetes/data-encryption.config
-        readOnly: true
-        pathType: File
-    EOT
-  )
-
-
-  k8s_values_cluster-3 = replace(
-    replace(
-      data.spectrocloud_pack.k8s-vsphere.values,
-      "/apiServer:\\n\\s+extraArgs:/",
-      indent(6, "$0\n${local.oidc_cluster-3}\n#test")
-    ),
-    "/extraVolumes:/",
-    indent(6, "$0\n${local.encryption_cluster-3}")
-  )
-
-}
 
 resource "vault_generic_secret" "kubeconfig_cluster-3" {
   path      = "pe/secret/tke/admin_creds/admin_conf_cluster-3"
@@ -83,7 +61,10 @@ resource "spectrocloud_cluster_vsphere" "cluster-3" {
   pack {
     name   = "kubernetes"
     tag    = "1.18.15"
-    values = local.k8s_values_cluster-3
+    values = templatefile("config/k8s.yaml", {
+      certSAN: local.api_cluster-3,
+      issuerURL: local.issuer_cluster-3,
+    })
   }
 
   pack {

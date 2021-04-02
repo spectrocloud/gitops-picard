@@ -1,16 +1,5 @@
 locals {
 
-  oidc_args = {
-    oidc-issuer-url : "https://%ISSUER_URL%"
-    oidc-client-id : "spectrocloud"
-    oidc-username-claim : "email"
-    oidc-username-prefix : "-"
-    oidc-groups-claim : "groups"
-    encryption-provider-config: "/etc/kubernetes/data-encryption.config"
-  }
-
-  oidc_args_string = join("\n", [for k, v in local.oidc_args : format("%s: \"%s\"", k, v)])
-
   # Network
   global_pcg_id                       = "603e528439ea6effbcd224d8"
   global_network_prefix               = 18
