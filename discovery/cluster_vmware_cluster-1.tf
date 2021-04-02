@@ -86,33 +86,6 @@ resource "citrixadc_servicegroup" "ingress-cluster-1" {
 
 ################################  Clusters   ####################################################
 
-locals {
-  oidc_cluster-1 = replace(local.oidc_args_string, "%ISSUER_URL%", local.issuer_cluster-1)
-  k8s_values_cluster-1 = replace(
-    replace(
-      data.spectrocloud_pack.k8s-vsphere.values,
-      "/apiServer:\\n\\s+extraArgs:/",
-      indent(2, <<-EOT
-        apiServer:
-          certSANs: ["${local.api_cluster-1}"]
-          extraArgs:
-            ${indent(4, local.oidc_cluster-1)}
-        EOT
-      )
-    ),
-    "/extraVolumes:/",
-    indent(6, trimspace(<<-EOT
-      extraVolumes:
-      - name: encryption-config
-        hostPath: /etc/kubernetes/data-encryption.config
-        mountPath: /etc/kubernetes/data-encryption.config
-        readOnly: true
-        pathType: File
-      EOT
-    ))
-  )
-}
-
 
 resource "spectrocloud_privatecloudgateway_ippool" "cluster-1" {
   private_cloud_gateway_id   = local.global_pcg_id
@@ -159,7 +132,10 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
   pack {
     name   = "kubernetes"
     tag    = "1.18.15"
-    values = local.k8s_values_cluster-1
+    values = templatefile("config/k8s.yaml", {
+      certSAN: local.api_cluster-1,
+      issuerURL: local.issuer_cluster-1,
+    })
   }
 
   pack {
@@ -317,14 +293,14 @@ resource "spectrocloud_cluster_vsphere" "cluster-1" {
     placement {
       cluster           = "cluster2"
       resource_pool     = ""
-      datastore         = "datastore55"
+      datastore         = "datastore55_2"
       network           = "VM Network 2"
       static_ip_pool_id = spectrocloud_privatecloudgateway_ippool.cluster-1.id
     }
     placement {
       cluster           = "cluster3"
       resource_pool     = ""
-      datastore         = "datastore56"
+      datastore         = "datastore56_2"
       network           = "VM Network 2"
       static_ip_pool_id = spectrocloud_privatecloudgateway_ippool.cluster-1.id
     }
