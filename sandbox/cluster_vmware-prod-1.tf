@@ -71,7 +71,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   machine_pool {
     name  = "worker-basic"
-    count = 3
+    count = 2
 
     placement {
       cluster       = "cluster2"
