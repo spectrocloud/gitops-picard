@@ -43,7 +43,7 @@ resource "spectrocloud_cluster_profile" "prodaws" {
     name   = "ubuntu-aws"
     tag    = "LTS__18.4.x"
     uid    = data.spectrocloud_pack.ubuntu-aws.id
-    values = data.spectrocloud_pack.ubuntu-aws.values
+    values = file("config/os_ubuntu.yaml")
   }
 
   pack {
@@ -66,6 +66,5 @@ resource "spectrocloud_cluster_profile" "prodaws" {
     uid    = data.spectrocloud_pack.csi-aws.id
     values = data.spectrocloud_pack.csi-aws.values
   }
-
 }
 
