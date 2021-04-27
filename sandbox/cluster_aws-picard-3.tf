@@ -30,7 +30,6 @@ resource "spectrocloud_cluster_aws" "cluster" {
   }
 
   # To override or specify values for a cluster:
-
   # pack {
   #   name   = "spectro-byo-manifest"
   #   tag    = "1.0.x"
