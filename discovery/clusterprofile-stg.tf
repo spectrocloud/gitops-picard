@@ -12,7 +12,7 @@ resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
     tag  = "LTS__18.4.x"
     uid  = data.spectrocloud_pack.ubuntu-vsphere.id
     #values = data.spectrocloud_pack.ubuntu-vsphere.values
-    values = file("config/os_ubuntu-stg.yaml")
+    values = file("config-stg/os_ubuntu.yaml")
   }
   pack {
     name   = "kubernetes"
@@ -55,11 +55,11 @@ resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
     name   = "dex"
     tag    = "2.28.0"
     uid    = data.spectrocloud_pack.dex.id
-    values = file("config/dex-stg.yaml")
+    values = file("config-stg/dex.yaml")
 
     manifest {
       name = "dex-config"
-      content = templatefile("config/dex-vault-stg.yaml", {
+      content = templatefile("config-stg/vault-dex.yaml", {
         vault_address : var.vault_address,
         vault_role_id : var.vault_ldap_role_id,
         vault_secret_id : var.vault_ldap_secret_id,
