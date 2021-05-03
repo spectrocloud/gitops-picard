@@ -66,6 +66,18 @@ variable "global_config" {
     vm_folder  = string
     ssh_public_key  = string
 
+    worker_node = object({
+      cpu = number
+      memory_mb = number
+      disk_gb = number
+    })
+
+    api_node = object({
+      cpu = number
+      memory_mb = number
+      disk_gb = number
+    })
+
     placements = list(object({
       cluster = string
       resource_pool = string

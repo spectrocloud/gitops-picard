@@ -50,9 +50,9 @@ resource "spectrocloud_cluster_vsphere" "this" {
       }
     }
     instance_type {
-      disk_size_gb = 60
-      memory_mb    = 16384
-      cpu          = 4
+      disk_size_gb = var.global_config.api_node.disk_gb
+      memory_mb    = var.global_config.api_node.memory_mb
+      cpu          = var.global_config.api_node.cpu
     }
   }
 
@@ -69,9 +69,9 @@ resource "spectrocloud_cluster_vsphere" "this" {
         static_ip_pool_id = spectrocloud_privatecloudgateway_ippool.workers.id
       }
       instance_type {
-        disk_size_gb = 200
-        memory_mb    = 131072
-        cpu          = 16
+        disk_size_gb = var.global_config.worker_node.disk_gb
+        memory_mb    = var.global_config.worker_node.memory_mb
+        cpu          = var.global_config.worker_node.cpu
       }
     }
   }
