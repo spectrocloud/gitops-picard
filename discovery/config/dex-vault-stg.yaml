@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ldap-secret
+  namespace: dex
+data:
+  role_id: ${base64encode(vault_role_id)}
+  secret_id: ${base64encode(vault_secret_id)}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vaultconfig
+  namespace: dex
+data:
+  config-init.hcl: |
+    exit_after_auth = true
+    pid_file = "/home/vault/pidfile"
+    auto_auth {
+      method "approle" {
+        mount_path = "auth/approle"
+        config = {
+          role_id_file_path = "/vault/custom/role_id"
+          secret_id_file_path = "/vault/custom/secret_id"
+          remove_secret_id_file_after_reading = false
+        }
+      }
+      sink "file" {
+        config = {
+          path = "/home/vault/.vault-token"
+        }
+      }
+    }
+    template {
+      destination = "/vault/secrets/config"
+      contents = <<-EOD
+        {{ with secret "secret/ldap/creds" }}
+          export BINDDN="{{ .Data.data.bind_dn }}"
+          export BINDPW="{{ .Data.data.bind_pw }}"
+        {{ end }}
+      EOD
+    }
+    vault {
+      address = "${vault_address}"
+      tls_skip_verify = "true"
+    }
+---
+# apiVersion: v1
+# kind: Secret
+# type: kubernetes.io/tls
+# metadata:
+#   name: default-tls
+#   namespace: nginx
+# stringData:
+#   $\{indent(2, certkey)\}
