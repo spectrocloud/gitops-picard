@@ -63,7 +63,7 @@ provider "citrixadc" {
   endpoint = var.ns_endpoint
 }
 
-# Secrets from Vault (not supported in T-Mo since read operations are not allowed)
+# Secrets from Vault (not supported in customer since read operations are not allowed)
 # data "vault_generic_secret" "sc_mgmt" {
 #   path = "pe/ci/tke/px-npe2/tke-px-npe2002/mgmt-cluster"
 # }

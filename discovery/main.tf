@@ -21,6 +21,9 @@ locals {
     pcg_id           = "603e528439ea6effbcd224d8"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
+    # Vault
+    vault_secrets_path = "pe/secret/tke/admin_creds"
+
     # Network
     network_prefix               = 18
     network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
