@@ -1,16 +1,11 @@
 ################################  Clusters   ####################################################
 
-# data "vault_generic_secret" "etcd_encryption_key_px-npe2300" {
-#   path = "pe/secret/tke/admin_creds/etcd_encryption_key_px-npe2300"
-# }
-# resource "vault_generic_secret" "kubeconfig_px-npe2300" {
-#   path      = "pe/secret/tke/admin_creds/admin_conf_px-npe2300"
-#   data_json = <<-EOT
-#     {
-#       "kubeconfig" : "${replace(spectrocloud_cluster_vsphere.px-npe2300.kubeconfig, "\n", "\\n")}"
-#     }
-#   EOT
-# }
+# Generate a "stable" random id
+resource "random_id" "etcd_encryption_key" {
+  byte_length = 32
+}
+
+# Create the VMware cluster
 resource "spectrocloud_cluster_vsphere" "this" {
   name               = local.n
   cluster_profile_id = var.cluster_profile_id
@@ -27,7 +22,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
     values = templatefile(var.cluster_packs["k8s"].file, {
       certSAN: "api-${local.fqdn}",
       issuerURL: "dex.${local.fqdn}",
-      etcd_encryption_key: "5BvsKhnGgks5YCNfEGwuo4RkDlBM731YnhFeJr6Z7jE=",
+      etcd_encryption_key: random_id.etcd_encryption_key.b64_std
     })
   }
   # TODO

@@ -54,6 +54,8 @@ variable "global_config" {
     pcg_id = string
     cloud_account_id = string
 
+    vault_secrets_path = string
+
     # Network
     network_prefix  = string
     network_nameserver_addresses = list(string)
