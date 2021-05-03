@@ -21,11 +21,11 @@ module "px-npe2300" {
   cluster_packs = {
     k8s = {
       tag  = "1.19.7"
-      file = "config/k8s-stg.yaml"
+      file = "config-stg/k8s.yaml"
     }
     dex = {
       tag  = "2.28.0"
-      file = "config/dex-stg.yaml"
+      file = "config-stg/dex.yaml"
     }
   }
 
