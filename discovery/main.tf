@@ -42,14 +42,14 @@ locals {
     EOT
 
     worker_node = {
-      cpu       = 16
-      memory_mb = 131072
-      disk_gb   = 200
+      cpu       = 4
+      memory_mb = 8192
+      disk_gb   = 60
     }
 
     api_node = {
       cpu       = 4
-      memory_mb = 16384
+      memory_mb = 8192
       disk_gb   = 60
     }
 
