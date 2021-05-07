@@ -1,26 +1,22 @@
 data "spectrocloud_pack" "vault" {
   name    = "vault"
-  version = "0.9.0"
+  version = "0.11.0"
+}
+data "spectrocloud_pack" "cni-vsphere" {
+  name    = "cni-calico"
+  version = "3.19.0"
+}
+data "spectrocloud_pack" "k8s-vsphere" {
+  name    = "kubernetes"
+  version = "1.19.7"
 }
 data "spectrocloud_pack" "dex" {
   name    = "dex"
   version = "2.28.0"
 }
-# data "spectrocloud_pack" "byom" {
-#   name    = "spectro-byo-manifest"
-#   version = "1.0.0"
-# }
 data "spectrocloud_pack" "csi-vsphere" {
   name = "csi-vsphere-volume"
   # version  = "1.0.x"
-}
-data "spectrocloud_pack" "cni-vsphere" {
-  name    = "cni-calico"
-  version = "3.16.0"
-}
-data "spectrocloud_pack" "k8s-vsphere" {
-  name    = "kubernetes"
-  version = "1.19.7"
 }
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name = "ubuntu-vsphere"
@@ -53,7 +49,7 @@ resource "spectrocloud_cluster_profile" "px-npe2003" {
   }
   pack {
     name   = "cni-calico"
-    tag    = "3.16.x"
+    tag    = "3.19.x"
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
@@ -78,7 +74,7 @@ resource "spectrocloud_cluster_profile" "px-npe2003" {
   }
   pack {
     name   = "vault"
-    tag    = "0.9.0"
+    tag    = "0.11.0"
     uid    = data.spectrocloud_pack.vault.id
     values = local.vault_values
   }
@@ -87,6 +83,7 @@ resource "spectrocloud_cluster_profile" "px-npe2003" {
     tag    = "2.28.0"
     uid    = data.spectrocloud_pack.dex.id
     values = file("config/dex.yaml")
+
     manifest {
       name = "dex-config"
       content = templatefile("config/vault-dex.yaml", {
@@ -94,6 +91,20 @@ resource "spectrocloud_cluster_profile" "px-npe2003" {
         vault_role_id : var.vault_ldap_role_id,
         vault_secret_id : var.vault_ldap_secret_id,
       })
+    }
+  }
+
+  pack {
+    name   = "tke-system"
+    type = "manifest"
+    manifest {
+      name = "tke-system"
+      content = <<-EOT
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: tke-system
+      EOT
     }
   }
 }

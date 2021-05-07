@@ -1,6 +1,21 @@
+data "spectrocloud_pack" "vault-stg" {
+  name    = "vault"
+  version = "0.11.0"
+}
+data "spectrocloud_pack" "cni-vsphere-stg" {
+  name    = "cni-calico"
+  version = "3.19.0"
+}
 data "spectrocloud_pack" "k8s-vsphere-stg" {
   name    = "kubernetes"
   version = "1.19.7"
+}
+locals {
+  vault_values_stg = replace(
+    data.spectrocloud_pack.vault-stg.values,
+    "/externalVaultAddr: \"\"/",
+    "externalVaultAddr: ${var.vault_address}"
+  )
 }
 resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
   name        = "px-npe2003-stg"
@@ -22,7 +37,7 @@ resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
   }
   pack {
     name   = "cni-calico"
-    tag    = "3.16.x"
+    tag    = "3.19.x"
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
@@ -47,9 +62,9 @@ resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
   }
   pack {
     name   = "vault"
-    tag    = "0.9.0"
-    uid    = data.spectrocloud_pack.vault.id
-    values = local.vault_values
+    tag    = "0.11.0"
+    uid    = data.spectrocloud_pack.vault-stg.id
+    values = local.vault_values_stg
   }
   pack {
     name   = "dex"
@@ -64,6 +79,20 @@ resource "spectrocloud_cluster_profile" "px-npe2003-stg" {
         vault_role_id : var.vault_ldap_role_id,
         vault_secret_id : var.vault_ldap_secret_id,
       })
+    }
+  }
+
+  pack {
+    name   = "tke-system"
+    type = "manifest"
+    manifest {
+      name = "tke-system"
+      content = <<-EOT
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: tke-system
+      EOT
     }
   }
 }
