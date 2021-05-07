@@ -55,6 +55,7 @@ variable "global_config" {
     cloud_account_id = string
 
     vault_secrets_path = string
+    vault_secrets_etcd_certs_path = string
 
     # Network
     network_prefix  = string

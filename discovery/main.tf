@@ -23,6 +23,7 @@ locals {
 
     # Vault
     vault_secrets_path = "pe/secret/tke/admin_creds"
+    vault_secrets_etcd_certs_path = "pe/secret/tke/admin_creds"
 
     # Network
     network_prefix               = 18

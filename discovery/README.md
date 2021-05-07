@@ -8,6 +8,7 @@ Spectro Cloud Terraform module to help provision K8aaS use-cases.
 - Create IP Pool (1 for API, 1 for Workers)
 - Creates new ETCD encryption key per cluster
 - Uploads Kubeconfig and ETCD encryption key to Vault
+- Generates etcd healthclient certificate and stores to vault
 - Creates 3 netscaler service groups (API, Nodeport, and Ingress)
 
 
