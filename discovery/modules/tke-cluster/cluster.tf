@@ -5,6 +5,13 @@ resource "random_id" "etcd_encryption_key" {
   byte_length = 32
 }
 
+resource "local_file" "kubeconfig" {
+  content              = spectrocloud_cluster_vsphere.this.kubeconfig
+  filename             = ".terraform/tmp/kubeconfig_${local.n}"
+  file_permission      = "0644"
+  directory_permission = "0755"
+}
+
 # Create the VMware cluster
 resource "spectrocloud_cluster_vsphere" "this" {
   name               = local.n
