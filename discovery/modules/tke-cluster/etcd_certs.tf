@@ -1,16 +1,5 @@
 ##################################  ETCD Certs   #############################################
 
-provider "kubernetes" {
-  config_path = local_file.kubeconfig.filename
-}
-
-data "kubernetes_secret" "etcd-ca" {
-  metadata {
-    name = "${local.n}-etcd"
-    namespace = "cluster-${spectrocloud_cluster_vsphere.this.id}"
-  }
-}
-
 locals {
   etcd-ca-cert = data.kubernetes_secret.etcd-ca.data["tls.crt"]
   etcd-ca-key = data.kubernetes_secret.etcd-ca.data["tls.key"]
