@@ -29,8 +29,8 @@ locals {
     "externalVaultAddr: ${var.vault_address}"
   )
 }
-resource "spectrocloud_cluster_profile" "px-npe2003" {
-  name        = "px-npe2003"
+resource "spectrocloud_cluster_profile" "sc-npe" {
+  name        = "sc-npe"
   description = "basic cp"
   cloud       = "vsphere"
   type        = "cluster"
@@ -95,15 +95,15 @@ resource "spectrocloud_cluster_profile" "px-npe2003" {
   }
 
   pack {
-    name   = "tke-system"
+    name = "sc-system"
     type = "manifest"
     manifest {
-      name = "tke-system"
+      name    = "sc-system"
       content = <<-EOT
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: tke-system
+          name: sc-system
       EOT
     }
   }
