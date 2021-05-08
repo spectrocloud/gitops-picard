@@ -40,8 +40,8 @@ resource "tls_locally_signed_cert" "etcd-healthcheck" {
   ca_cert_pem        = local.etcd-ca-cert
   ca_private_key_pem = local.etcd-ca-key
 
-  // 2 years
-  validity_period_hours = 24*365*2
+  # 4 years
+  validity_period_hours = 24*365*4
 
   allowed_uses = [
     "key_encipherment",
