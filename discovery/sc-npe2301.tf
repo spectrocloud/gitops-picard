@@ -1,7 +1,7 @@
-module "px-npe2301" {
+module "sc-npe-1701" {
   source = "./modules/tke-cluster"
 
-  cluster_name           = "px-npe2301"
+  cluster_name           = "sc-npe-1701"
   cluster_workers_per_az = 1
   cluster_network        = "10.10.242"
 
@@ -11,13 +11,13 @@ module "px-npe2301" {
   cluster_worker_start_ip = "45"
   cluster_worker_end_ip   = "51"
 
-  netscaler_vip_api      = "10.10.182.5"
-  netscaler_vip_nodeport = "10.10.182.6"
-  netscaler_vip_ingress  = "10.10.182.6"
+  netscaler_vip_api      = "10.10.182.4"
+  netscaler_vip_nodeport = "10.10.182.5"
+  netscaler_vip_ingress  = "10.10.182.5"
 
   cluster_datastore = "DS001"
 
-  cluster_profile_id = spectrocloud_cluster_profile.px-npe2003-stg.id
+  cluster_profile_id = spectrocloud_cluster_profile.sc-npe.id
   cluster_packs = {
     k8s = {
       tag  = "1.19.7"

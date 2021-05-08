@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  description = "Name of the cluster (e.g: px-npe2300)"
+  description = "Name of the cluster (e.g: sc-npe1701)"
 }
 variable "cluster_workers_per_az" {
   type = number

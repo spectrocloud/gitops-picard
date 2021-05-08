@@ -25,8 +25,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
       etcd_encryption_key: random_id.etcd_encryption_key.b64_std
     })
   }
-  # TODO
-  # etcd_encryption_key : data.vault_generic_secret.etcd_encryption_key_px-npe2300.data["value"] })
+
   pack {
     name = "dex"
     tag  = var.cluster_packs["dex"].tag
