@@ -21,11 +21,11 @@ module "sc-npe-1701" {
   cluster_packs = {
     k8s = {
       tag  = "1.19.7"
-      file = "config-stg/k8s.yaml"
+      file = "config/k8s.yaml"
     }
     dex = {
       tag  = "2.28.0"
-      file = "config-stg/dex.yaml"
+      file = "config/dex.yaml"
     }
   }
 
