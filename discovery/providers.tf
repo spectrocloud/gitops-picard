@@ -28,6 +28,7 @@ variable "vault_ldap_secret_id" {}
 
 provider "vault" {
   address               = var.vault_address
+  token_name            = "sc_child"
   max_lease_ttl_seconds = 3 * 60 * 60
   auth_login {
     path = "auth/approle/login"
@@ -63,9 +64,9 @@ provider "citrixadc" {
   endpoint = var.ns_endpoint
 }
 
-# Secrets from Vault (not supported in customer since read operations are not allowed)
+# Secrets from Vault (not supported when read operations are blocked)
 # data "vault_generic_secret" "sc_mgmt" {
-#   path = "pe/ci/tke/px-npe2/tke-px-npe2002/mgmt-cluster"
+#   path = "secrets/mgmt-cluster"
 # }
 # # provider "spectrocloud"
 #   username = data.vault_generic_secret.sc_mgmt.data.username
@@ -73,7 +74,7 @@ provider "citrixadc" {
 #   host     = data.vault_generic_secret.sc_mgmt.data.host
 
 # data "vault_generic_secret" "netscaler" {
-#   path = "pe/ci/tke/px-npe2/shared/netscaler"
+#   path = "secrets/netscaler"
 # }
 # provider "citrixadc"
 #   username = data.vault_generic_secret.netscaler.data.username

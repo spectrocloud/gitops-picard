@@ -22,8 +22,8 @@ locals {
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
-    vault_secrets_path = "pe/secret/tke/admin_creds"
-    vault_secrets_etcd_certs_path = "pe/secret/tke/admin_creds"
+    vault_secrets_path            = "sc/env1/admin_creds"
+    vault_secrets_etcd_certs_path = "sc/env1/etcd-certs"
 
     # Network
     network_prefix               = 18
@@ -77,5 +77,5 @@ locals {
 }
 
 data "spectrocloud_cloudaccount_vsphere" "default" {
-  name = "npe2003"
+  name = "npe"
 }
