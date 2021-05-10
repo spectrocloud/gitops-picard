@@ -37,7 +37,7 @@ data "spectrocloud_pack" "cni-vsphere" {
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.18.16"
+  version = "1.19.8"
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
