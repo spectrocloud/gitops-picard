@@ -1,5 +1,5 @@
 data "spectrocloud_cloudaccount_aws" "picard" {
-  name = "aws-sa"
+  name = "aws-dev-access"
 }
 
 locals {
