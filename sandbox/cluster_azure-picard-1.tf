@@ -68,5 +68,15 @@ resource "spectrocloud_cluster_azure" "cluster" {
       type    = "Standard_LRS"
     }
   }
+    machine_pool {
+    name                    = "w2"
+    count                   = 1
+    instance_type           = "Standard_B4ms"
+    azs                     = ["1"]
+    disk {
+      size_gb = 60
+      type    = "Standard_LRS"
+    }
+  }
 
 }
