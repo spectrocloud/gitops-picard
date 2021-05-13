@@ -91,4 +91,21 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
       cpu          = 4
     }
   }
+
+  machine_pool {
+    name  = "general-compute"
+    count = 1
+
+    placement {
+      cluster       = "cluster2"
+      resource_pool = ""
+      datastore     = "datastore55_2"
+      network       = "VM Network"
+    }
+    instance_type {
+      disk_size_gb = 65
+      memory_mb    = 8192
+      cpu          = 4
+    }
+  }
 }
