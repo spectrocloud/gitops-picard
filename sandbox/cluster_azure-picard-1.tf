@@ -59,20 +59,20 @@ resource "spectrocloud_cluster_azure" "cluster" {
   }
 
   machine_pool {
-    name                    = "new-worker-pool"
-    count                   = 3
-    instance_type           = "Standard_B4ms"
-    azs                     = ["1"]
+    name          = "new-worker-pool"
+    count         = 3
+    instance_type = "Standard_B4ms"
+    azs           = ["1"]
     disk {
       size_gb = 60
       type    = "Standard_LRS"
     }
   }
-    machine_pool {
-    name                    = "w2"
-    count                   = 1
-    instance_type           = "Standard_B4ms"
-    azs                     = ["1"]
+  machine_pool {
+    name          = "w2"
+    count         = 1
+    instance_type = "Standard_B4ms"
+    azs           = ["1"]
     disk {
       size_gb = 60
       type    = "Standard_LRS"
