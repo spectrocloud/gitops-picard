@@ -94,7 +94,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   machine_pool {
     name  = "general-compute"
-    count = 1
+    count = 2
 
     placement {
       cluster       = "cluster2"
