@@ -19,31 +19,37 @@ resource "tls_private_key" "ssh_key" {
 # Create the VMware cluster
 resource "spectrocloud_cluster_vsphere" "this" {
   name               = local.n
-  cluster_profile_id = var.cluster_profile_id
   cloud_account_id   = var.global_config.cloud_account_id
+
+  cluster_profile {
+    id = var.cluster_profile_id
+
+    pack {
+      name = "kubernetes"
+      tag  = var.cluster_packs["k8s"].tag
+      values = templatefile(var.cluster_packs["k8s"].file, {
+        certSAN: "api-${local.fqdn}",
+        issuerURL: "dex.${local.fqdn}",
+        etcd_encryption_key: random_id.etcd_encryption_key.b64_std
+      })
+    }
+
+    pack {
+      name = "dex"
+      tag  = var.cluster_packs["dex"].tag
+      values = templatefile(var.cluster_packs["dex"].file, {
+        issuer: "dex.${local.fqdn}",
+      })
+    }
+  }
+
   cloud_config {
     ssh_key    = local.public_key_openssh
     datacenter = var.global_config.datacenter
     folder     = "${var.global_config.vm_folder}/${local.n}"
     static_ip  = true
   }
-  pack {
-    name = "kubernetes"
-    tag  = var.cluster_packs["k8s"].tag
-    values = templatefile(var.cluster_packs["k8s"].file, {
-      certSAN: "api-${local.fqdn}",
-      issuerURL: "dex.${local.fqdn}",
-      etcd_encryption_key: random_id.etcd_encryption_key.b64_std
-    })
-  }
 
-  pack {
-    name = "dex"
-    tag  = var.cluster_packs["dex"].tag
-    values = templatefile(var.cluster_packs["dex"].file, {
-      issuer: "dex.${local.fqdn}",
-    })
-  }
   machine_pool {
     control_plane = true
     name          = "master-pool"

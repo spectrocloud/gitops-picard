@@ -35,7 +35,8 @@ resource "vault_generic_secret" "etcd_certs" {
 
 # Store the SSH keys in Vault
 resource "vault_generic_secret" "ssh_keys" {
-  path = "${var.global_config.vault_ssh_keys_path}/${local.n}"
+  path = "${var.global_config.vault_ssh_keys_path}/ssh-keys_${local.n}"
+  disable_read = true
   data_json = <<-EOT
       {
       "private" : "${replace(local.private_key_pem, "\n", "\\n")}",
