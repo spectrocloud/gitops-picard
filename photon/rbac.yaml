@@ -6,15 +6,36 @@ all_clusters:
     - {type: User, name: user6}
     - {type: Group, name: group_admin}
     - {type: ServiceAccount, name: group6, namespace: foo}
-  roleBindings:
+  - role: edit
+    name: edit-admins-all
+    subjects:
+    - {type: Group, name: edit-group}
+    - {type: ServiceAccount, name: group6, namespace: koo}
+  namespaces:
   - namespace: monitoring
-    name: view-monitoring
     createNamespace: true
-    roles:
+    roleBindings:
     - role: admin
       # name is optional
       name: special-override-name-role
       kind: ClusterRole
+      subjects:
+      - {type: User, name: user3}
+      - {type: Group, name: group3}
+  - namespace: security
+    createNamespace: true
+    roleBindings:
+    - role: admin
+      # name is optional
+      name: special-override-name-role
+      kind: ClusterRole
+      subjects:
+      - {type: User, name: user3}
+      - {type: Group, name: group3}
+    - role: view
+      # name is optional
+      name: special-override-name-role
+      kind: Role
       subjects:
       - {type: User, name: user3}
       - {type: Group, name: group3}
@@ -26,10 +47,10 @@ clusters:
       - {type: User, name: user6}
       - {type: Group, name: group6}
       - {type: ServiceAccount, name: group6, namespace: foo}
-    roleBindings:
+    namespaces:
     - namespace: team2
       createNamespace: true
-      roles:
+      roleBindings:
       - role: admin
         kind: ClusterRole
         subjects:
