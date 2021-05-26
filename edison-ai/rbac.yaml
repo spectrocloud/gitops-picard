@@ -6,41 +6,18 @@ all_clusters:
     - {type: User, name: user6}
     - {type: Group, name: group_admin}
     - {type: ServiceAccount, name: group6, namespace: foo}
-  - role: edit
-    name: edit-admins-all
-    subjects:
-    - {type: Group, name: edit-group}
-    - {type: ServiceAccount, name: group6, namespace: koo}
-  namespaces:
-  - namespace: monitoring
-    createNamespace: true
-    roleBindings:
-    - role: admin
-      # name is optional
-      name: special-override-name-role
-      kind: ClusterRole
-      subjects:
-      - {type: User, name: user3}
-      - {type: Group, name: group3}
-  - namespace: security
-    createNamespace: true
-    roleBindings:
-    - role: admin
-      # name is optional
-      name: special-override-name-role
-      kind: ClusterRole
-      subjects:
-      - {type: User, name: user3}
-      - {type: Group, name: group3}
-    - role: view
-      # name is optional
-      name: special-override-name-role
-      kind: Role
-      subjects:
-      - {type: User, name: user3}
-      - {type: Group, name: group3}
 clusters:
   tool-dev-1:
+    clusterRoleBindings: []
+    namespaces:
+    - namespace: team2
+      createNamespace: true
+      roleBindings:
+      - role: admin
+        kind: ClusterRole
+        subjects:
+        - {type: Group, name: team-vendor-b}
+  tool-dev-5:
     clusterRoleBindings:
     - role: view
       subjects:
