@@ -56,6 +56,7 @@ variable "global_config" {
 
     vault_secrets_path = string
     vault_secrets_etcd_certs_path = string
+    vault_ssh_keys_path = string
 
     # Network
     network_prefix  = string
