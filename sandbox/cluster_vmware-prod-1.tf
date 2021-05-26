@@ -16,7 +16,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     network_type          = "DDNS"
     network_search_domain = local.cluster_network_search
   }
- 
+
   # To override or specify values for a cluster:
 
   pack {
