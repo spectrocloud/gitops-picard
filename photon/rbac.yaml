@@ -1,0 +1,53 @@
+all_clusters:
+  clusterRoleBindings:
+  - role: view
+    name: view-admins-all
+    subjects:
+    - {type: User, name: user6}
+    - {type: Group, name: group_admin}
+    - {type: ServiceAccount, name: group6, namespace: foo}
+  roleBindings:
+  - namespace: monitoring
+    name: view-monitoring
+    createNamespace: true
+    roles:
+    - role: admin
+      # name is optional
+      name: special-override-name-role
+      kind: ClusterRole
+      subjects:
+      - {type: User, name: user3}
+      - {type: Group, name: group3}
+clusters:
+  tool-dev-1:
+    clusterRoleBindings:
+    - role: view
+      subjects:
+      - {type: User, name: user6}
+      - {type: Group, name: group6}
+      - {type: ServiceAccount, name: group6, namespace: foo}
+    roleBindings:
+    - namespace: team2
+      createNamespace: true
+      roles:
+      - role: admin
+        kind: ClusterRole
+        subjects:
+        - {type: Group, name: team-vendor-b}
+  tool-dev-2:
+    clusterRoleBindings:
+    - role: view
+      subjects:
+      - {type: User, name: user6}
+      - {type: Group, name: team-vendor-c}
+  tool-stg-1:
+    clusterRoleBindings:
+    - role: admin
+      subjects:
+      - {type: Group, name: team-admins-2}
+  tool-prd-1:
+    clusterRoleBindings:
+    - role: admin
+      subjects:
+      - {type: Group, name: team-admins-2}
+      - {type: Group, name: team-admins-3}
