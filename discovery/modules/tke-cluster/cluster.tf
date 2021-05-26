@@ -1,8 +1,8 @@
 ################################  Clusters   ####################################################
 
 locals {
-  public_key_openssh   = tls_private_key.ssh_key.public_key_openssh
-  private_key_pem = tls_private_key.ssh_key.private_key_pem
+  public_key_openssh = tls_private_key.ssh_key.public_key_openssh
+  private_key_pem    = tls_private_key.ssh_key.private_key_pem
 }
 
 # Generate a "stable" random id
@@ -18,8 +18,8 @@ resource "tls_private_key" "ssh_key" {
 
 # Create the VMware cluster
 resource "spectrocloud_cluster_vsphere" "this" {
-  name               = local.n
-  cloud_account_id   = var.global_config.cloud_account_id
+  name             = local.n
+  cloud_account_id = var.global_config.cloud_account_id
 
   cluster_profile {
     id = var.cluster_profile_id
@@ -28,9 +28,9 @@ resource "spectrocloud_cluster_vsphere" "this" {
       name = "kubernetes"
       tag  = var.cluster_packs["k8s"].tag
       values = templatefile(var.cluster_packs["k8s"].file, {
-        certSAN: "api-${local.fqdn}",
-        issuerURL: "dex.${local.fqdn}",
-        etcd_encryption_key: random_id.etcd_encryption_key.b64_std
+        certSAN : "api-${local.fqdn}",
+        issuerURL : "dex.${local.fqdn}",
+        etcd_encryption_key : random_id.etcd_encryption_key.b64_std
       })
     }
 
@@ -38,7 +38,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
       name = "dex"
       tag  = var.cluster_packs["dex"].tag
       values = templatefile(var.cluster_packs["dex"].file, {
-        issuer: "dex.${local.fqdn}",
+        issuer : "dex.${local.fqdn}",
       })
     }
   }
@@ -75,7 +75,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
   dynamic "machine_pool" {
     for_each = ["wp-az1", "wp-az2", "wp-az3"]
     content {
-      name = machine_pool.value
+      name  = machine_pool.value
       count = var.cluster_workers_per_az
       placement {
         cluster           = local.placements[machine_pool.key].cluster
