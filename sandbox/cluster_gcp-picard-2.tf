@@ -54,7 +54,7 @@ resource "spectrocloud_cluster_gcp" "cluster" {
 
   machine_pool {
     name          = "worker-basic"
-    count         = 5
+    count         = 2
     instance_type = "e2-standard-2"
     azs           = ["${local.gcp_region}-a"]
   }
