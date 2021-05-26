@@ -1,8 +1,19 @@
 ################################  Clusters   ####################################################
 
+locals {
+  public_key_openssh   = tls_private_key.ssh_key.public_key_openssh
+  private_key_pem = tls_private_key.ssh_key.private_key_pem
+}
+
 # Generate a "stable" random id
 resource "random_id" "etcd_encryption_key" {
   byte_length = 32
+}
+
+# Generate SSH keys for the nodes
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  #rsa_bits  = 4096 # Defaults to 2048 bit
 }
 
 # Create the VMware cluster
@@ -11,7 +22,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
   cluster_profile_id = var.cluster_profile_id
   cloud_account_id   = var.global_config.cloud_account_id
   cloud_config {
-    ssh_key    = var.global_config.ssh_public_key
+    ssh_key    = local.public_key_openssh
     datacenter = var.global_config.datacenter
     folder     = "${var.global_config.vm_folder}/${local.n}"
     static_ip  = true
