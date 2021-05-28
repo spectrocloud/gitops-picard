@@ -23,6 +23,16 @@ resource "tls_cert_request" "etcd-healthcheck" {
 }
 
 resource "tls_locally_signed_cert" "etcd-healthcheck" {
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to etcd-healthcheck related resources after the initial infra rollout
+      ca_cert_pem,
+      ca_private_key_pem,
+      validity_period_hours
+    ]
+  }
+
   cert_request_pem = tls_cert_request.etcd-healthcheck.cert_request_pem
 
   ca_key_algorithm   = "RSA"

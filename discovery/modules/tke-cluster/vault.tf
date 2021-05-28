@@ -22,6 +22,14 @@ resource "vault_generic_secret" "etcd_encryption_key" {
 
 # Store the etcd client health certificates
 resource "vault_generic_secret" "etcd_certs" {
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to etcd_certs related resources after the initial infra rollout
+      data_json
+    ]
+  }
+
   path         = "${var.global_config.vault_secrets_etcd_certs_path}/etcd-healthcheck-certs_${local.n}"
   disable_read = true
   data_json    = <<-EOT
