@@ -1,24 +1,24 @@
 terraform {
   backend "s3" {
-    bucket                      = "terraform-state"
-    key                         = "photon/terraform.tfstate"
-    region                      = "ignored"
-    endpoint                    = "https://10.10.137.64:9000"
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    skip_region_validation      = true
-    force_path_style            = true
+    bucket                      = "terraform-state-spectro"
+    key                         = "project-edison-ai/terraform.tfstate"
+    region                      = "us-east-1"
+    #endpoint                    = "https://10.10.137.64:9000"
+    #skip_credentials_validation = true
+    #skip_metadata_api_check     = true
+    #skip_region_validation      = true
+    #force_path_style            = true
     #access_key, secret_key initialize with backend-config
   }
 }
 
 # locals
-locals {
+# locals {
 
-  global_config = {
+  # global_config = {
     # Domain
-    dns_domain       = "discovery.spectrocloud.com"
-    cloud_account_id = data.spectrocloud_cloudaccount_aws.default.id
+    # dns_domain       = "discovery.spectrocloud.com"
+    # cloud_account_id = data.spectrocloud_cloudaccount_aws.default.id
 
     # Vault
     # vault_secrets_path            = "sc/env1/admin_creds"
@@ -56,8 +56,8 @@ locals {
     #     datastore     = "datastore56"
     #   }
     # ]
-  }
-}
+  # }
+# }
 
 data "spectrocloud_cloudaccount_aws" "default" {
   name = "aws-picard-2"
