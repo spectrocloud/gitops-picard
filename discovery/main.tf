@@ -33,6 +33,10 @@ locals {
       "10.10.242" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
+      },
+      "10.10.243" = {
+        gateway = "10.10.192.1"
+        network = "VM Network 2"
       }
     }
 
