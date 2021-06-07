@@ -3,7 +3,7 @@ module "sc-npe-1701" {
 
   cluster_name           = "sc-npe-1701"
   cluster_workers_per_az = 1
-  cluster_network        = "10.10.242"
+  cluster_network        = "10.10.243"
 
   # IP address (reserve 43-44 for 5-node CP)
   cluster_api_start_ip    = "38"

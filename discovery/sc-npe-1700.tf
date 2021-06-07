@@ -11,9 +11,10 @@ module "sc-npe-1700" {
   cluster_worker_start_ip = "27"
   cluster_worker_end_ip   = "37"
 
-  netscaler_vip_api      = "10.10.182.2"
-  netscaler_vip_nodeport = "10.10.182.3"
-  netscaler_vip_ingress  = "10.10.182.3"
+  # Commenting below config to skip terraform from creating netscaler resources
+  #netscaler_vip_api      = "10.10.182.2"
+  #netscaler_vip_nodeport = "10.10.182.3"
+  #netscaler_vip_ingress  = "10.10.182.3"
 
   cluster_datastore = "DS001"
 

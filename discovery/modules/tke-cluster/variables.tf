@@ -32,12 +32,15 @@ variable "cluster_profile_id" {
 
 variable "netscaler_vip_api" {
   description = "The Virtual Service VIP for API/CP"
+  default     = ""
 }
 variable "netscaler_vip_nodeport" {
   description = "The Virtual Service VIP for NODEPORT"
+  default     = ""
 }
 variable "netscaler_vip_ingress" {
   description = "The Virtual Service VIP for INGRESS"
+  default     = ""
 }
 
 variable "cluster_packs" {
