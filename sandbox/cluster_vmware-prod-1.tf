@@ -100,7 +100,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   machine_pool {
     name  = "gpu-basic"
-    count = 1
+    count = 2
 
     placement {
       cluster       = "cluster2"
