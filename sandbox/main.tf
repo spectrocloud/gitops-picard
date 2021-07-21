@@ -52,5 +52,3 @@ provider "spectrocloud" {
   password     = var.sc_password
   project_name = var.sc_project_name
 }
-
-  
