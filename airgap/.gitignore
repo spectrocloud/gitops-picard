@@ -1,0 +1,9 @@
+/terraform.tfvars
+/.terraform/
+/.terraform.lock.hcl
+/creds/
+/terraform.tfstate.backup
+/terraform.tfstate
+/config-template/
+/.customer/
+/archived/
