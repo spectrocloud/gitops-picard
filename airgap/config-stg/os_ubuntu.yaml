@@ -1,0 +1,61 @@
+# Spectro Golden images includes most of the hardening standards recommended by CIS benchmarking v1.5
+# Uncomment below section to
+# 1. Include custom files to be copied over to the nodes and/or
+# 2. Execute list of commands before or after kubeadm init/join is executed
+#
+kubeadmconfig:
+  preKubeadmCommands:
+    - echo "Executing pre kube admin config commands"
+    - update-ca-certificates
+    - curl --user spectro:admin@airgap http://10.10.202.235/images/import-vsphere-k8s-images.sh -o /tmp/import-vsphere-k8s-images.sh
+    - bash /tmp/import-vsphere-k8s-images.sh
+    - 'systemctl restart containerd; sleep 3'
+    - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
+  postKubeadmCommands:
+    - echo "Executing post kube admin config commands"
+    - '/etc/kubernetes/pwx-node-labeler.sh'
+  files:
+    - targetPath: /etc/kubernetes/pwx-node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+          while [ -z $zone ]; do
+            echo "Waiting for zone label to get populated in the node $(hostname)...";
+            sleep 10;
+            zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+            #Check beta label as a fallback
+            [ -z "$zone" ] && zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.failure-domain\.beta\.kubernetes\.io\/zone}");
+          done;
+          echo "Zone label populated on the node is $zone";
+          kubectl label node `hostname` "px/rack=$zone";
+        else
+          echo "Skipping px-rack label for ControlPlane nodes"
+        fi
+    - targetPath: /usr/local/share/ca-certificates/mycom.crt
+      targetOwner: "root:root"
+      targetPermissions: "0644"
+      content: |
+        -----BEGIN CERTIFICATE-----
+        MIIDXDCCAkSgAwIBAgIUEnXak4gf+J2bBeLYzmwm0O+ifjwwDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjEwNzI3MTkwMzIxWhcN
+        MzEwNzI1MTkwMzIxWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
+        KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPDT8hgDc3w5s25JR+G6MUI+XK76CO7
+        VEK7pq4aCS/C/qFOyQfsLhurPhGvKiQBbJhgMWxTL59IDjiZIjEDfHokvOD3ALyJ
+        cfr/BeWOTqvVJhQhNXeBkONOY0W/ZCH46O31XDW6j5aENb57BUb8RV1AYgNCgAFT
+        5K9ztZXYl33648OfTivg4WPbrViUSGmjGelrNXq3FOKWUZN6dF3joTF5RlOSunR9
+        9AKL5/gYkxh8MpV6kiya2vtu8o06C9wZy+V5k+1rlMP/WqQOW3GVUMF9copqrEI8
+        B29Lr1ob66xtfqrKKeqLSNx2u/3wCKf2fMgMhBhaQUteJKEHUwBemCMCAwEAAaOB
+        mzCBmDAdBgNVHQ4EFgQUytyPSXps/4Dg4ob0PejOgu2dIgAwHwYDVR0jBBgwFoAU
+        ytyPSXps/4Dg4ob0PejOgu2dIgAwDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
+        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCsrrMBMGA1UdJQQM
+        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQB1F69pKXiQy7tMya4R6cUO
+        0UlgkReq4WzpztESPqREcE7D8yBELsUN5exLQ2O3rDjUFj0jAhWp6cYutCVECLdh
+        IyxqFaBH6aphiGnjYlq6l8B6XFq1YPt7vrPh+l2WpDrcfoH7H+WMd9NpJWbazpTQ
+        Wsv49E8KppBvFQLyrGJUkUa3oervTvq2dXi3VtKADc867woZsQ102v9P1T+Di5TJ
+        NZgl+KNtLgkvxPfSL/459KVAuRelvHZ2QwFNLpXTZVhl5FzN6V6IA2KK6lVHqzbO
+        W8SZWYTBT0aXBpAWwGzGfxeW0e8XYP3RgqwQkZLw83OpPvuzRvioR1G0SXJ9x5Lp
+        -----END CERTIFICATE-----
