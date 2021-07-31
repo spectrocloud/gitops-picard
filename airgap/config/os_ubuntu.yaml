@@ -35,26 +35,27 @@ kubeadmconfig:
         else
           echo "Skipping px-rack label for ControlPlane nodes"
         fi
-    - targetPath: /usr/local/share/ca-certificates/root_ca.crt
+    - targetPath: /usr/local/share/ca-certificates/mycom.crt
       targetOwner: "root:root"
       targetPermissions: "0644"
       content: |
         -----BEGIN CERTIFICATE-----
-        MIIDFTCCAf2gAwIBAgIUG76JmrZRzfRlbstRUHrqpixTTRswDQYJKoZIhvcNAQEL
-        BQAwEjEQMA4GA1UEAwwHcm9vdF9jYTAeFw0yMTAzMDYyMjIwMDRaFw0zMDA0MjIw
-        NjIwMzRaMBIxEDAOBgNVBAMMB3Jvb3RfY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
-        DwAwggEKAoIBAQDvvHKWD+PgeLjntQPXJaaGe8MVgTwtMlN+91xvs1kAofqmKqIw
-        qrFA2hlE5MsMQoBoL1Bozj4iWOITxCx1Qbyj2dspyRJTot1JI/LVVkYdZzJBy8G4
-        gHdo5GB8dLZ+TmtEA4GZdVU34ODv4jBuKEfflVRrUV98rpXtSdF0gXxKQ0VQcj9V
-        xLaUxfmgcaDbpsCJcJ/XUEBK5zbUjX8E2xbzY2G00umQIbBTiW/Qew3l2pQCUN9j
-        Hll2xB6SzwFxMNA028aF3Wds818EEVkKEv+7zAA/xUCuJpx/04yevY7NxBOTOPwN
-        ptLh/3uJ75GlzNzkCljw7Eq6qHZR1egWR2/DAgMBAAGjYzBhMA4GA1UdDwEB/wQE
-        AwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBREMqKdJMA6J1x92VyXyig/
-        /CGHmDAfBgNVHSMEGDAWgBREMqKdJMA6J1x92VyXyig//CGHmDANBgkqhkiG9w0B
-        AQsFAAOCAQEAXgGjvknG5E/B+Yw/ADzo5IMfGfuOvXYLvoXfvIk6R+uY37yCaMTy
-        swngvv33Ba1QQdMZML2cOQw4IF+xJYcG5NwZgrmv7BX5TU1NXy/E8Atc44TwZ2WE
-        dlbmn0qW0Rk5EtUfU9f08eDpHolLXVhkrVrXsmn/1/J8E8C8YWMXkMgfBh5qtcnN
-        0fjrLIkF0QFUeKlPOGE6t1yA6FB0NgbuH25ot+IguZsL+4KQyRs6fPcjkHpfy41q
-        53AYhXzfdNFSQu+DEKQEuDha2t/P6O/3faonwRbsTjkDt64bw8f1i3bXGEMV6cXs
-        e+r71NOzxebWScL2SSZfVqpTgsckgSA5DQ==
+        MIIDXDCCAkSgAwIBAgIUEnXak4gf+J2bBeLYzmwm0O+ifjwwDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjEwNzI3MTkwMzIxWhcN
+        MzEwNzI1MTkwMzIxWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
+        KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPDT8hgDc3w5s25JR+G6MUI+XK76CO7
+        VEK7pq4aCS/C/qFOyQfsLhurPhGvKiQBbJhgMWxTL59IDjiZIjEDfHokvOD3ALyJ
+        cfr/BeWOTqvVJhQhNXeBkONOY0W/ZCH46O31XDW6j5aENb57BUb8RV1AYgNCgAFT
+        5K9ztZXYl33648OfTivg4WPbrViUSGmjGelrNXq3FOKWUZN6dF3joTF5RlOSunR9
+        9AKL5/gYkxh8MpV6kiya2vtu8o06C9wZy+V5k+1rlMP/WqQOW3GVUMF9copqrEI8
+        B29Lr1ob66xtfqrKKeqLSNx2u/3wCKf2fMgMhBhaQUteJKEHUwBemCMCAwEAAaOB
+        mzCBmDAdBgNVHQ4EFgQUytyPSXps/4Dg4ob0PejOgu2dIgAwHwYDVR0jBBgwFoAU
+        ytyPSXps/4Dg4ob0PejOgu2dIgAwDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
+        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCsrrMBMGA1UdJQQM
+        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQB1F69pKXiQy7tMya4R6cUO
+        0UlgkReq4WzpztESPqREcE7D8yBELsUN5exLQ2O3rDjUFj0jAhWp6cYutCVECLdh
+        IyxqFaBH6aphiGnjYlq6l8B6XFq1YPt7vrPh+l2WpDrcfoH7H+WMd9NpJWbazpTQ
+        Wsv49E8KppBvFQLyrGJUkUa3oervTvq2dXi3VtKADc867woZsQ102v9P1T+Di5TJ
+        NZgl+KNtLgkvxPfSL/459KVAuRelvHZ2QwFNLpXTZVhl5FzN6V6IA2KK6lVHqzbO
+        W8SZWYTBT0aXBpAWwGzGfxeW0e8XYP3RgqwQkZLw83OpPvuzRvioR1G0SXJ9x5Lp
         -----END CERTIFICATE-----

@@ -107,21 +107,4 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
     }
   }
 
-  pack {
-    name = "xyz"
-    type = "manifest"
-    manifest {
-      name = "xyz1"
-      content = file("config/namespace-labeler.yaml")
-    }
-  }
-
-  pack {
-    name = "abc"
-    type = "manifest"
-    manifest {
-      name = "abc1"
-      content = file("config/namespace-labeler.yaml")
-    }
-  }
 }
