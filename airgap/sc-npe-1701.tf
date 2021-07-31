@@ -27,10 +27,10 @@ module "sc-npe-1701" {
       tag  = "2.28.0"
       file = "config/dex.yaml"
     }
-    /*vault = {
+    vault = {
       tag = "0.11.0"
       file = "config/vault.yaml"
-    }*/
+    }
     namespace-labeler = {
       tag = "1.0.0"
       file = "config-stg/namespace-labeler.yaml"
