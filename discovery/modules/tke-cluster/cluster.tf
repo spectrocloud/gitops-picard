@@ -41,6 +41,12 @@ resource "spectrocloud_cluster_vsphere" "this" {
         issuer : "dex.${local.fqdn}",
       })
     }
+
+    pack {
+      name = "namespace-labeler"
+      tag = var.cluster_packs["namespace-labeler"].tag
+      values = ""
+    }
   }
 
   cloud_config {

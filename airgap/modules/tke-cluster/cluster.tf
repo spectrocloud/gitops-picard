@@ -42,11 +42,6 @@ resource "spectrocloud_cluster_vsphere" "this" {
       })
     }
 
-    /*pack {
-      name = "vault"
-      tag  = var.cluster_packs["vault"].tag
-      values = file(var.cluster_packs["k8s"].file)
-    }*/
   }
 
   cloud_config {
