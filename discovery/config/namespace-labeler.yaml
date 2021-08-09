@@ -50,7 +50,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
-            - -exc
+            - -xc
             - |
 
               declare -a labels_arr=(
@@ -61,7 +61,7 @@ spec:
               declare -a spectro_namespaces_arr=(
               "cert-manager" "capi-kubeadm-bootstrap-system"
               "capi-kubeadm-control-plane-system" "capi-webhook-system"
-              "kube-node-lease" "kube-public" "kube-system"
+              "kube-node-lease" "kube-public" "kube-system" "test1"
               "default" "tke-system" "dex" "vault" "reach-system")
 
               echo "$(date) Processing namespace label updates"
@@ -84,11 +84,17 @@ spec:
 
               for ns in "${spectro_namespaces_arr[@]}"
               do
-                for lbl in "${labels_arr[@]}"
-                do
-                  echo "$(date) Updating label ${label} for ${ns}"
-                  kubectl label namespace ${ns} ${lbl} --overwrite
-                done
+                #Check if namespace exists
+                kubectl get ns ${ns}
+                if [[ $? -eq 0 ]]; then
+                  for lbl in "${labels_arr[@]}"
+                  do
+                    echo "$(date) Updating label ${label} for ${ns}"
+                    kubectl label namespace ${ns} ${lbl} --overwrite
+                  done
+                else
+                  echo "Namespace ${ns} doesn't exist, skipping label updates"
+                fi
               done
 
           volumeMounts:
