@@ -28,6 +28,10 @@ module "sc-npe-1700" {
       tag  = "2.28.0"
       file = "config-stg/dex.yaml"
     }
+    namespace-labeler = {
+      tag = "1.0.0"
+      file = "config/namespace-labeler.yaml"
+    }
   }
 
   global_config = local.global_config

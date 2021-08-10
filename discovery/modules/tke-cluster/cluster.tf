@@ -20,27 +20,30 @@ resource "tls_private_key" "ssh_key" {
 resource "spectrocloud_cluster_vsphere" "this" {
   name             = local.n
   cloud_account_id = var.global_config.cloud_account_id
+  cluster_profile_id = var.cluster_profile_id
 
-  cluster_profile {
-    id = var.cluster_profile_id
+  pack {
+    name = "kubernetes"
+    tag  = var.cluster_packs["k8s"].tag
+    values = templatefile(var.cluster_packs["k8s"].file, {
+      certSAN : "api-${local.fqdn}",
+      issuerURL : "dex.${local.fqdn}",
+      etcd_encryption_key : random_id.etcd_encryption_key.b64_std
+    })
+  }
 
-    pack {
-      name = "kubernetes"
-      tag  = var.cluster_packs["k8s"].tag
-      values = templatefile(var.cluster_packs["k8s"].file, {
-        certSAN : "api-${local.fqdn}",
-        issuerURL : "dex.${local.fqdn}",
-        etcd_encryption_key : random_id.etcd_encryption_key.b64_std
-      })
-    }
+  pack {
+    name = "dex"
+    tag  = var.cluster_packs["dex"].tag
+    values = templatefile(var.cluster_packs["dex"].file, {
+      issuer : "dex.${local.fqdn}",
+    })
+  }
 
-    pack {
-      name = "dex"
-      tag  = var.cluster_packs["dex"].tag
-      values = templatefile(var.cluster_packs["dex"].file, {
-        issuer : "dex.${local.fqdn}",
-      })
-    }
+  pack {
+    name = "namespace-labeler"
+    tag = var.cluster_packs["namespace-labeler"].tag
+    values = ""
   }
 
   cloud_config {
