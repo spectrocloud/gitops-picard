@@ -71,7 +71,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
 
   machine_pool {
     name          = "gpu-pool-2"
-    count         = 2
+    count         = 1
     instance_type = "Standard_B4ms"
     azs           = ["1"]
     disk {
