@@ -40,12 +40,6 @@ resource "spectrocloud_cluster_vsphere" "this" {
     })
   }
 
-  # pack {
-  #   name = "namespace-labeler"
-  #   tag = var.cluster_packs["namespace-labeler"].tag
-  #   values = ""
-  # }
-
   cloud_config {
     ssh_key    = local.public_key_openssh
     datacenter = var.global_config.datacenter
