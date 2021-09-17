@@ -2,6 +2,10 @@ data "spectrocloud_pack" "vault-stg" {
   name    = "vault"
   version = "0.11.0"
 }
+data "spectrocloud_pack" "nginx-stg" {
+  name    = "nginx"
+  version = "0.43.0"
+}
 data "spectrocloud_pack" "cni-vsphere-stg" {
   name    = "cni-calico"
   version = "3.19.0"
@@ -66,6 +70,25 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
     uid    = data.spectrocloud_pack.vault-stg.id
     values = local.vault_values_stg
   }
+
+  pack {
+    name   = "nginx"
+    tag    = "0.43.0"
+    uid    = data.spectrocloud_pack.nginx-stg.id
+    values = file("config-stg/nginx.yaml")
+
+    manifest {
+      name = "nginx-config"
+      content = templatefile("config-stg/nginx-config.yaml", {
+        # Read actual cert, key details from file and base64 encode using filebase64 function
+        # This should be updated whenever we change the certs
+        tls_key_contents : filebase64("config-stg/certs/sc-npe.key"),
+        tls_crt_contents : filebase64("config-stg/certs/sc-npe.crt"),
+        ca_crt_contents : filebase64("config-stg/certs/ca.crt"),
+      })
+    }
+  }
+
   pack {
     name   = "dex"
     tag    = "2.28.0"
@@ -93,6 +116,15 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
         metadata:
           name: sc-system
       EOT
+    }
+  }
+
+  pack {
+    name = "namespace-labeler"
+    type = "manifest"
+    manifest {
+      name = "namespace-label-config"
+      content = file("config/namespace-labeler.yaml")
     }
   }
 }
