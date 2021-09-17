@@ -45,12 +45,3 @@ data:
       address = "${vault_address}"
       tls_skip_verify = "true"
     }
----
-# apiVersion: v1
-# kind: Secret
-# type: kubernetes.io/tls
-# metadata:
-#   name: default-tls
-#   namespace: nginx
-# stringData:
-#   $\{indent(2, certkey)\}
