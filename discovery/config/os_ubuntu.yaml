@@ -12,6 +12,7 @@ kubeadmconfig:
   postKubeadmCommands:
     - echo "Executing post kube admin config commands"
     - '/etc/kubernetes/pwx-node-labeler.sh'
+    - '/etc/kubernetes/node-labeler.sh'
   files:
     - targetPath: /etc/kubernetes/pwx-node-labeler.sh
       targetOwner: "root:root"
@@ -32,6 +33,20 @@ kubeadmconfig:
           kubectl label node `hostname` "px/rack=$zone";
         else
           echo "Skipping px-rack label for ControlPlane nodes"
+        fi
+    - targetPath: /etc/kubernetes/node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          #For worker nodes, use kubelet.conf
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        else
+          #For control-plane nodes, use admin.conf
+          export KUBECONFIG=/etc/kubernetes/admin.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
         fi
     - targetPath: /usr/local/share/ca-certificates/root_ca.crt
       targetOwner: "root:root"
