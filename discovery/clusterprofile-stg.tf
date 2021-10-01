@@ -124,7 +124,7 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
     type = "manifest"
     manifest {
       name = "namespace-label-config"
-      content = file("config/namespace-labeler.yaml")
+      content = file("config-stg/namespace-labeler.yaml")
     }
   }
 }
