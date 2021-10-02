@@ -71,7 +71,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55_2"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {
@@ -88,7 +88,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55_2"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {
@@ -100,12 +100,12 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   machine_pool {
     name  = "gpu-basic"
-    count = 2
+    count = 1
 
     placement {
       cluster       = "cluster2"
       resource_pool = ""
-      datastore     = "datastore55_2"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {

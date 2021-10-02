@@ -107,4 +107,13 @@ resource "spectrocloud_cluster_profile" "sc-npe" {
       EOT
     }
   }
+
+  pack {
+    name = "namespace-labeler"
+    type = "manifest"
+    manifest {
+      name = "namespace-label-config"
+      content = file("config/namespace-labeler.yaml")
+    }
+  }
 }

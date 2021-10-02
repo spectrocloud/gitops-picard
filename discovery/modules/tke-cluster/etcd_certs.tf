@@ -37,4 +37,9 @@ resource "tls_locally_signed_cert" "etcd-healthcheck" {
     "digital_signature",
     "client_auth",
   ]
+
+  lifecycle {
+    # Ignore changes to etcd-healthcheck related resources after the initial infra rollout
+    ignore_changes = all
+  }
 }
