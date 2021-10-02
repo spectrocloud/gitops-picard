@@ -26,7 +26,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
 
     pack {
       name = "kubernetes"
-      tag  = var.cluster_packs["k8s"].tag
+      tag = var.cluster_packs["k8s"].tag
       values = templatefile(var.cluster_packs["k8s"].file, {
         certSAN : "api-${local.fqdn}",
         issuerURL : "dex.${local.fqdn}",
@@ -36,7 +36,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
 
     pack {
       name = "dex"
-      tag  = var.cluster_packs["dex"].tag
+      tag = var.cluster_packs["dex"].tag
       values = templatefile(var.cluster_packs["dex"].file, {
         issuer : "dex.${local.fqdn}",
       })

@@ -30,11 +30,27 @@ locals {
     network_prefix               = 18
     network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
     networks = {
+      "10.10.182" = {
+        gateway = "10.10.128.1"
+        network = "VM Network"
+      },
+      "10.10.183" = {
+        gateway = "10.10.128.1"
+        network = "VM Network"
+      },
       "10.10.242" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
       },
       "10.10.243" = {
+        gateway = "10.10.192.1"
+        network = "VM Network 2"
+      },
+      "10.10.244" = {
+        gateway = "10.10.192.1"
+        network = "VM Network 2"
+      },
+      "10.10.245" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
       }
@@ -63,17 +79,17 @@ locals {
       {
         cluster       = "cluster1"
         resource_pool = ""
-        datastore     = "datastore54"
+        datastore     = "Datastore57"
       },
       {
         cluster       = "cluster2"
         resource_pool = ""
-        datastore     = "datastore55"
+        datastore     = "Datastore58"
       },
       {
         cluster       = "cluster3"
         resource_pool = ""
-        datastore     = "datastore56"
+        datastore     = "Datastore59"
       }
     ]
   }
