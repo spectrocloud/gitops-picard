@@ -7,7 +7,7 @@ kubeadmconfig:
   preKubeadmCommands:
     - echo "Executing pre kube admin config commands"
     - update-ca-certificates
-    - curl --user spectro:admin@airgap http://10.10.202.235/images/import-vsphere-k8s-images.sh -o /tmp/import-vsphere-k8s-images.sh
+    - curl --user spectro:admin@airgap http://10.10.167.44/images/import-vsphere-k8s-images.sh -o /tmp/import-vsphere-k8s-images.sh
     - bash /tmp/import-vsphere-k8s-images.sh
     - 'systemctl restart containerd; sleep 3'
     - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
@@ -40,22 +40,22 @@ kubeadmconfig:
       targetPermissions: "0644"
       content: |
         -----BEGIN CERTIFICATE-----
-        MIIDXDCCAkSgAwIBAgIUEnXak4gf+J2bBeLYzmwm0O+ifjwwDQYJKoZIhvcNAQEL
-        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjEwNzI3MTkwMzIxWhcN
-        MzEwNzI1MTkwMzIxWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
-        KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPDT8hgDc3w5s25JR+G6MUI+XK76CO7
-        VEK7pq4aCS/C/qFOyQfsLhurPhGvKiQBbJhgMWxTL59IDjiZIjEDfHokvOD3ALyJ
-        cfr/BeWOTqvVJhQhNXeBkONOY0W/ZCH46O31XDW6j5aENb57BUb8RV1AYgNCgAFT
-        5K9ztZXYl33648OfTivg4WPbrViUSGmjGelrNXq3FOKWUZN6dF3joTF5RlOSunR9
-        9AKL5/gYkxh8MpV6kiya2vtu8o06C9wZy+V5k+1rlMP/WqQOW3GVUMF9copqrEI8
-        B29Lr1ob66xtfqrKKeqLSNx2u/3wCKf2fMgMhBhaQUteJKEHUwBemCMCAwEAAaOB
-        mzCBmDAdBgNVHQ4EFgQUytyPSXps/4Dg4ob0PejOgu2dIgAwHwYDVR0jBBgwFoAU
-        ytyPSXps/4Dg4ob0PejOgu2dIgAwDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
-        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCsrrMBMGA1UdJQQM
-        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQB1F69pKXiQy7tMya4R6cUO
-        0UlgkReq4WzpztESPqREcE7D8yBELsUN5exLQ2O3rDjUFj0jAhWp6cYutCVECLdh
-        IyxqFaBH6aphiGnjYlq6l8B6XFq1YPt7vrPh+l2WpDrcfoH7H+WMd9NpJWbazpTQ
-        Wsv49E8KppBvFQLyrGJUkUa3oervTvq2dXi3VtKADc867woZsQ102v9P1T+Di5TJ
-        NZgl+KNtLgkvxPfSL/459KVAuRelvHZ2QwFNLpXTZVhl5FzN6V6IA2KK6lVHqzbO
-        W8SZWYTBT0aXBpAWwGzGfxeW0e8XYP3RgqwQkZLw83OpPvuzRvioR1G0SXJ9x5Lp
+        MIIDXDCCAkSgAwIBAgIUV1lTWTLJM0e4bVIAT+kgGIo/EZgwDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjExMDAyMDkzMzIxWhcN
+        MzEwOTMwMDkzMzIxWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
+        KoZIhvcNAQEBBQADggEPADCCAQoCggEBAN8j8qG8Br1CarqzDKLvMZNcgrh06jh8
+        4NIpzWcTrbVCu4T1h/u1vhXuWytKCLR/XX5SRIhNIoV5IqNvh43Iey+AzXkkXXXP
+        ulKWIIvJI6Ofgpnmycj3vWZoIPWnND1hHp1t2Rok7iBJQKYgAAaSlKqDekm9yTtE
+        q/E4UMhFy4bl0U+AJQHKto9VE4uYl1cltcr63vPmkqXEXRTGlECeErV4e2ngYYzK
+        2wMh1i3+VcJ5PLloIwAjYeRwSapr7fqDN+leOy3/2c1HYmXmhE41jVBKmQpQoJrP
+        dzRaVfiCqy4VbfNNzeTQ/R7MvdD+hMLyf44rTYPLTxRGY5vk3zykmpsCAwEAAaOB
+        mzCBmDAdBgNVHQ4EFgQUfw3Bo7HIgyef7T2bpiaok1bEHn0wHwYDVR0jBBgwFoAU
+        fw3Bo7HIgyef7T2bpiaok1bEHn0wDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
+        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCqcsMBMGA1UdJQQM
+        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQDInkRDwgM6HXCyo4QKIRUV
+        ZaICy89cl6bQZ+eWlke+n2CYkGSmllle2VHOQMnbp/LZv6JauCRiPG7emRjGwSgm
+        53i84oZi1bgHmq+QfoOjdhR08se9ntaiF2TqVu5voGm784rq5NARuACHkY0WPirJ
+        BGPF0sMBcnvK/mXwW6VB0whm2e4o6TdqANmNM3Z+D2olAxSeAmVygnesQ7SdIH89
+        pa4BEDsc6mQvWz9OEtZf+H3l13lKPFm0rEQ5ZPFD1AF4EgUD+jWbjsusVA9Tgko3
+        pCLQ4CVxWJNwg1x52HzBZmCoTFaYVS6EKUXVrpRN+3aJzTIAtJuH6YbcnuTPKUuq
         -----END CERTIFICATE-----

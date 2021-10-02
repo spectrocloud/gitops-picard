@@ -49,7 +49,7 @@ charts:
       leaderElector:
         enabled: true
         image:
-          repository: "10.10.202.235:8000/google_containers/leader-elector"
+          repository: "10.10.167.44:8000/google_containers/leader-elector"
           tag: "0.4"
         ttl: 60s
 
@@ -63,7 +63,7 @@ charts:
 
       # image sets the repo and tag of the vault-k8s image to use for the injector.
       image:
-        repository: "10.10.202.235:8000/spectro-images-public/hashicorp/vault-k8s"
+        repository: "10.10.167.44:8000/spectro-images-public/hashicorp/vault-k8s"
         tag: "0.10.0"
         pullPolicy: IfNotPresent
 
@@ -71,7 +71,7 @@ charts:
       # containers.  This should be set to the official Vault image.  Vault 1.3.1+ is
       # required.
       agentImage:
-        repository: "10.10.202.235:8000/spectro-images-public/vault"
+        repository: "10.10.167.44:8000/spectro-images-public/vault"
         tag: "1.7.0"
 
       # The default values for the injected Vault Agent containers.
@@ -215,7 +215,7 @@ charts:
       # By default no direct resource request is made.
 
       image:
-        repository: "10.10.202.235:8000/spectro-images-public/vault"
+        repository: "10.10.167.44:8000/spectro-images-public/vault"
         tag: "1.7.0"
         # Overrides the default Image Pull Policy
         pullPolicy: IfNotPresent
@@ -702,7 +702,7 @@ charts:
       enabled: false
 
       image:
-        repository: "10.10.202.235:8000/spectro-images-public/hashicorp/vault-csi-provider"
+        repository: "10.10.167.44:8000/spectro-images-public/hashicorp/vault-csi-provider"
         tag: "0.2.0"
         pullPolicy: IfNotPresent
 

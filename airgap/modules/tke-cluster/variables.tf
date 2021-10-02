@@ -95,7 +95,6 @@ locals {
   n               = var.cluster_name
   current_network = var.global_config.networks[var.cluster_network]
   fqdn            = "${var.cluster_name}.${var.global_config.dns_domain}"
-  vault_address   = ""
 
   placements = [for i, v in var.global_config.placements : {
     cluster       = v.cluster

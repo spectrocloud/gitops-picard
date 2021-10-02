@@ -46,7 +46,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: main
-          image: 10.10.202.235:8000/spectro-images-public/debug/spectro-util:1.0.0
+          image: 10.10.167.44:8000/spectro-images-public/debug/spectro-util:1.0.0
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
