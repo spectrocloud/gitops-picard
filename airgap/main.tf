@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket                      = "terraform-state"
-    key                         = "discovery/terraform.tfstate"
+    key                         = "airgap/terraform.tfstate"
     region                      = "ignored"
     endpoint                    = "https://10.10.137.64:9000"
     skip_credentials_validation = true
@@ -18,7 +18,7 @@ locals {
   global_config = {
     # Domain
     dns_domain       = "10.10.251.30"
-    pcg_id           = "61006c2e49e0fb298b4cca8b"
+    pcg_id           = "61587d5c66127c216e64b496"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
@@ -30,11 +30,11 @@ locals {
     network_prefix               = 18
     network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
     networks = {
-      "10.10.242" = {
+      "10.10.243" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
       },
-      "10.10.243" = {
+      "10.10.244" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
       }
@@ -42,7 +42,7 @@ locals {
 
     # VM properties
     datacenter     = "Datacenter"
-    vm_folder      = "Demo"
+    vm_folder      = "boobalan"
     ssh_public_key = "Demo"
 
     worker_node = {
@@ -80,5 +80,5 @@ locals {
 }
 
 data "spectrocloud_cloudaccount_vsphere" "default" {
-  name = "npe"
+  name = "us-dc2"
 }

@@ -9,7 +9,7 @@ charts:
     replicaCount: 3
     image:
       # -- Repository to pull the container image from.
-      repository: 10.10.202.235:8000/dexidp/dex
+      repository: 10.10.167.44:8000/dexidp/dex
       # -- Image [pull policy](https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       pullPolicy: IfNotPresent
       # TODO(sagikazarmark): use a tagged version when available
@@ -212,7 +212,7 @@ charts:
     # -- [InitContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) for the Pod.
     initContainers:
       - name: init-wait-for-vault
-        image: 10.10.202.235:8000/google_containers/kubernetes-dashboard-init-amd64:v1.0.0
+        image: 10.10.167.44:8000/google_containers/kubernetes-dashboard-init-amd64:v1.0.0
         command:
         - /bin/bash
         - -xc
