@@ -60,7 +60,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
 
   machine_pool {
     name          = "new-worker-pool"
-    count         = 3
+    count         = 1
     instance_type = "Standard_B4ms"
     azs           = ["1"]
     disk {
@@ -68,8 +68,9 @@ resource "spectrocloud_cluster_azure" "cluster" {
       type    = "Standard_LRS"
     }
   }
+
   machine_pool {
-    name          = "w2"
+    name          = "gpu-pool-2"
     count         = 1
     instance_type = "Standard_B4ms"
     azs           = ["1"]

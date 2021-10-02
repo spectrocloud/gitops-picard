@@ -170,7 +170,7 @@ charts:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: std-ingress-class
+        # kubernetes.io/ingress.class: std-ingress-class
         # kubernetes.io/tls-acme: "true"
       hosts:
         - host: ${issuer}
