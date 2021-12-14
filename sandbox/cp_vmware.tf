@@ -37,7 +37,7 @@ data "spectrocloud_pack" "cni-vsphere" {
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.18.16"
+  version = "1.19.16"
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
@@ -69,8 +69,8 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
   }
 
   pack {
-    name   = "kubernetes"
-    tag    = "1.18.16"
+    name   = data.spectrocloud_pack.k8s-vsphere.name
+    tag    = data.spectrocloud_pack.k8s-vsphere.version
     uid    = data.spectrocloud_pack.k8s-vsphere.id
     values = local.vsphere_k8s_values
   }
