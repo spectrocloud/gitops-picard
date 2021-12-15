@@ -26,8 +26,8 @@ data "spectrocloud_pack" "istio-vsphere" {
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
-  name = "csi-vsphere-csi"
-  # version  = "1.0.x"
+  name = "csi-vsphere-csi-k8s1.19"
+  version  = "2.4.0"
 }
 
 data "spectrocloud_pack" "cni-vsphere" {
@@ -83,8 +83,8 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
   }
 
   pack {
-    name   = "csi-vsphere-csi"
-    tag    = "1.0.x"
+    name   = data.spectrocloud_pack.csi-vsphere.name
+    tag    = data.spectrocloud_pack.csi-vsphere.version
     uid    = data.spectrocloud_pack.csi-vsphere.id
     values = data.spectrocloud_pack.csi-vsphere.values
   }
