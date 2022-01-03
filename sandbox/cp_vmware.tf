@@ -26,7 +26,7 @@ data "spectrocloud_pack" "istio-vsphere" {
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
-  name = "csi-vsphere-csi-k8s1.19"
+  name = "csi-vsphere-csi"
   version  = "2.4.0"
 }
 
