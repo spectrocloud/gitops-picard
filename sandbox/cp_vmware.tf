@@ -27,17 +27,17 @@ data "spectrocloud_pack" "istio-vsphere" {
 
 data "spectrocloud_pack" "csi-vsphere" {
   name = "csi-vsphere-csi"
-  version  = "2.4.0"
+  version  = "2.3.0"
 }
 
 data "spectrocloud_pack" "cni-vsphere" {
   name    = "cni-calico"
-  version = "3.16.0"
+  version = "3.19.0"
 }
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.19.16"
+  version = "1.20.14"
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
@@ -76,8 +76,8 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
   }
 
   pack {
-    name   = "cni-calico"
-    tag    = "3.16.x"
+    name   = data.spectrocloud_pack.cni-vsphere.name
+    tag    = data.spectrocloud_pack.cni-vsphere.version
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
