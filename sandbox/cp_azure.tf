@@ -11,7 +11,7 @@ data "spectrocloud_pack" "csi-azure" {
 
 data "spectrocloud_pack" "cni-azure" {
   name    = "cni-calico-azure"
-  version = "3.16.0"
+  version = "3.19.0"
 }
 
 data "spectrocloud_pack" "k8s-azure" {
@@ -46,15 +46,15 @@ resource "spectrocloud_cluster_profile" "azure" {
   }
 
   pack {
-    name   = "kubernetes"
-    tag    = "1.18.15"
+    name   = data.spectrocloud_pack.k8s-azure.name
+    tag    = data.spectrocloud_pack.k8s-azure.version
     uid    = data.spectrocloud_pack.k8s-azure.id
     values = local.azure_k8s_values
   }
 
   pack {
-    name   = "cni-calico-azure"
-    tag    = "3.16.x"
+    name   = data.spectrocloud_pack.cni-azure.name
+    tag    = data.spectrocloud_pack.cni-azure.version
     uid    = data.spectrocloud_pack.cni-azure.id
     values = data.spectrocloud_pack.cni-azure.values
   }
