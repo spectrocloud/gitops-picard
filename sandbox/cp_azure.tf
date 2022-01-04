@@ -16,7 +16,7 @@ data "spectrocloud_pack" "cni-azure" {
 
 data "spectrocloud_pack" "k8s-azure" {
   name    = "kubernetes"
-  version = "1.18.15"
+  version = "1.20.14"
 }
 
 data "spectrocloud_pack" "ubuntu-azure" {
