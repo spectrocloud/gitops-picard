@@ -1,5 +1,5 @@
 data "spectrocloud_cloudaccount_vsphere" "picard-vc2" {
-  name = "picard-vc2"
+  name = "picard2-vc2"
 }
 
 # resource "spectrocloud_cluster_rbac" "prod-vmware-1" {
