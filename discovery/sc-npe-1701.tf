@@ -21,7 +21,7 @@ module "sc-npe-1701" {
   cluster_profile_id = spectrocloud_cluster_profile.sc-npe.id
   cluster_packs = {
     k8s = {
-      tag  = "1.19.7"
+      tag  = "1.21.6"
       file = "config-stg/k8s.yaml"
     }
     dex = {
