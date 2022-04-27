@@ -8,7 +8,7 @@ data "spectrocloud_pack" "cni-vsphere" {
 }
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.19.7"
+  version = "1.21.6"
 }
 data "spectrocloud_pack" "dex" {
   name    = "dex"
@@ -20,7 +20,7 @@ data "spectrocloud_pack" "csi-vsphere" {
 }
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name = "ubuntu-vsphere"
-  # version  = "1.0.x"
+  version  = "18.04"
 }
 locals {
   vault_values = replace(

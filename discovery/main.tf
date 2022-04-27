@@ -77,17 +77,17 @@ locals {
     # which is replaced with var.cluster_datastore
     placements = [
       {
-        cluster       = "cluster1"
+        cluster       = "Cluster1"
         resource_pool = ""
         datastore     = "Datastore57"
       },
       {
-        cluster       = "cluster2"
+        cluster       = "Cluster2"
         resource_pool = ""
         datastore     = "Datastore58"
       },
       {
-        cluster       = "cluster3"
+        cluster       = "Cluster3"
         resource_pool = ""
         datastore     = "Datastore59"
       }
