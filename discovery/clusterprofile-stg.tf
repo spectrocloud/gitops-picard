@@ -12,7 +12,7 @@ data "spectrocloud_pack" "cni-vsphere-stg" {
 }
 data "spectrocloud_pack" "k8s-vsphere-stg" {
   name    = "kubernetes"
-  version = "1.19.7"
+  version = "1.21.6"
 }
 locals {
   vault_values_stg = replace(
