@@ -20,8 +20,8 @@ data "spectrocloud_pack" "k8s-gcp" {
 }
 
 data "spectrocloud_pack" "ubuntu-gcp" {
-  name = "ubuntu-gcp"
-  version  = "18.04"
+  name    = "ubuntu-gcp"
+  version = "18.04"
 }
 
 locals {

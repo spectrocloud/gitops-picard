@@ -20,8 +20,8 @@ data "spectrocloud_pack" "k8s-azure" {
 }
 
 data "spectrocloud_pack" "ubuntu-azure" {
-  name = "ubuntu-azure"
-  version  = "18.04"
+  name    = "ubuntu-azure"
+  version = "18.04"
   # version  = "1.0.x"
 }
 

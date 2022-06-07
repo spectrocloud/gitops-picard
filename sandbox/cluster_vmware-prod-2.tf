@@ -1,7 +1,7 @@
 # Locals and cloud accounts defined in cluster_vmware-prod-1.tf
 
 resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
-  name               = "vmware-prod-2"
+  name = "vmware-prod-2"
   cluster_profile {
     id = spectrocloud_cluster_profile.prodvmware.id
 
@@ -27,7 +27,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-2" {
 
   }
 
-  cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
+  cloud_account_id = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
 
   cloud_config {
     ssh_key = local.cluster_ssh_public_key
