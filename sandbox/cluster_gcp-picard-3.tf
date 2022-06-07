@@ -13,7 +13,10 @@ locals {
 
 resource "spectrocloud_cluster_gcp" "cluster" {
   name               = "gcp-picard-3"
-  cluster_profile_id = spectrocloud_cluster_profile.prod-gcp.id
+
+  cluster_profile {
+    id = spectrocloud_cluster_profile.prod-gcp.id
+  }
   cloud_account_id   = data.spectrocloud_cloudaccount_gcp.picard.id
 
   cloud_config {

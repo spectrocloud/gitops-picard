@@ -21,6 +21,7 @@ data "spectrocloud_pack" "k8s-azure" {
 
 data "spectrocloud_pack" "ubuntu-azure" {
   name = "ubuntu-azure"
+  version  = "18.04"
   # version  = "1.0.x"
 }
 
@@ -39,8 +40,8 @@ resource "spectrocloud_cluster_profile" "azure" {
   type        = "cluster"
 
   pack {
-    name   = "ubuntu-azure"
-    tag    = "LTS__18.4.x"
+    name   = data.spectrocloud_pack.ubuntu-azure.name
+    tag    = data.spectrocloud_pack.ubuntu-azure.version
     uid    = data.spectrocloud_pack.ubuntu-azure.id
     values = data.spectrocloud_pack.ubuntu-azure.values
   }
