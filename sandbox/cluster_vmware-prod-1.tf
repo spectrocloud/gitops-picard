@@ -1,5 +1,5 @@
 data "spectrocloud_cloudaccount_vsphere" "picard-vc2" {
-  name = "picard2-vc2"
+  name = "picard-vc2"
 }
 
 # resource "spectrocloud_cluster_rbac" "prod-vmware-1" {
@@ -23,7 +23,32 @@ data "spectrocloud_cloudaccount_vsphere" "picard-vc2" {
 resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
   name               = "vmware-prod-1"
-  cluster_profile_id = spectrocloud_cluster_profile.prodvmware.id
+
+  cluster_profile {
+    id = spectrocloud_cluster_profile.prodvmware.id
+
+    # To override or specify values for a cluster:
+    pack {
+      name   = "lb-metallb"
+      tag    = "0.11.0"
+      values = <<-EOT
+        manifests:
+          metallb:
+
+            #The namespace to use for deploying MetalLB
+            namespace: "metallb-system"
+
+            #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
+            avoidBuggyIps: true
+
+            # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
+            # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
+            addresses:
+            - 10.10.182.10-10.10.182.19
+      EOT
+    }
+  }
+
   cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
 
   # rbac = [
@@ -40,27 +65,6 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     network_search_domain = local.cluster_network_search
   }
 
-  # To override or specify values for a cluster:
-
-  pack {
-    name   = "lb-metallb"
-    tag    = "0.8.x"
-    values = <<-EOT
-      manifests:
-        metallb:
-
-          #The namespace to use for deploying MetalLB
-          namespace: "metallb-system"
-
-          #MetalLB will skip setting .0 & .255 IP address when this flag is enabled
-          avoidBuggyIps: true
-
-          # Layer 2 config; The IP address range MetalLB should use while assigning IP's for svc type LoadBalancer
-          # For the supported formats, check https://metallb.universe.tf/configuration/#layer-2-configuration
-          addresses:
-          - 10.10.182.10-10.10.182.19
-    EOT
-  }
 
   machine_pool {
     control_plane           = true
@@ -69,9 +73,9 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     count                   = 3
 
     placement {
-      cluster       = "cluster2"
+      cluster       = "Cluster2"
       resource_pool = ""
-      datastore     = "DSC_2/Datastore58"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {
@@ -86,9 +90,9 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     count = 1
 
     placement {
-      cluster       = "cluster2"
+      cluster       = "Cluster2"
       resource_pool = ""
-      datastore     = "DSC_2/Datastore58"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {
@@ -103,9 +107,9 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     count = 1
 
     placement {
-      cluster       = "cluster2"
+      cluster       = "Cluster2"
       resource_pool = ""
-      datastore     = "DSC_2/Datastore58"
+      datastore     = "Datastore58"
       network       = "VM Network"
     }
     instance_type {
