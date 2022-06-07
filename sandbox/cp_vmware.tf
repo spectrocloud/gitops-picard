@@ -26,8 +26,8 @@ data "spectrocloud_pack" "istio-vsphere" {
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
-  name = "csi-vsphere-csi"
-  version  = "2.3.0"
+  name    = "csi-vsphere-csi"
+  version = "2.3.0"
 }
 
 data "spectrocloud_pack" "cni-vsphere" {
@@ -41,8 +41,8 @@ data "spectrocloud_pack" "k8s-vsphere" {
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
-  name = "ubuntu-vsphere"
-  version  = "18.04"
+  name    = "ubuntu-vsphere"
+  version = "18.04"
 }
 
 locals {

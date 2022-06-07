@@ -9,7 +9,7 @@ terraform {
     key_path    = "certs/client.key"
   }
 
-  
+
   required_providers {
     spectrocloud = {
       version = "~> 0.5.0"
