@@ -14,7 +14,7 @@ locals {
 
 
 resource "spectrocloud_cluster_azure" "cluster" {
-  name               = "az-picard-2"
+  name = "az-picard-2"
 
   cluster_profile {
     id = spectrocloud_cluster_profile.azure.id
@@ -28,7 +28,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
     #    # Note : This must not overlap with any IP ranges assigned to nodes for pods.
     #    serviceClusterIpRange: "10.96.0.0/12"
 
-## KubeAdm customization for kubernetes hardening. Below config will be ignored if k8sHardening property above is disabled
+    ## KubeAdm customization for kubernetes hardening. Below config will be ignored if k8sHardening property above is disabled
     #  kubeadmconfig:
     #    apiServer:
     #      extraArgs:
@@ -101,7 +101,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
     #      # Sometimes api server takes a little longer to respond. Retry if applying the pod-security-policy manifest fails
     #      - 'export KUBECONFIG=/etc/kubernetes/admin.conf && [ -f "$KUBECONFIG" ] && { echo " ====> Applying PodSecurityPolicy" ; until $(kubectl apply -f /etc/kubernetes/hardening/privileged-psp.yaml > /dev/null ); do echo "Failed to apply PodSecurityPolicies, will retry in 5s" ; sleep 5 ; done ; } || echo "Skipping PodSecurityPolicy for worker nodes"'
 
-## Client configuration to add OIDC based authentication flags in kubeconfig
+    ## Client configuration to add OIDC based authentication flags in kubeconfig
     #  clientConfig:
     #    oidc-issuer-url: "{{ .spectro.pack.kubernetes.kubeadmconfig.apiServer.extraArgs.oidc-issuer-url }}"
     #    oidc-client-id: "{{ .spectro.pack.kubernetes.kubeadmconfig.apiServer.extraArgs.oidc-client-id }}"
@@ -110,7 +110,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
     #      }
   }
 
-  cloud_account_id   = data.spectrocloud_cloudaccount_azure.picard.id
+  cloud_account_id = data.spectrocloud_cloudaccount_azure.picard.id
 
   cloud_config {
     subscription_id = local.azure_subscription_id

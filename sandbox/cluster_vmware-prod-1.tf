@@ -22,7 +22,7 @@ data "spectrocloud_cloudaccount_vsphere" "picard-vc2" {
 
 resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
 
-  name               = "vmware-prod-1"
+  name = "vmware-prod-1"
 
   cluster_profile {
     id = spectrocloud_cluster_profile.prodvmware.id
@@ -49,7 +49,7 @@ resource "spectrocloud_cluster_vsphere" "prod-vmware-1" {
     }
   }
 
-  cloud_account_id   = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
+  cloud_account_id = data.spectrocloud_cloudaccount_vsphere.picard-vc2.id
 
   # rbac = [
   #   spectroclu_cluster_rbac.sdfs.id
