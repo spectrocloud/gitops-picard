@@ -48,3 +48,38 @@
     tag: 1.0.0
   - name: store-edge-apps-base
     tag: 1.5.0
+
+
+#############################################
+# 004
+#############################################
+- name: store-004-ca-sac
+  tags:
+    state: Ca
+    city: Sacremento
+    type: reserve # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '38.66594632226066, -121.3475556167745'
+  edge_servers: ['c77c375996aa']
+  profiles:
+  - name: store-edge-infra
+    tag: 1.0.0
+  - name: store-edge-apps-base
+    tag: 1.5.0
+
+#############################################
+# 005
+#############################################
+- name: store-005-or-port
+  tags:
+    state: Or
+    city: Portland
+    type: reserve # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '45.57487596799815, -122.60226776599914'
+  edge_servers: ['c77c375996aa']
+  profiles:
+  - name: store-edge-infra
+    tag: 1.0.0
+  - name: store-edge-apps-base
+    tag: 1.5.0
