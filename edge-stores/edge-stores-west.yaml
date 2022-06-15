@@ -56,7 +56,7 @@
     type: reserve # drive-thru, reserve, combo
     stage: 'false'
     latlng: '38.66594632226066, -121.3475556167745'
-  edge_servers: ['f3d82408cad6 ']
+  edge_servers: ['f3d82408cad6']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
