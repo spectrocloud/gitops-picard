@@ -8,14 +8,15 @@ on:
   # but only for the main branch
   push:
     paths:
-    - 'sandbox/**'
+    - 'edge-stores/**'
+    - 'edge-tf-scripts/**'
     branches:
     - main
   #pull_request:
     #types: [edited, opened, synchronize, reopened]
 
 env:
-  SPECTROCLOUD_TF_PATH: sandbox
+  SPECTROCLOUD_TF_PATH: edge-tf-scripts
   SPECTROCLOUD_WORKSPACE: default
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -47,7 +48,7 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
-          
+
     - name: Terraform Apply
       id: apply
       run: |
@@ -56,36 +57,3 @@ jobs:
         -var 'sc_project_name=${{ secrets.SC_PROJECT_NAME }}' \
         -var 'sc_username=${{ secrets.SC_USERNAME }}' \
         -var 'sc_password=${{ secrets.SC_PASSWORD }}'
-      continue-on-error: true
-    - uses: jwalton/gh-find-current-pr@v1
-      id: findPr
-  
-    - uses: actions/github-script@v3
-      if: success() && steps.findPr.outputs.number
-      env:
-        PLAN: "terraform\n${{ steps.apply.outputs.stdout }}"
-        PR: ${{ steps.findPr.outputs.pr }}
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
-          #### Terraform Apply 📖 \`${{ steps.apply.outcome }}\`
-
-          <details open><summary>Show Plan</summary>
-
-          \`\`\`hcl
-          ${process.env.PLAN}
-          \`\`\`
-
-          </details>
-
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
-
-          github.issues.createComment({
-            issue_number: ${process.env.PR},
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
