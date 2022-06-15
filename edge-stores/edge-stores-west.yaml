@@ -75,6 +75,6 @@
   edge_servers: ['1c697a091152', 'd45ddf00d90c', '54b2030910d0']
   profiles:
     - name: store-edge-infra
-      tag: 1.0.0
+      tag: 2.0.0
     - name: store-edge-apps-base
       tag: 1.5.0
