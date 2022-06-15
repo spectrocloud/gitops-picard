@@ -8,7 +8,7 @@
     type: cafe # drive-thru, reserve, combo
     stage: 'true'
     latlng: '37.366519,-121.919364'
-  edge_servers: ['3b8113057120']
+  edge_servers: ['3b8113057123']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
@@ -24,7 +24,7 @@
     type: reserve # drive-thru, reserve, combo
     stage: 'true'
     latlng: '37.432122,-121.891819'
-  edge_servers: ['c7d71ca29b6e']
+  edge_servers: ['c7d71ca29b6a']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
