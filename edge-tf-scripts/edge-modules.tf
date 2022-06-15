@@ -1,9 +1,10 @@
 locals {
   edge_files = fileset("${path.module}/config", "edge-stores-*.yaml")
 
-  edgeList = flatten([for k in local.edge_files : [for e in yamldecode(file("config/${k}")) : e]])
+  edge_list = yamldecode(join("\n", [for i in local.edge_files: file("config/${i}")]))
+
   edge = {
-    for e in local.edgeList :
+    for e in local.edge_list :
       e.name => e
   }
 }
