@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Terraform Apply
+name: Terraform Edge Apply
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -10,6 +10,7 @@ on:
     paths:
     - 'edge-stores/**'
     - 'edge-tf-scripts/**'
+    - '.github/workflows/edge-tfapply.yaml'
     branches:
     - main
   #pull_request:
