@@ -10,7 +10,7 @@ data "spectrocloud_cluster_profile" "edge_app_profile" {
 
 resource "spectrocloud_appliance" "this" {
   count = length(var.device_uuid)
-  
+
   uid = lower("edge-${var.device_uuid[count.index]}")
   labels = {
     "cluster" = spectrocloud_cluster_import.this.id
