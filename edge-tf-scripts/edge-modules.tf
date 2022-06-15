@@ -3,7 +3,7 @@ locals {
 
   edgeList = flatten([for k in local.edge_files : [for e in yamldecode(file("config/${k}")) : e]])
   edge = {
-    for e in edgeList :
+    for e in local.edgeList :
       e.name => e
   }
 }
