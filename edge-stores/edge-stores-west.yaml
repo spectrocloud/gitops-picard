@@ -8,7 +8,7 @@
     type: cafe # drive-thru, reserve, combo
     stage: 'true'
     latlng: '37.366519,-121.919364'
-  edge_servers: ['3b8113057123']
+  edge_servers: ['a6505c1a08e8']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
@@ -17,51 +17,51 @@
 #############################################
 # 002
 #############################################
-# - name: store-002-ca-mil
-#   tags:
-#     state: Ca
-#     city: Milpitas
-#     type: reserve # drive-thru, reserve, combo
-#     stage: 'true'
-#     latlng: '37.432122,-121.891819'
-#   edge_servers: ['c7d71ca29b6a']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 003
-# #############################################
-# - name: store-003-or-port
-#   tags:
-#     state: Or
-#     city: Portland
-#     type: reserve # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '45.57487596799815, -122.60226776599914'
-#   edge_servers: ['c77c375996ac']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 004
-# #############################################
-# - name: store-004-ca-sac
-#   tags:
-#     state: Ca
-#     city: Sacremento
-#     type: reserve # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '38.66594632226066, -121.3475556167745'
-#   edge_servers: ['c77c375996ad']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
+- name: store-002-ca-mil
+  tags:
+    state: Ca
+    city: Milpitas
+    type: reserve # drive-thru, reserve, combo
+    stage: 'true'
+    latlng: '37.432122,-121.891819'
+  edge_servers: ['7117b318547f']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 003
+#############################################
+- name: store-003-or-port
+  tags:
+    state: Or
+    city: Portland
+    type: reserve # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '45.57487596799815, -122.60226776599914'
+  edge_servers: ['7ac21391137e']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 004
+#############################################
+- name: store-004-ca-sac
+  tags:
+    state: Ca
+    city: Sacremento
+    type: reserve # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '38.66594632226066, -121.3475556167745'
+  edge_servers: ['f3d82408cad6 ']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
 # #############################################
 # # 005
 # #############################################
