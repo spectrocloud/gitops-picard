@@ -1,16 +1,16 @@
 locals {
   edge_files = fileset("${path.module}/config", "edge-stores-*.yaml")
 
-  edge_list = yamldecode(join("\n", [for i in local.edge_files: file("config/${i}")]))
+  edge_list = yamldecode(join("\n", [for i in local.edge_files : file("config/${i}")]))
 
   edge = {
     for e in local.edge_list :
-      e.name => e
+    e.name => e
   }
 }
 
 module "edge" {
-  source = "./modules/edge"
+  source   = "./modules/edge"
   for_each = local.edge
 
   name = each.value.name
