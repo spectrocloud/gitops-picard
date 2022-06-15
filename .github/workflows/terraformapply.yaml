@@ -7,6 +7,8 @@ name: Terraform Apply
 on:
   # but only for the main branch
   push:
+    paths:
+    - 'sandbox/**'
     branches:
     - main
   #pull_request:
