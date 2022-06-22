@@ -1,83 +1,83 @@
-# #############################################
-# # 501
-# #############################################
-# - name: store-501-pa-phil
-#   tags:
-#     state: Pa
-#     city: Philadelphia
-#     type: reserve # drive-thru, reserve, combo
-#     stage: 'true'
-#     latlng: '39.98745330264465, -75.10130166655905'
-#   edge_servers: ['4938964e6e2d']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 502
-# #############################################
-# - name: store-502-dc-wash
-#   tags:
-#     state: Dc
-#     city: Washington
-#     type: store # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '38.885803892016575, -77.02924069351471'
-#   edge_servers: ['84ae09909f98']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 503
-# #############################################
-# - name: store-503-va-rich
-#   tags:
-#     state: Va
-#     city: Richmond
-#     type: store # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '37.54034912244921, -77.43527364009215'
-#   edge_servers: ['f4498cee35e9']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 504
-# #############################################
-# - name: store-504-pa-pit
-#   tags:
-#     state: Pa
-#     city: Pittsburgh
-#     type: store # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '40.46764139994461, -79.9535434273596'
-#   edge_servers: ['43af7f8cc03f']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 505
-# #############################################
-# - name: store-505-ny-nyc
-#   tags:
-#     state: Ny
-#     city: New York
-#     type: cafe # drive-thru, reserve, combo
-#     stage: 'true'
-#     latlng: '40.71892568847224, -73.99512647745632'
-#   edge_servers: ['832ec16304f7']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
+#############################################
+# 501
+#############################################
+- name: store-501-pa-phil
+  tags:
+    state: Pa
+    city: Philadelphia
+    type: reserve # drive-thru, reserve, combo
+    stage: 'true'
+    latlng: '39.98745330264465, -75.10130166655905'
+  edge_servers: ['9251e9b8c47b']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 502
+#############################################
+- name: store-502-dc-wash
+  tags:
+    state: Dc
+    city: Washington
+    type: store # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '38.885803892016575, -77.02924069351471'
+  edge_servers: ['5b1fac1bdd46']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 503
+#############################################
+- name: store-503-va-rich
+  tags:
+    state: Va
+    city: Richmond
+    type: store # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '37.54034912244921, -77.43527364009215'
+  edge_servers: ['babebbc10f53']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 504
+#############################################
+- name: store-504-pa-pit
+  tags:
+    state: Pa
+    city: Pittsburgh
+    type: store # drive-thru, reserve, combo
+    stage: 'false'
+    latlng: '40.46764139994461, -79.9535434273596'
+  edge_servers: ['6b86ddca52de']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
+#############################################
+# 505
+#############################################
+- name: store-505-ny-nyc
+  tags:
+    state: Ny
+    city: New York
+    type: cafe # drive-thru, reserve, combo
+    stage: 'true'
+    latlng: '40.71892568847224, -73.99512647745632'
+  edge_servers: ['7bfa43383b96']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: store-edge-apps-base
+      tag: 1.5.0
 #############################################
 # 506
 #############################################
