@@ -15,7 +15,7 @@ import yaml from "yaml";
 import fs from "fs";
 import { exec } from "child_process";
 
-if (false) {
+if (true) {
 	console.warn = function (...args) {
 		return;
 	};
