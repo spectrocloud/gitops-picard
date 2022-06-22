@@ -10,7 +10,7 @@ import semver from "semver";
 import fetch from "node-fetch";
 import Spinner from "ink-spinner";
 import glob from "glob";
-import _ from "lodash";
+import _, { first } from "lodash";
 import yaml from "yaml";
 import fs from "fs";
 import { exec } from "child_process";
@@ -169,7 +169,7 @@ export default function CliForm() {
 				{
 					name: `filters.${index}.value`,
 					label: "Filter value",
-					Input: SelectInput,
+					Input: MultiSelectInput,
 					format: null, // prevents empty value from being ''
 					inputConfig: {
 						items: (
@@ -219,19 +219,26 @@ export default function CliForm() {
 	const affectedStores = useMemo(() => {
 		return allStores.filter((store) => {
 			const conditions = data?.filters?.map((filter) => {
-				return _.get(store, `tags.${filter.tag}`) === filter.value;
+        if (!filter.value) {
+          return true;
+        }
+
+				return filter.value.includes(_.get(store, `tags.${filter.tag}`));
 			});
 
 			if (filterOps.length === 0) {
 				return conditions?.[0] || false;
 			}
 
-			return filterOps.every((op, index) => {
+			return filterOps.every((op, index, arr) => {
+        let firstMod = [0, arr.length -1].includes(index) ?  0 : -1;
+        let secondMod = [0, arr.length -1].includes(index) ?  1 : 0;
+
 				if (op === "and") {
-					return conditions[index] && conditions[index + 1];
+					return !!(conditions[index + firstMod] && conditions[index + secondMod]);
 				}
 				if (op === "or") {
-					return conditions[index] || conditions[index + 1];
+          return !!(conditions[index + firstMod] || conditions[index + secondMod]);
 				}
 			});
 		});
@@ -245,13 +252,14 @@ export default function CliForm() {
 
 		async function submit() {
 			const conditions = data.filters.map((filter, index) => {
-				let out = `.tags.${filter.tag} == "${filter.value}"`;
+				let includes = (filter?.value || []).map(val => `.tags.${filter.tag} == "${val}"`);
+        const template = `${includes.join(' or ')}`
 
 				if (filterOps[index / 2]) {
-					return `${out} ${filterOps[index / 2]} `;
+					return `${template} ${filterOps[index / 2]} `;
 				}
 
-				return out;
+				return template;
 			});
 
 			const operation = `profiles.[${
@@ -419,7 +427,7 @@ export default function CliForm() {
 											</Box>
 										)}
 									</Field>
-									<Text>
+									<Text bold>
 										{name.includes("value")
 											? filterOps[index / 2 - 1]?.toUpperCase?.()
 											: null}
