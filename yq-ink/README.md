@@ -8,4 +8,6 @@ npm run dev
 # different terminal
 cd ../edge-stores
 
+spectro-yq
+
 ```
