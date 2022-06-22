@@ -231,13 +231,8 @@ export default function CliForm() {
 			}
 
 			return filterOps.every((op, index, arr) => {
-        let firstMod = index === 0 ?  0 : -1;
-        let secondMod = index === 0 ?  1 : 0;
-
-        if (index === arr.length - 1) {
-          firstMod = 0;
-          secondMod = 1;
-        }
+        let firstMod = [0, arr.length -1].includes(index) ?  0 : -1;
+        let secondMod = [0, arr.length -1].includes(index) ?  1 : 0;
 
 				if (op === "and") {
 					return !!(conditions[index + firstMod] && conditions[index + secondMod]);
@@ -257,7 +252,7 @@ export default function CliForm() {
 
 		async function submit() {
 			const conditions = data.filters.map((filter, index) => {
-				let includes = filter.value.map(val => `.tags.${filter.tag} == "${val}"`);
+				let includes = (filter?.value || []).map(val => `.tags.${filter.tag} == "${val}"`);
         const template = `${includes.join(' or ')}`
 
 				if (filterOps[index / 2]) {
