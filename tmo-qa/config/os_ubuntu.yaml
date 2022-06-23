@@ -1,0 +1,92 @@
+# Spectro Golden images includes most of the hardening standards recommended by CIS benchmarking v1.5
+# Uncomment below section to
+# 1. Include custom files to be copied over to the nodes and/or
+# 2. Execute list of commands before or after kubeadm init/join is executed
+#
+kubeadmconfig:
+  preKubeadmCommands:
+    - echo "Executing pre kube admin config commands"
+    - update-ca-certificates
+    - "systemctl restart containerd; sleep 3"
+    - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
+  postKubeadmCommands:
+    - echo "Executing post kube admin config commands"
+    - '/etc/kubernetes/pwx-node-labeler.sh'
+    - '/etc/kubernetes/node-labeler.sh'
+  files:
+    - targetPath: /etc/kubernetes/pwx-node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+          while [ -z $zone ]; do
+            echo "Waiting for zone label to get populated in the node $(hostname)...";
+            sleep 10;
+            zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+            #Check beta label as a fallback
+            [ -z "$zone" ] && zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.failure-domain\.beta\.kubernetes\.io\/zone}");
+          done;
+          echo "Zone label populated on the node is $zone";
+          kubectl label node `hostname` "px/rack=$zone";
+        else
+          echo "Skipping px-rack label for ControlPlane nodes"
+        fi
+    - targetPath: /etc/kubernetes/node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          #For worker nodes, use kubelet.conf
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        else
+          #For control-plane nodes, use admin.conf
+          export KUBECONFIG=/etc/kubernetes/admin.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        fi
+    - targetPath: /usr/local/share/ca-certificates/root_ca.crt
+      targetOwner: "root:root"
+      targetPermissions: "0644"
+      content: |
+        -----BEGIN CERTIFICATE-----
+        MIIDHzCCAgegAwIBAgIUIIymLRPHcfQr8gdHockwvGmlyMQwDQYJKoZIhvcNAQEL
+        BQAwEjEQMA4GA1UEAwwHcm9vdF9jYTAeFw0yMTA4MjQwMTA1MTBaFw0yNzA1MDgw
+        OTA1NDBaMA0xCzAJBgNVBAMTAmNhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+        CgKCAQEAy2IICcgTZuWxZ+LnPVLqNYIsjctWc8WjcspFeMFj2jW/vWVgCgHtk1us
+        ob7yrlY5Ka7NTX8hGbhcr9EB4AHlvD2cv6Vz2ei1TNQn4Q8pxsUerZFrN4IhxpSG
+        Gjy2oGUM/jBr6a6AwTpCEWdNk/5rS7r2cuPAAfaCOXjEQ54EOAhUqFMxy73eaS1J
+        7rBIYUrkfsI1UI4VLgdBntNIFl6PE6sexwJCbh1VuHG7W2PUpu53+zO457Me6fri
+        9C31q6OZs8ets3iYQSuehwdaDdpT3TgxpDWuVqSoQivZbM+MkIUl8DtIFINwfVR5
+        6opmyeGNlES2B1VNodztf2GPzMH+2wIDAQABo3IwcDAOBgNVHQ8BAf8EBAMCAQYw
+        DwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUiVVR4ycs1ex8tsURlvrAS6A7ZKYw
+        HwYDVR0jBBgwFoAUtyoKOi5ajYU8/6TnyDH9RuOznLIwDQYDVR0RBAYwBIICY2Ew
+        DQYJKoZIhvcNAQELBQADggEBABr5SlpsEgiT973wKAMbz8oHt+v8kL6znEqFtJjB
+        jM/a4HEf0rbh12DixY0OWkb77ss1Wu88wHlt8JzpN1/kfOMBIdlRLZjG0rEr09Fo
+        J2CUp0EyTAnd5AHtoseo3dM5eLJumnZN6ljGzcPWebdvGouSx1u0ty43c97Mcun+
+        TWES/7D5V0huIVusXchEL8OTHlhoJhaoY7k8Aem/BSaZqx2B4Br14O6pD7IReuE3
+        eX4yR8iFVQtYUB/okCBLhNL+VaalcgHCEUrKrKvZOC3GoqdFdrCr2DYaTza/xxmi
+        gbnHPUXgRt9cuEWyW0a4YtGLgY6IR49/Sp1spEtBj+fLpXo=
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIDFTCCAf2gAwIBAgIULXd6l7b6lDWgbYq2WlcloqG94QkwDQYJKoZIhvcNAQEL
+        BQAwEjEQMA4GA1UEAwwHcm9vdF9jYTAeFw0yMTA4MjQwMTAzMTJaFw0zMDEwMDkw
+        OTAzNDFaMBIxEDAOBgNVBAMMB3Jvb3RfY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+        DwAwggEKAoIBAQC1ZTWusc5AnGLYSzaupTaDpQW0Y7JZjdCUdRsfQxHrirK7Syea
+        SSCvt/pgXHnkzCMou+RRtfx/PYLjhITUoE7ETtnWCmNVY2LgnGOYZUdtwRw4U9sn
+        kRko9REopkob9TLipqF967XcEFsSQknbro1Pa3qwh0Yu7k6anPstsWuslqP0SUP3
+        wQLcAbOckiIhBtN/dQH2aOe2YeJky4FB/T8CxvA1Nwo1hb/jxBf5692MaVx5eHZT
+        Dy2fxNvIlqn/TkwMWvBL1n5YSt1/vDf1NKHssqWsu6RVnQrkAOJx6FtBZatgS8u0
+        hBSXiLzsStrJOz39AaBrS0NeDQdjadDRfxb9AgMBAAGjYzBhMA4GA1UdDwEB/wQE
+        AwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBS3Kgo6LlqNhTz/pOfIMf1G
+        47OcsjAfBgNVHSMEGDAWgBS3Kgo6LlqNhTz/pOfIMf1G47OcsjANBgkqhkiG9w0B
+        AQsFAAOCAQEAZ+IbomNyA6lFKWaW4+TON4AtA8w2BXVC0vKw+5+FnlyqoLLdpFeY
+        mbFVI6N7Ju+YFiTqw5NwQopslV4EMIVOStPTgKMjGDTUIsQAfHrU5P1qCzsGNfMV
+        /ORn9LE1Ccfjf7D2jeO6z1biLK4KfXtonGJ2AZ1ysTG9nkUYo3O37h4oq93RkLJu
+        kRhEjLppO7tOkK5Z+Lk901RGYtUZb/zxDVr321VMLx5jSXy+hRRA4W3opyCSjS+H
+        X7ccI2G1thy9ZV2nilcMj0VZTmnfi/iBAqKP4h5b6+M5KPbxj97dxIsWKtM6jtB2
+        tdCadmcZzbO0m3w2K+vMtwkC0VcfyfVn/Q==
+        -----END CERTIFICATE-----
