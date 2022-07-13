@@ -18,7 +18,7 @@ locals {
   global_config = {
     # Domain
     dns_domain       = "tmo-qa1.spectrocloud.com"
-    pcg_id           = "62b2af90001250b0dd372fd4"
+    pcg_id           = "62c5a1eede0be00bf881cf6c"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
@@ -28,13 +28,13 @@ locals {
 
     # Network
     network_prefix               = 18
-    network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
+    network_nameserver_addresses = ["10.10.128.8"]
     networks = {
       "10.10.182" = {
         gateway = "10.10.128.1"
         network = "VM Network"
       },
-      "10.10.183" = {
+      "10.10.188" = {
         gateway = "10.10.128.1"
         network = "VM Network"
       },

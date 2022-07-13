@@ -3,7 +3,7 @@ module "sc-npe-1700" {
 
   cluster_name           = "ar-teams-1700"
   cluster_workers_per_az = 1
-  cluster_network        = "10.10.246"
+  cluster_network        = "10.10.188"
 
   # IP address (reserve 25-26 for 5-node CP)
   cluster_api_start_ip    = "40"
@@ -12,9 +12,9 @@ module "sc-npe-1700" {
   cluster_worker_end_ip   = "55"
 
   # Commenting below config to skip terraform from creating netscaler resources
-  netscaler_vip_api      = "10.10.246.20"
-  netscaler_vip_nodeport = "10.10.246.21"
-  netscaler_vip_ingress  = "10.10.246.22"
+  netscaler_vip_api      = "10.10.188.20"
+  netscaler_vip_nodeport = "10.10.188.21"
+  netscaler_vip_ingress  = "10.10.188.22"
 
   cluster_datastore = "DS001"
 
