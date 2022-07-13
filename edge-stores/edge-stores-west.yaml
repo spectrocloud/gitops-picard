@@ -8,10 +8,10 @@
 #     type: cafe # drive-thru, reserve, combo
 #     stage: 'true'
 #     latlng: '37.366519,-121.919364'
-#   edge_servers: ['a6505c1a08e8']
+#   edge_servers: ['0af4c82a43bc']
 #   profiles:
 #     - name: store-edge-infra
-#       tag: 1.0.0
+#       tag: 2.0.0
 #     - name: store-edge-apps-base
 #       tag: 1.5.0
 # #############################################
@@ -24,10 +24,10 @@
 #     type: reserve # drive-thru, reserve, combo
 #     stage: 'true'
 #     latlng: '37.432122,-121.891819'
-#   edge_servers: ['7117b318547f']
+#   edge_servers: ['e9a194d65357']
 #   profiles:
 #     - name: store-edge-infra
-#       tag: 1.0.0
+#       tag: 2.0.0
 #     - name: store-edge-apps-base
 #       tag: 1.5.0
 # #############################################
@@ -40,39 +40,23 @@
 #     type: reserve # drive-thru, reserve, combo
 #     stage: 'false'
 #     latlng: '45.57487596799815, -122.60226776599914'
-#   edge_servers: ['7ac21391137e']
+#   edge_servers: ['3b16a4851b26']
 #   profiles:
 #     - name: store-edge-infra
 #       tag: 1.0.0
 #     - name: store-edge-apps-base
 #       tag: 1.5.0
 # #############################################
-# # 004
-# #############################################
-# - name: store-004-ca-sac
-#   tags:
-#     state: Ca
-#     city: Sacremento
-#     type: reserve # drive-thru, reserve, combo
-#     stage: 'false'
-#     latlng: '38.66594632226066, -121.3475556167745'
-#   edge_servers: ['ccf46ecb320a']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: store-edge-apps-base
-#       tag: 1.5.0
-# #############################################
-# # 005
-# #############################################
-- name: store-005-wa-sea
+# 004
+#############################################
+- name: store-004-ca-sac
   tags:
-    state: Wa
-    city: Seattle
+    state: Ca
+    city: Sacremento
     type: reserve # drive-thru, reserve, combo
     stage: 'false'
-    latlng: '47.581125,-122.335021'
-  edge_servers: ['1c697a091152', 'd45ddf02d90c', '54b2040910d0']
+    latlng: '38.66594632226066, -121.3475556167745'
+  edge_servers: ['d986442ac824']
   profiles:
     - name: store-edge-infra
       tag: 2.0.0
