@@ -35,7 +35,7 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   }
   pack {
     name   = "kubernetes"
-    tag    = "1.19.7"
+    tag    = "1.21.6"
     uid    = data.spectrocloud_pack.k8s-vsphere-stg.id
     values = data.spectrocloud_pack.k8s-vsphere-stg.values
   }
