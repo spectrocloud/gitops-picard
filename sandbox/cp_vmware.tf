@@ -8,41 +8,49 @@
 data "spectrocloud_pack" "nginx-vsphere" {
   name    = "nginx"
   version = "1.0.4"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "hipster-vsphere" {
   name    = "sapp-hipster"
   version = "2.0.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "lbmetal-vsphere" {
   name    = "lb-metallb"
   version = "0.11.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "istio-vsphere" {
   name    = "istio"
   version = "1.6.2"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
   name    = "csi-vsphere-csi"
   version = "2.3.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "cni-vsphere" {
   name    = "cni-calico"
   version = "3.19.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
   version = "1.20.14"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name    = "ubuntu-vsphere"
   version = "18.04"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 locals {
