@@ -6,22 +6,26 @@
 
 data "spectrocloud_pack" "csi-gcp" {
   name = "csi-gcp"
+  registry_uid = data.spectrocloud_registry.registry.id
   # version  = "1.0.x"
 }
 
 data "spectrocloud_pack" "cni-gcp" {
   name    = "cni-calico"
   version = "3.19.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "k8s-gcp" {
   name    = "kubernetes"
   version = "1.20.14"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "ubuntu-gcp" {
   name    = "ubuntu-gcp"
   version = "18.04"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 locals {
