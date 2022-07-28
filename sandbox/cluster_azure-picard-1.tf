@@ -141,6 +141,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
 
   machine_pool {
     control_plane           = true
+    is_system_node_pool  = true
     control_plane_as_worker = true
     name                    = "master-pool"
     count                   = 1
@@ -154,6 +155,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
 
   machine_pool {
     name          = "new-worker-pool"
+    is_system_node_pool  = false
     count         = 1
     instance_type = "Standard_B4ms"
     azs           = ["1"]
@@ -165,6 +167,7 @@ resource "spectrocloud_cluster_azure" "cluster" {
 
   machine_pool {
     name          = "gpu-pool-2"
+    is_system_node_pool  = false
     count         = 1
     instance_type = "Standard_B4ms"
     azs           = ["1"]
