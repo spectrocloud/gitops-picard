@@ -48,3 +48,24 @@
           #   tag: ""
 
           imagePullSecrets: []
+  - name: minio
+    version: 6.8.0
+    type: oci
+    registry: prod-azurecr
+    values: |
+      pack:
+        namespace: "hipster-app"
+        spectrocloud.com/install-priority: "0"
+      values:
+        minio:
+          replicaCount: 1
+          service:
+            type: ClusterIP
+            port: 80
+          # image:
+          #   repository: nginx
+          #   pullPolicy: IfNotPresent
+          #   # Overrides the image tag whose default is the chart appVersion.
+          #   tag: ""
+
+          imagePullSecrets: []
