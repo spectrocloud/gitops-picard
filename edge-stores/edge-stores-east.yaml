@@ -1,49 +1,49 @@
 #############################################
 # 501
 #############################################
-- name: store-501-pa-phil
-  tags:
-    state: Pa
-    city: Philadelphia
-    type: reserve # drive-thru, reserve, combo
-    stage: 'true'
-    latlng: '39.98745330264465, -75.10130166655905'
-  edge_servers: ['edce025c8c9c']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    # - name: store-edge-apps-base
-    #   tag: 1.5.0
-#############################################
-# 502
-#############################################
-- name: store-502-dc-wash
-  tags:
-    state: Dc
-    city: Washington
-    type: store # drive-thru, reserve, combo
-    stage: 'false'
-    latlng: '38.885803892016575, -77.02924069351471'
-  edge_servers: ['220b6e1ca25c']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    # - name: store-edge-apps-base
-    #   tag: 1.5.0
-#############################################
-# 503
-#############################################
-- name: store-503-va-rich
-  tags:
-    state: Va
-    city: Richmond
-    type: store # drive-thru, reserve, combo
-    stage: 'false'
-    latlng: '37.54034912244921, -77.43527364009215'
-  edge_servers: ['819061b1137c']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
+# - name: store-501-pa-phil
+#   tags:
+#     state: Pa
+#     city: Philadelphia
+#     type: reserve # drive-thru, reserve, combo
+#     stage: 'true'
+#     latlng: '39.98745330264465, -75.10130166655905'
+#   edge_servers: ['edce025c8c9c']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
+#     # - name: store-edge-apps-base
+#     #   tag: 1.5.0
+# #############################################
+# # 502
+# #############################################
+# - name: store-502-dc-wash
+#   tags:
+#     state: Dc
+#     city: Washington
+#     type: store # drive-thru, reserve, combo
+#     stage: 'false'
+#     latlng: '38.885803892016575, -77.02924069351471'
+#   edge_servers: ['220b6e1ca25c']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
+#     # - name: store-edge-apps-base
+#     #   tag: 1.5.0
+# #############################################
+# # 503
+# #############################################
+# - name: store-503-va-rich
+#   tags:
+#     state: Va
+#     city: Richmond
+#     type: store # drive-thru, reserve, combo
+#     stage: 'false'
+#     latlng: '37.54034912244921, -77.43527364009215'
+#   edge_servers: ['819061b1137c']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
     # - name: store-edge-apps-base
     #   tag: 1.5.0
 # #############################################
