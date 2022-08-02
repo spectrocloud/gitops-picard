@@ -20,7 +20,7 @@ resource "spectrocloud_cluster_profile" "profile" {
   description = try(each.value.description, "")
   tags        = ["dev"]
   type        = "add-on"
-  version = each.value.version
+  version     = each.value.version
 
   pack {
     name = "manifest-namespace"
@@ -43,11 +43,11 @@ resource "spectrocloud_cluster_profile" "profile" {
   dynamic "pack" {
     for_each = each.value.charts
     content {
-      name   = pack.value.name
+      name         = pack.value.name
       registry_uid = data.spectrocloud_registry_oci.prod-azure.id
-      type   = try(pack.value.type, "spectro")
-      tag    = pack.value.version
-      values = try(pack.value.values, "")
+      type         = try(pack.value.type, "spectro")
+      tag          = pack.value.version
+      values       = try(pack.value.values, "")
     }
   }
 }
