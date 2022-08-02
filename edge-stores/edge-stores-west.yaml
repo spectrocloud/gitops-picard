@@ -5,7 +5,7 @@
   tags:
     state: Ca
     city: San Jose
-    type: cafe # drive-thru, reserve, combo
+    type: full
     stage: 'true'
     latlng: '37.366519,-121.919364'
   edge_servers: ['69e009f4aef9']
@@ -21,8 +21,8 @@
   tags:
     state: Ca
     city: Milpitas
-    type: reserve # drive-thru, reserve, combo
-    stage: 'true'
+    type: full
+    stage: 'false'
     latlng: '37.432122,-121.891819'
   edge_servers: ['69e56920f753']
   profiles:
@@ -33,30 +33,30 @@
 #############################################
 # 003
 #############################################
-- name: store-003-or-port
+- name: store-003-ca-sac
   tags:
-    state: Or
-    city: Portland
-    type: reserve # drive-thru, reserve, combo
+    state: Ca
+    city: Sacramento
+    type: full
     stage: 'false'
-    latlng: '45.57487596799815, -122.60226776599914'
-  edge_servers: ['51d822214d70']
+    latlng: '38.66594632226066, -121.3475556167745'
+  edge_servers: ['787f7584afa0']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
     - name: edge-apps-base
       tag: 1.0.0
-# #############################################
-# # 004
-# #############################################
-- name: store-004-ca-sac
+#############################################
+# 003
+#############################################
+- name: store-004-or-port
   tags:
-    state: Ca
-    city: Sacremento
-    type: reserve # drive-thru, reserve, combo
+    state: Or
+    city: Portland
+    type: outdoors
     stage: 'false'
-    latlng: '38.66594632226066, -121.3475556167745'
-  edge_servers: ['787f7584afa0']
+    latlng: '45.57487596799815, -122.60226776599914'
+  edge_servers: ['51d822214d70']
   profiles:
     - name: store-edge-infra
       tag: 1.0.0
