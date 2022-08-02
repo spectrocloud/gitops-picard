@@ -9,7 +9,7 @@ locals {
 
   cp = {
     for e in local.cp_list :
-    e.name => e
+    "${e.name}-${e.version}" => e
   }
 }
 
