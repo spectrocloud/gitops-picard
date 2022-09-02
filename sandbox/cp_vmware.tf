@@ -7,7 +7,7 @@
 
 data "spectrocloud_pack" "nginx-vsphere" {
   name    = "nginx"
-  version = "1.0.4"
+  version = "1.3.0"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
@@ -25,13 +25,13 @@ data "spectrocloud_pack" "lbmetal-vsphere" {
 
 data "spectrocloud_pack" "istio-vsphere" {
   name    = "istio"
-  version = "1.6.2"
+  version = "1.14.1"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "csi-vsphere" {
   name    = "csi-vsphere-csi"
-  version = "2.3.0"
+  version = "2.6.0"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
@@ -43,13 +43,13 @@ data "spectrocloud_pack" "cni-vsphere" {
 
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.20.14"
+  version = "1.23.9"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name    = "ubuntu-vsphere"
-  version = "18.04"
+  version = "20.04"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
@@ -120,35 +120,10 @@ resource "spectrocloud_cluster_profile" "prodvmware" {
   }
 
   pack {
-    name   = "istio"
-    tag    = "1.6.x"
+    name   = data.spectrocloud_pack.istio-vsphere.name
+    tag    = data.spectrocloud_pack.istio-vsphere.version
     uid    = data.spectrocloud_pack.istio-vsphere.id
-    values = <<-EOT
-      charts:
-        istio-operator:
-          hub: docker.io/istio
-          tag: 1.6.2
-          operatorNamespace: istio-operator
-          istioNamespace: istio-system
-        istio-controlplane:
-          namespace: istio-system
-          controlPlaneName: istio-controlplane
-          ############################################ ISTIO PROFILES #################################################
-          # default: generally for production (istiod, prometheus, ingress gateway)
-          # demo: enable everything for production (istiod, prometheus, ingress gateway, egress, kiali, tracing)
-          # remote: remote cluster of a multicluster mesh, with a shared control plane
-          ############################################################################################################
-          spec:
-            profile: demo
-            # Disable Pod disruption budget for the additional components. Otherwise, pods will get stuck when node is drained
-            values:
-              kiali:
-                service:
-                  type: LoadBalancer
-              global:
-                defaultPodDisruptionBudget:
-                  enabled: false
-    EOT
+    values = data.spectrocloud_pack.istio-vsphere.values
   }
 
   pack {
