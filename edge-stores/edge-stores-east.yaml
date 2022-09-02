@@ -62,16 +62,16 @@
 #############################################
 # 505
 #############################################
-- name: store-505-ny-nyc
-  tags:
-    state: Ny
-    city: New York
-    type: cafe # drive-thru, reserve, combo
-    stage: 'true'
-    latlng: '40.71892568847224, -73.99512647745632'
-  edge_servers: ['f727b4d7c6af']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    - name: edge-apps-web
-      tag: 2.0.0
+# - name: store-505-ny-nyc
+#   tags:
+#     state: Ny
+#     city: New York
+#     type: cafe # drive-thru, reserve, combo
+#     stage: 'true'
+#     latlng: '40.71892568847224, -73.99512647745632'
+#   edge_servers: ['f727b4d7c6af']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
+#     - name: edge-apps-web
+#       tag: 2.0.0
