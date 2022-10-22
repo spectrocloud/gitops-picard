@@ -21,11 +21,11 @@ module "sc-npe-1701" {
   cluster_profile_id = spectrocloud_cluster_profile.sc-npe.id
   cluster_packs = {
     k8s = {
-      tag  = "1.21.6"
+      tag  = "1.22.7"
       file = "config-stg/k8s.yaml"
     }
     dex = {
-      tag  = "2.28.0"
+      tag  = "2.35.1"
       file = "config-stg/dex.yaml"
     }
     namespace-labeler = {
