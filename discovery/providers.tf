@@ -16,6 +16,11 @@ terraform {
       source  = "citrix.com/test/citrixadc"
       version = "~> 0.12.44"
     }
+
+    tls = {
+      source = "hashicorp/tls"
+      version = "3.4.0"
+    }
   }
 }
 
