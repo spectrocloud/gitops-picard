@@ -177,6 +177,7 @@ charts:
         - host: ${issuer}
           paths:
             - path: /
+              pathType: ImplementationSpecific
       tls:
         - hosts:
             - ${issuer}
