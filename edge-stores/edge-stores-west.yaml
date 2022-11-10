@@ -61,3 +61,19 @@
       tag: 1.0.0
     - name: edge-apps-web
       tag: 2.0.0
+#############################################
+# 005
+#############################################
+- name: store-005-wa-sea
+  tags:
+    state: Wa
+    city: Seattle
+    type: reserve
+    stage: 'false'
+    latlng: '47.581125,-122.335021'
+  edge_servers: ['5d54411dd3ae', '48a6aa060adf', '66dda452b2d7']
+  profiles:
+    - name: store-edge-infra
+      tag: 1.0.0
+    - name: edge-apps-web
+      tag: 2.0.0
