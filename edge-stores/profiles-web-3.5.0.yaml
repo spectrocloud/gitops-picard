@@ -16,7 +16,7 @@
         hipster:
           replicaCount: 1
           service:
-            type: ClusterIP
+            type: NodePort
             port: 80
           # image:
           #   repository: nginx
