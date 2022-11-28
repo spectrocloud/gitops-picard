@@ -7,6 +7,7 @@
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
     - "vm-name: picard-edge-1"
+    - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
@@ -28,6 +29,7 @@
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
     - "vm-name: picard-edge-2"
+    - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
@@ -49,6 +51,7 @@
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
     - "vm-name: picard-edge-3"
+    - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
@@ -70,6 +73,7 @@
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
     - "vm-name: picard-edge-4"
+    - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
@@ -91,6 +95,7 @@
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
     - "vm-name: picard-edge-5"
+    - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
