@@ -9,11 +9,11 @@ locals {
   }
 }
 module "edge" {
-  source = "./modules/edge"
-  for_each = local.edge
-  name = each.value.name
-  cluster_tags = each.value.cluster_tags
-  cluster_vip = each.value.cluster_vip
-  node_pools = each.value.node_pools
+  source           = "./modules/edge"
+  for_each         = local.edge
+  name             = each.value.name
+  cluster_tags     = each.value.cluster_tags
+  cluster_vip      = each.value.cluster_vip
+  node_pools       = each.value.node_pools
   cluster_profiles = each.value.profiles
 }

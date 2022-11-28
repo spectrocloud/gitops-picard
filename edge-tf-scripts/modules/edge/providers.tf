@@ -5,6 +5,6 @@ terraform {
       source  = "spectrocloud/spectrocloud"
     }
   }
-  experiments = [module_variable_optional_attrs]
+  experiments      = [module_variable_optional_attrs]
   required_version = ">= 1.2.8"
 }
