@@ -41,7 +41,7 @@ variable "cluster_profiles" {
   }))
 }
 variable "cluster_vip" {
-  type    = string
+  type        = string
   description = "IP Address for Cluster VIP for HA.  Must be unused on on the same layer 2 segment as the node IPs."
 }
 variable "ssh_keys" {
