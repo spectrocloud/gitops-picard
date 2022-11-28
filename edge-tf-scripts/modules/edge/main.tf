@@ -53,7 +53,7 @@ resource "spectrocloud_cluster_edge_native" "this" {
         content {
           name   = pack.value.name
           tag    = pack.value.tag
-          values = pack.value.values
+          values = pack.value.values == null ? "" : pack.value.values
         }
       }
     }
