@@ -19,6 +19,9 @@
         - uid: d05df7572249dd
           labels:
             name: 12345dd
+        - uid: d05df7572249ddddddd
+          labels:
+            name: 12345ddddd
   profiles:
     - name: ubuntu-k3s
       tag: 1.24.6
