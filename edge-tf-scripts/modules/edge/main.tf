@@ -6,55 +6,54 @@ data "spectrocloud_cluster_profile" "this" {
   version = each.value["tag"]
 }
 
-
-resource "spectrocloud_appliance" "this" {
-  count = length(var.device_uuid)
-
-  uid = lower("edge-${var.device_uuid[count.index]}")
-  labels = {
-    "cluster" = spectrocloud_cluster_import.this.id
-    "name" = "edge-${var.name}"
-  }
-  wait = false
-}
-
 locals {
-  tags = concat([
-      "imported:false"
-    ], [
-    for k, v in tomap(var.tags) :
-      "${k}:${v}"
-  ])
+  nodes = { for v in flatten([
+    for node_pool in var.node_pools : [
+      for node in try(node_pool.nodes, []) : {
+        name  = node.uid
+        value = try(node.labels, {})
+      }
+    ]
+    ]) : v.name => v.value
+  }
 }
-resource "spectrocloud_cluster_import" "this" {
-  name  = "edge-${var.name}"
-  cloud = "generic"
-  tags  = local.tags
-  #tags  = ["imported:false", "environment:${var.branch}"]
+resource "spectrocloud_appliance" "this" {
+  for_each = { for k, v in local.nodes : k => v }
+  uid      = lower(each.key)
+  labels   = each.value
+  wait     = false
+}
 
+resource "spectrocloud_cluster_edge_native" "this" {
+  depends_on      = [spectrocloud_appliance.this]
+  name            = var.name
+  tags            = var.cluster_tags
+  skip_completion = var.skip_wait_for_completion
+  cloud_config {
+    ssh_key     = var.ssh_keys
+    vip         = var.cluster_vip
+    ntp_servers = var.ntp_servers
+  }
+  dynamic "machine_pool" {
+    for_each = var.node_pools
+    content {
+      name                    = machine_pool.value.name
+      control_plane           = machine_pool.value.control_plane
+      control_plane_as_worker = machine_pool.value.control_plane == true ? true : false
+      additional_labels       = machine_pool.value.labels
+      host_uids               = machine_pool.value.nodes[*].uid
+    }
+  }
   dynamic "cluster_profile" {
-
     for_each = var.cluster_profiles
     content {
       id = data.spectrocloud_cluster_profile.this[cluster_profile.value.name].id
-
       dynamic "pack" {
         for_each = cluster_profile.value.packs == null ? [] : cluster_profile.value.packs
-
         content {
           name   = pack.value.name
           tag    = pack.value.tag
-          values = pack.value.values == null ? "" : pack.value.values
-
-          # dynamic "manifest" {
-          #   for_each = pack.value.manifest== null ? [] : pack.value.manifest
-
-          #   content {
-          #   name    = manifest.value.name
-          #   tag = manifest.value.tag
-          #   content = manifest.value.content
-          #   }
-          # }
+          values = pack.value.values
         }
       }
     }
