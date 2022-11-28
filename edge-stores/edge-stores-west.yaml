@@ -1,79 +1,110 @@
-# - name: store-001-ca-sj
-#   tags:
-#     state: Ca
-#     city: San Jose
-#     type: full
-#     stage: 'true'
-#     latlng: '37.366519,-121.919364'
-#   edge_servers: ['69e009f4aef9']
+# #############################################
+# # 601
+# #############################################
+- name: store-601-wa-seattle
+  cluster_vip: 10.10.171.176
+  cluster_tags:
+    - "type: reserve" # drive-thru, reserve, combo
+    - "stage: true"
+    - "vm-name: picard-edge-6"
+    - "region: west"
+  node_pools:
+    - name: control-plane
+      control_plane: true
+      nodes:
+        - uid: edge-f7fd3842df73adf97b8e12db8acd1854
+          labels:
+            name: wa-seattle-01
+  profiles:
+    - name: ubuntu-k3s
+      tag: 1.24.6
+    - name: edge-apps-web
+      tag: 2.0.0
+#############################################
+# 602
+#############################################
+- name: store-602-ca-sjc
+  cluster_vip: 10.10.171.177
+  cluster_tags:
+    - "type: reserve" # drive-thru, reserve, combo
+    - "stage: true"
+    - "vm-name: picard-edge-7"
+    - "region: west"
+  node_pools:
+    - name: control-plane
+      control_plane: true
+      nodes:
+        - uid: edge-f25638420ed3d266f3c67f228085a9ba
+          labels:
+            name: ca-sjc-01
+  profiles:
+    - name: ubuntu-k3s
+      tag: 1.24.6
+    - name: edge-apps-web
+      tag: 2.0.0
+#############################################
+# 603
+#############################################
+- name: store-603-nv-las
+  cluster_vip: 10.10.171.178
+  cluster_tags:
+    - "type: reserve" # drive-thru, reserve, combo
+    - "stage: true"
+    - "vm-name: picard-edge-8"
+    - "region: west"
+  node_pools:
+    - name: control-plane
+      control_plane: true
+      nodes:
+        - uid: edge-ec7538428ebb7bbb228d641c98cbbe86
+          labels:
+            name: nv-las-01
+  profiles:
+    - name: ubuntu-k3s
+      tag: 1.24.6
+    - name: edge-apps-web
+      tag: 2.0.0
+#############################################
+# 604
+############################################
+- name: store-604-az-phx
+  cluster_vip: 10.10.171.179
+  cluster_tags:
+    - "type: reserve" # drive-thru, reserve, combo
+    - "stage: true"
+    - "vm-name: picard-edge-9"
+    - "region: west"
+  node_pools:
+    - name: control-plane
+      control_plane: true
+      nodes:
+        - uid: edge-807e3842772f146df45c2850c82172fe
+          labels:
+            name: az-phx-01
+  profiles:
+    - name: ubuntu-k3s
+      tag: 1.24.6
+    - name: edge-apps-web
+      tag: 2.0.0
+# #############################################
+# # 605
+# ############################################
+# - name: store-605-mt-bzn
+#   cluster_vip: 10.10.171.180
+#   cluster_tags:
+#     - "type: reserve" # drive-thru, reserve, combo
+#     - "stage: true"
+#     - "vm-name: picard-edge-10"
+#     - "region: west"
+#   node_pools:
+#     - name: control-plane
+#       control_plane: true
+#       nodes:
+#         - uid: edge-223638424062cc6bd5cf3f5b84d03d65
+#           labels:
+#             name: mt-bzn-01
 #   profiles:
-#     - name: store-edge-infra
+#     - name: ubuntu-k3s
+#       tag: 1.24.6
+#     - name: edge-apps-web
 #       tag: 2.0.0
-#     - name: edge-apps-web
-#       tag: 3.0.0
-#       overrides:
-#         mongoreplicas: "3"
-# # #############################################
-# # # 002
-# #############################################
-# - name: store-002-ca-mil
-#   tags:
-#     state: Ca
-#     city: Milpitas
-#     type: full
-#     stage: 'false'
-#     latlng: '37.432122,-121.891819'
-#   edge_servers: ['69e56920f753']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: edge-apps-web
-#       tag: 3.0.0
-# #############################################
-# # 003
-# #############################################
-# - name: store-003-ca-sac
-#   tags:
-#     state: Ca
-#     city: Sacramento
-#     type: full
-#     stage: 'false'
-#     latlng: '38.66594632226066, -121.3475556167745'
-#   edge_servers: ['f7d62ede81c9']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: edge-apps-web
-#       tag: 3.0.0
-# #############################################
-# # 003
-# #############################################
-# - name: store-004-or-port
-#   tags:
-#     state: Or
-#     city: Portland
-#     type: outdoors
-#     stage: 'false'
-#     latlng: '45.57487596799815, -122.60226776599914'
-#   edge_servers: ['6960d10ce457']
-#   profiles:
-#     - name: store-edge-infra
-#       tag: 1.0.0
-#     - name: edge-apps-web
-#       tag: 2.0.0
-# #############################################
-# # 005
-# #############################################
-# # - name: store-005-wa-sea
-# #   tags:
-# #     state: Wa
-# #     city: Seattle
-# #     type: reserve
-# #     stage: 'false'
-# #     latlng: '47.581125,-122.335021'
-# #   edge_servers: ['5d54411dd3ae', '48a6aa060adf', '66dda452b2d7']
-# #   profiles:
-# #     - name: store-edge-infra
-# #       tag: 1.0.0
-# #     - name: edge-apps-web
-# #       tag: 2.0.0
