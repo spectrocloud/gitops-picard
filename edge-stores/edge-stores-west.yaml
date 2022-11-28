@@ -1,79 +1,79 @@
-- name: store-001-ca-sj
-  tags:
-    state: Ca
-    city: San Jose
-    type: full
-    stage: 'true'
-    latlng: '37.366519,-121.919364'
-  edge_servers: ['69e009f4aef9']
-  profiles:
-    - name: store-edge-infra
-      tag: 2.0.0
-    - name: edge-apps-web
-      tag: 3.0.0
-      overrides:
-        mongoreplicas: "3"
-# #############################################
-# # 002
-#############################################
-- name: store-002-ca-mil
-  tags:
-    state: Ca
-    city: Milpitas
-    type: full
-    stage: 'false'
-    latlng: '37.432122,-121.891819'
-  edge_servers: ['69e56920f753']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    - name: edge-apps-web
-      tag: 3.0.0
-#############################################
-# 003
-#############################################
-- name: store-003-ca-sac
-  tags:
-    state: Ca
-    city: Sacramento
-    type: full
-    stage: 'false'
-    latlng: '38.66594632226066, -121.3475556167745'
-  edge_servers: ['f7d62ede81c9']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    - name: edge-apps-web
-      tag: 3.0.0
-#############################################
-# 003
-#############################################
-- name: store-004-or-port
-  tags:
-    state: Or
-    city: Portland
-    type: outdoors
-    stage: 'false'
-    latlng: '45.57487596799815, -122.60226776599914'
-  edge_servers: ['6960d10ce457']
-  profiles:
-    - name: store-edge-infra
-      tag: 1.0.0
-    - name: edge-apps-web
-      tag: 2.0.0
-#############################################
-# 005
-#############################################
-# - name: store-005-wa-sea
+# - name: store-001-ca-sj
 #   tags:
-#     state: Wa
-#     city: Seattle
-#     type: reserve
+#     state: Ca
+#     city: San Jose
+#     type: full
+#     stage: 'true'
+#     latlng: '37.366519,-121.919364'
+#   edge_servers: ['69e009f4aef9']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 2.0.0
+#     - name: edge-apps-web
+#       tag: 3.0.0
+#       overrides:
+#         mongoreplicas: "3"
+# # #############################################
+# # # 002
+# #############################################
+# - name: store-002-ca-mil
+#   tags:
+#     state: Ca
+#     city: Milpitas
+#     type: full
 #     stage: 'false'
-#     latlng: '47.581125,-122.335021'
-#   edge_servers: ['5d54411dd3ae', '48a6aa060adf', '66dda452b2d7']
+#     latlng: '37.432122,-121.891819'
+#   edge_servers: ['69e56920f753']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
+#     - name: edge-apps-web
+#       tag: 3.0.0
+# #############################################
+# # 003
+# #############################################
+# - name: store-003-ca-sac
+#   tags:
+#     state: Ca
+#     city: Sacramento
+#     type: full
+#     stage: 'false'
+#     latlng: '38.66594632226066, -121.3475556167745'
+#   edge_servers: ['f7d62ede81c9']
+#   profiles:
+#     - name: store-edge-infra
+#       tag: 1.0.0
+#     - name: edge-apps-web
+#       tag: 3.0.0
+# #############################################
+# # 003
+# #############################################
+# - name: store-004-or-port
+#   tags:
+#     state: Or
+#     city: Portland
+#     type: outdoors
+#     stage: 'false'
+#     latlng: '45.57487596799815, -122.60226776599914'
+#   edge_servers: ['6960d10ce457']
 #   profiles:
 #     - name: store-edge-infra
 #       tag: 1.0.0
 #     - name: edge-apps-web
 #       tag: 2.0.0
+# #############################################
+# # 005
+# #############################################
+# # - name: store-005-wa-sea
+# #   tags:
+# #     state: Wa
+# #     city: Seattle
+# #     type: reserve
+# #     stage: 'false'
+# #     latlng: '47.581125,-122.335021'
+# #   edge_servers: ['5d54411dd3ae', '48a6aa060adf', '66dda452b2d7']
+# #   profiles:
+# #     - name: store-edge-infra
+# #       tag: 1.0.0
+# #     - name: edge-apps-web
+# #       tag: 2.0.0
