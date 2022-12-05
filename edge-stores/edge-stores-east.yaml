@@ -17,7 +17,7 @@
             name: pa-phil-01
   profiles:
     - name: ubuntu-k3s
-      tag: 1.24.6
+      tag: 1.25.2
     - name: edge-apps-web
       tag: 2.5.0
 #############################################
