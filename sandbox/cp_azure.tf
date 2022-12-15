@@ -13,7 +13,7 @@ data "spectrocloud_pack" "csi-azure" {
 
 data "spectrocloud_pack" "cni-azure" {
   name    = "cni-calico-azure"
-  version = "3.19.0"
+  version = "3.24.1"
   registry_uid = data.spectrocloud_registry.registry.id
 }
 
