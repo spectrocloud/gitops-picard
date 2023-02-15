@@ -1,110 +1,110 @@
-# #############################################
-# # 601
-# #############################################
-- name: store-601-wa-seattle
-  cluster_vip: 10.10.171.176
-  cluster_tags:
-    - "type: reserve" # drive-thru, reserve, combo
-    - "stage: true"
-    - "vm-name: picard-edge-6"
-    - "region: west"
-  node_pools:
-    - name: control-plane
-      control_plane: true
-      nodes:
-        - uid: edge-f7fd3842df73adf97b8e12db8acd1854
-          labels:
-            name: wa-seattle-01
-  profiles:
-    - name: ubuntu-k3s
-      tag: 1.24.6
-    - name: edge-apps-web
-      tag: 2.5.0
-#############################################
-# 602
-#############################################
-- name: store-602-ca-sjc
-  cluster_vip: 10.10.171.177
-  cluster_tags:
-    - "type: reserve" # drive-thru, reserve, combo
-    - "stage: true"
-    - "vm-name: picard-edge-7"
-    - "region: west"
-  node_pools:
-    - name: control-plane
-      control_plane: true
-      nodes:
-        - uid: edge-f25638420ed3d266f3c67f228085a9ba
-          labels:
-            name: ca-sjc-01
-  profiles:
-    - name: ubuntu-k3s
-      tag: 1.24.6
-    - name: edge-apps-web
-      tag: 2.5.0
-#############################################
-# 603
-#############################################
-- name: store-603-nv-las
-  cluster_vip: 10.10.171.178
-  cluster_tags:
-    - "type: reserve" # drive-thru, reserve, combo
-    - "stage: true"
-    - "vm-name: picard-edge-8"
-    - "region: west"
-  node_pools:
-    - name: control-plane
-      control_plane: true
-      nodes:
-        - uid: edge-ec7538428ebb7bbb228d641c98cbbe86
-          labels:
-            name: nv-las-01
-  profiles:
-    - name: ubuntu-k3s
-      tag: 1.24.6
-    - name: edge-apps-web
-      tag: 2.5.0
-#############################################
-# 604
-############################################
-- name: store-604-az-phx
-  cluster_vip: 10.10.171.179
-  cluster_tags:
-    - "type: reserve" # drive-thru, reserve, combo
-    - "stage: true"
-    - "vm-name: picard-edge-9"
-    - "region: west"
-  node_pools:
-    - name: control-plane
-      control_plane: true
-      nodes:
-        - uid: edge-807e3842772f146df45c2850c82172fe
-          labels:
-            name: az-phx-01
-  profiles:
-    - name: ubuntu-k3s
-      tag: 1.24.6
-    - name: edge-apps-web
-      tag: 2.5.0
-# #############################################
-# # 605
-# ############################################
-# - name: store-605-mt-bzn
-#   cluster_vip: 10.10.171.180
+# # #############################################
+# # # 601
+# # #############################################
+# - name: store-601-wa-seattle
+#   cluster_vip: 10.10.171.176
 #   cluster_tags:
 #     - "type: reserve" # drive-thru, reserve, combo
 #     - "stage: true"
-#     - "vm-name: picard-edge-10"
+#     - "vm-name: picard-edge-6"
 #     - "region: west"
 #   node_pools:
 #     - name: control-plane
 #       control_plane: true
 #       nodes:
-#         - uid: edge-223638424062cc6bd5cf3f5b84d03d65
+#         - uid: edge-f7fd3842df73adf97b8e12db8acd1854
 #           labels:
-#             name: mt-bzn-01
+#             name: wa-seattle-01
 #   profiles:
 #     - name: ubuntu-k3s
 #       tag: 1.24.6
 #     - name: edge-apps-web
-#       tag: 1.0.0
+#       tag: 2.5.0
+# #############################################
+# # 602
+# #############################################
+# - name: store-602-ca-sjc
+#   cluster_vip: 10.10.171.177
+#   cluster_tags:
+#     - "type: reserve" # drive-thru, reserve, combo
+#     - "stage: true"
+#     - "vm-name: picard-edge-7"
+#     - "region: west"
+#   node_pools:
+#     - name: control-plane
+#       control_plane: true
+#       nodes:
+#         - uid: edge-f25638420ed3d266f3c67f228085a9ba
+#           labels:
+#             name: ca-sjc-01
+#   profiles:
+#     - name: ubuntu-k3s
+#       tag: 1.24.6
+#     - name: edge-apps-web
+#       tag: 2.5.0
+# #############################################
+# # 603
+# #############################################
+# - name: store-603-nv-las
+#   cluster_vip: 10.10.171.178
+#   cluster_tags:
+#     - "type: reserve" # drive-thru, reserve, combo
+#     - "stage: true"
+#     - "vm-name: picard-edge-8"
+#     - "region: west"
+#   node_pools:
+#     - name: control-plane
+#       control_plane: true
+#       nodes:
+#         - uid: edge-ec7538428ebb7bbb228d641c98cbbe86
+#           labels:
+#             name: nv-las-01
+#   profiles:
+#     - name: ubuntu-k3s
+#       tag: 1.24.6
+#     - name: edge-apps-web
+#       tag: 2.5.0
+# #############################################
+# # 604
+# ############################################
+# - name: store-604-az-phx
+#   cluster_vip: 10.10.171.179
+#   cluster_tags:
+#     - "type: reserve" # drive-thru, reserve, combo
+#     - "stage: true"
+#     - "vm-name: picard-edge-9"
+#     - "region: west"
+#   node_pools:
+#     - name: control-plane
+#       control_plane: true
+#       nodes:
+#         - uid: edge-807e3842772f146df45c2850c82172fe
+#           labels:
+#             name: az-phx-01
+#   profiles:
+#     - name: ubuntu-k3s
+#       tag: 1.24.6
+#     - name: edge-apps-web
+#       tag: 2.5.0
+# # #############################################
+# # # 605
+# # ############################################
+# # - name: store-605-mt-bzn
+# #   cluster_vip: 10.10.171.180
+# #   cluster_tags:
+# #     - "type: reserve" # drive-thru, reserve, combo
+# #     - "stage: true"
+# #     - "vm-name: picard-edge-10"
+# #     - "region: west"
+# #   node_pools:
+# #     - name: control-plane
+# #       control_plane: true
+# #       nodes:
+# #         - uid: edge-223638424062cc6bd5cf3f5b84d03d65
+# #           labels:
+# #             name: mt-bzn-01
+# #   profiles:
+# #     - name: ubuntu-k3s
+# #       tag: 1.24.6
+# #     - name: edge-apps-web
+# #       tag: 1.0.0
