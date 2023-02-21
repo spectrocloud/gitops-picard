@@ -17,4 +17,5 @@ module "edge" {
   cluster_vip      = each.value.cluster_vip
   node_pools       = each.value.node_pools
   cluster_profiles = each.value.profiles
+  location = each.value.location
 }
