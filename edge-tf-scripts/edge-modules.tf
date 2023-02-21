@@ -9,7 +9,8 @@ locals {
   }
 }
 module "edge" {
-  source           = "./modules/edge"
+  source           = "spectrocloud/edge/spectrocloud"
+  version = "1.1.1"
   for_each         = local.edge
   name             = each.value.name
   cluster_tags     = each.value.cluster_tags
