@@ -1,20 +1,20 @@
-# # #############################################
-# # # 501
-# # #############################################
-# - name: store-501-pa-phil
-#   cluster_vip: 10.10.171.171
-#   cluster_tags:
-#     - "type: reserve" # drive-thru, reserve, combo
-#     - "stage: true"
-#     - "vm-name: picard-edge-1"
-#     - "region: east"
-#   node_pools:
-#     - name: control-plane
-#       control_plane: true
-#       nodes:
-#         - uid: edge-244d3842a1f63f7e4589f2173f94cc78
-#           labels:
-#             name: pa-phil-01
+# #############################################
+# # 501
+# #############################################
+- name: store-501-pa-phil
+  cluster_vip: 10.10.171.171
+  cluster_tags:
+    - "type: reserve" # drive-thru, reserve,edge_host_uid combo
+    - "stage: true"
+    - "vm-name: picard-edge-1"
+    - "region: east"
+  node_pools:
+    - name: control-plane
+      control_plane: true
+      nodes:
+        - edge_host_uid: edge-244d3842a1f63f7e4589f2173f94cc78
+          edge_host_tags:
+            name: pa-phil-01
 #   profiles:
 #     - name: ubuntu-k3s
 #       tag: 1.25.2
@@ -34,8 +34,8 @@
 #     - name: control-plane
 #       control_plane: true
 #       nodes:
-#         - uid: edge-286e3842be01ab974dc253de7e8b562b
-#           labels:
+#         - edge_host_uid: edge-286e3842be01ab974dc253de7e8b562b
+#           edge_host_tags:
 #             name: nj-newark-01
 #   profiles:
 #     - name: ubuntu-k3s
@@ -56,8 +56,8 @@
 #     - name: control-plane
 #       control_plane: true
 #       nodes:
-#         - uid: edge-a5b238425aad95e2b8796b69862cfa32
-#           labels:
+#         - edge_host_uid: edge-a5b238425aad95e2b8796b69862cfa32
+#           edge_host_tags:
 #             name: pa-pit-01
 #   profiles:
 #     - name: ubuntu-k3s
@@ -78,8 +78,8 @@
 #     - name: control-plane
 #       control_plane: true
 #       nodes:
-#         - uid: edge-50da38421c7be0cf4c595b06be9df92b
-#           labels:
+#         - edge_host_uid: edge-50da38421c7be0cf4c595b06be9df92b
+#           edge_host_tags:
 #             name: ga-atl-01
 #   profiles:
 #     - name: ubuntu-k3s
@@ -100,8 +100,8 @@
 #     - name: control-plane
 #       control_plane: true
 #       nodes:
-#         - uid: edge-223638424062cc6bd5cf3f5b84d03d65
-#           labels:
+#         - edge_host_uid: edge-223638424062cc6bd5cf3f5b84d03d65
+#           edge_host_tags:
 #             name: fl-miami-01
 #   profiles:
 #     - name: ubuntu-k3s
