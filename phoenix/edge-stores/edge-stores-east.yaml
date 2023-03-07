@@ -8,7 +8,7 @@
   node_pools:
     - name: control-plane
       control_plane: true
-      edge_host_uid: 
+      edge_host_uid:
         - "edge-84ce3842ea7bb33f345c5add2c14192f"
   profiles:
     - name: ubuntu-k3s
@@ -17,6 +17,7 @@
     - name: edge-apps-web
       tag: 2.5.0
       context: project
-  location: 
+  rbac_bindings: []
+  location:
     latitude: 39.952583
     longitude: -75.165222
