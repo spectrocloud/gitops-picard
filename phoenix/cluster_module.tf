@@ -1,7 +1,7 @@
 locals {
-  edge_files = fileset("${path.module}/config", "edge-stores-*.yaml")
+  edge_files = fileset("edge-stores", "edge-stores-*.yaml")
 
-  edge_list = try(yamldecode(join("\n", [for i in local.edge_files : file("config/${i}")])), [])
+  edge_list = try(yamldecode(join("\n", [for i in local.edge_files : file("edge-stores/${i}")])), [])
 
   edge = {
     for e in local.edge_list :
@@ -9,7 +9,7 @@ locals {
   }
 }
 module "edge" {
-  source = "./modules"
+  source = "./modules/edge"
   for_each         = local.edge
   name             = each.value.name
   skip_wait_for_completion = false

@@ -1,5 +1,5 @@
 locals {
-  raw_kubeconfig = yamldecode(spectrocloud_cluster_vsphere.this.kubeconfig)
+  raw_kubeconfig = yamldecode(spectrocloud_cluster_edge_native.this.kubeconfig)
 
   cluster_ca   = local.raw_kubeconfig.clusters[0].cluster.certificate-authority-data
   cluster_host = local.raw_kubeconfig.clusters[0].cluster.server
