@@ -1,15 +1,15 @@
-- name: store-501-pa-phil
-  cluster_vip: 10.239.21.248
+- name: store-001-ca-sj
+  cluster_vip: 10.10.182.47
   cluster_tags:
     - "type: reserve" # drive-thru, reserve,edge_host_uid combo
-    - "stage: true"
     - "vm-name: picard-edge-1"
     - "region: east"
   node_pools:
     - name: control-plane
       control_plane: true
       edge_host_uid:
-        - "edge-84ce3842ea7bb33f345c5add2c14192f"
+        # - "edge-d5b81a42d67559c0845ec8dcaa34555f" #gitops-1
+      - "edge-f9511a42a2cbf37290e5e2f52cf753f2" #gitops-2
   profiles:
     - name: ubuntu-k3s
       tag: 1.25.2

@@ -1,3 +1,34 @@
+
+resource "local_file" "kubeconfig" {
+  content  = spectrocloud_cluster_edge_native.this.kubeconfig
+  filename = "kubeconfig_${local.cluster_id}"
+}
+
+
+# null provider reading a file
+resource "null_resource" "write_pem" {
+
+  depends_on = [local_file.kubeconfig]
+
+  triggers = {
+    # change this if a force re-run is needed
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "python3 ${path.module}/read_pem_from_oidc.py >> ${path.module}/pem_${local.cluster_id}.pub"
+
+    environment = {
+      KUBECONFIG = local_file.kubeconfig.filename
+    }
+  }
+}
+
+data "local_file" "pem_file" {
+  depends_on = [null_resource.write_pem]
+  filename = "${path.module}/pem_${local.cluster_id}.pub"
+}
+
 # resource "vault_auth_backend" "kubernetes" {
 #   type = "kubernetes"
 #   # path = "demo"
