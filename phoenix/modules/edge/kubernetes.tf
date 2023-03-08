@@ -8,12 +8,12 @@
 #   client_key             = base64decode(local.cluster_key)
 # }
 
-resource "kubernetes_secret" "vault_sa" {
-  metadata {
-    name = "vault-token-955r"
-    annotations = {
-      "kubernetes.io/service-account.name": "vault"
-    }
-  }
-  type = "kubernetes.io/service-account-token"
-}
+# resource "kubernetes_secret" "vault_sa" {
+#   metadata {
+#     name = "vault-token-955r"
+#     annotations = {
+#       "kubernetes.io/service-account.name": "vault"
+#     }
+#   }
+#   type = "kubernetes.io/service-account-token"
+# }
