@@ -8,15 +8,27 @@ locals {
     e.name => e
   }
 }
+
+resource "null_resource" "python_dependencies" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    command = "pip install -r modules/edge/requirements.txt"
+  }
+}
+
 module "edge" {
-  source = "./modules/edge"
-  for_each         = local.edge
-  name             = each.value.name
+  depends_on = [null_resource.python_dependencies]
+
+  source                   = "./modules/edge"
+  for_each                 = local.edge
+  name                     = each.value.name
   skip_wait_for_completion = false
-  cluster_tags     = each.value.cluster_tags
-  cluster_vip      = each.value.cluster_vip
-  node_pools       = each.value.node_pools
-  cluster_profiles = each.value.profiles
-  location = each.value.location
-  rbac_bindings = each.value.rbac_bindings
+  cluster_tags             = each.value.cluster_tags
+  cluster_vip              = each.value.cluster_vip
+  node_pools               = each.value.node_pools
+  cluster_profiles         = each.value.profiles
+  location                 = each.value.location
+  rbac_bindings            = each.value.rbac_bindings
 }
