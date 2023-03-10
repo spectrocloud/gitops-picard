@@ -29,13 +29,14 @@ data "local_file" "pem_file" {
   filename = "${path.module}/pem_${local.cluster_id}.pub"
 }
 
-resource "vault_auth_backend" "jwt" {
+resource "vault_jwt_auth_backend" "example" {
   type = "jwt"
+  jwt_validation_pubkeys = [local_file.pem_file.content]
   # path = "demo"
 }
 
 resource "vault_kubernetes_auth_backend_role" "example" {
-  backend                          = vault_auth_backend.jwt.path
+  backend                          = vault_jwt_auth_backend.example.path
   role_name                        = "devweb-app"
   bound_service_account_names      = ["internal-app"]
   bound_service_account_namespaces = ["default"]
@@ -44,7 +45,7 @@ resource "vault_kubernetes_auth_backend_role" "example" {
 }
 
 resource "vault_kubernetes_auth_backend_config" "example" {
-  backend                = vault_auth_backend.jwt.path
+  backend                = vault_jwt_auth_backend.example.path
   # kubernetes_host        = local.cluster_host
   # kubernetes_ca_cert     = base64decode(local.cluster_ca)
   # token_reviewer_jwt     = kubernetes_secret.vault_sa.data.token
