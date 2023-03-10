@@ -22,3 +22,21 @@ data "kubernetes_secret" "etcd-ca" {
     namespace = "cluster-${spectrocloud_cluster_vsphere.this.id}"
   }
 }
+
+output "cluster-ca-cert" {
+  value = base64decode(local.cluster_ca)
+  description = "Cluster CA cert"
+  sensitive = true
+}
+
+output "cluster-client-cert" {
+  value = base64decode(local.cluster_cert)
+  description = "Cluster client cert"
+  sensitive = true
+}
+
+output "cluster-client-key" {
+  value = base64decode(local.cluster_key)
+  description = "Cluster client key"
+  sensitive = true
+}

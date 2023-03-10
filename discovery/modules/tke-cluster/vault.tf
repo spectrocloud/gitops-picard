@@ -2,7 +2,7 @@
 
 # Create the Kubeconfig
 resource "vault_generic_secret" "kubeconfig" {
-  path      = "${var.global_config.vault_secrets_path}/admin_conf_${local.n}"
+  path      = "${var.global_config.vault_secrets_path}/${local.n}"
   data_json = <<-EOT
     {
       "kubeconfig" : "${replace(spectrocloud_cluster_vsphere.this.kubeconfig, "\n", "\\n")}"
@@ -12,7 +12,7 @@ resource "vault_generic_secret" "kubeconfig" {
 
 # Store the etcd_encryption_key
 resource "vault_generic_secret" "etcd_encryption_key" {
-  path      = "${var.global_config.vault_secrets_path}/etcd_encryption_key_${local.n}"
+  path      = "${var.global_config.vault_secrets_etcd_certs_path}/${local.n}_encryption_key"
   data_json = <<-EOT
     {
       "value" : "${random_id.etcd_encryption_key.b64_std}"
@@ -22,7 +22,7 @@ resource "vault_generic_secret" "etcd_encryption_key" {
 
 # Store the etcd client health certificates
 resource "vault_generic_secret" "etcd_certs" {
-  path         = "${var.global_config.vault_secrets_etcd_certs_path}/etcd-healthcheck-certs_${local.n}"
+  path         = "${var.global_config.vault_secrets_etcd_certs_path}/${local.n}_certs"
   disable_read = true
   data_json    = <<-EOT
     {
@@ -35,7 +35,7 @@ resource "vault_generic_secret" "etcd_certs" {
 
 # Store the SSH keys in Vault
 resource "vault_generic_secret" "ssh_keys" {
-  path         = "${var.global_config.vault_ssh_keys_path}/ssh-keys_${local.n}"
+  path         = "${var.global_config.vault_ssh_keys_path}/${local.n}"
   disable_read = true
   data_json    = <<-EOT
       {
