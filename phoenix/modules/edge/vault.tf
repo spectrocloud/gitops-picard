@@ -38,9 +38,11 @@ resource "vault_jwt_auth_backend" "example" {
 resource "vault_jwt_auth_backend_role" "example" {
   backend                          = vault_jwt_auth_backend.example.path
   role_name                        = "devweb-app"
-  bound_subject = "system:serviceaccount:default:default"
+  bound_audiences = "https://kubernetes.default.svc.cluster.local"
+
   user_claim = "sub"
   role_type       = "jwt"
+  policies = " devwebapp"
 }
 
 # resource "vault_kubernetes_auth_backend_config" "example" {
@@ -51,3 +53,4 @@ resource "vault_jwt_auth_backend_role" "example" {
 #   # issuer                 = "https://kubernetes.default.svc.cluster.local"
 
 # }
+
