@@ -6,10 +6,10 @@ module "sc-npe-1701" {
   cluster_network        = "10.10.183"
 
   # IP address (reserve 25-26 for 5-node CP)
-  cluster_api_start_ip    = "90"
-  cluster_api_end_ip      = "94"
-  cluster_worker_start_ip = "95"
-  cluster_worker_end_ip   = "105"
+  cluster_api_start_ip    = "190"
+  cluster_api_end_ip      = "194"
+  cluster_worker_start_ip = "195"
+  cluster_worker_end_ip   = "205"
 
   # Commenting below config to skip terraform from creating netscaler resources
   #netscaler_vip_api      = "10.10.182.2"

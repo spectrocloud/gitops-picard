@@ -91,4 +91,25 @@ resource "spectrocloud_cluster_vsphere" "this" {
       }
     }
   }
+
+  dynamic "machine_pool" {
+    # Conditionally include additional worker pool resources. When count is 0, resource will not be created
+    for_each = var.cluster_worker1_start_ip != "" ? ["wp-az1-1", "wp-az2-1", "wp-az3-1"] : []
+    content {
+      name  = machine_pool.value
+      count = var.cluster_workers1_per_az
+      placement {
+        cluster           = local.placements[machine_pool.key].cluster
+        resource_pool     = local.placements[machine_pool.key].resource_pool
+        datastore         = local.placements[machine_pool.key].datastore
+        network           = local.placements[machine_pool.key].network
+        static_ip_pool_id = spectrocloud_privatecloudgateway_ippool.workers1[0].id
+      }
+      instance_type {
+        disk_size_gb = var.global_config.worker_node.disk_gb
+        memory_mb    = var.global_config.worker_node.memory_mb
+        cpu          = var.global_config.worker_node.cpu
+      }
+    }
+  }
 }
