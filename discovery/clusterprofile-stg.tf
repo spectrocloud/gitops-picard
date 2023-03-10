@@ -14,6 +14,11 @@ data "spectrocloud_pack" "k8s-vsphere-stg" {
   name    = "kubernetes"
   version = "1.22.7"
 }
+
+data "spectrocloud_pack" "cilium-tetragon" {
+  name    = "tetragon"
+  version = "0.8.3"
+}
 locals {
   vault_values_stg = replace(
     data.spectrocloud_pack.vault-stg.values,
@@ -44,6 +49,13 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
     tag    = "1.10.9"
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
+  }
+
+  pack {
+    name   = "tetragon"
+    tag    = "0.8.3"
+    uid    = data.spectrocloud_pack.cilium-tetragon.id
+    values = data.spectrocloud_pack.cilium-tetragon.values
   }
   pack {
     name   = "csi-vsphere-csi"
