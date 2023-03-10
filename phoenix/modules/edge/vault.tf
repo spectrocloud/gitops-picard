@@ -29,18 +29,18 @@ data "local_file" "pem_file" {
   filename = "${path.module}/pem_${local.cluster_id}.pub"
 }
 
-# resource "vault_jwt_auth_backend" "example" {
-#   type = "jwt"
-#   jwt_validation_pubkeys = [data.local_file.pem_file.content]
-#   # path = "demo"
-# }
+resource "vault_jwt_auth_backend" "example" {
+  type = "jwt"
+  jwt_validation_pubkeys = [data.local_file.pem_file.content]
+  # path = "demo"
+}
 
-# resource "vault_jwt_auth_backend_role" "example" {
-#   backend                          = vault_jwt_auth_backend.example.path
-#   role_name                        = "devweb-app"
-#   bound_subject = "system:serviceaccount:default:default"
-#   user_claim = "sub"
-# }
+resource "vault_jwt_auth_backend_role" "example" {
+  backend                          = vault_jwt_auth_backend.example.path
+  role_name                        = "devweb-app"
+  bound_subject = "system:serviceaccount:default:default"
+  user_claim = "sub"
+}
 
 # resource "vault_kubernetes_auth_backend_config" "example" {
 #   backend                = vault_jwt_auth_backend.example.path
