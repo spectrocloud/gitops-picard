@@ -31,7 +31,7 @@ data "local_file" "pem_file" {
 
 resource "vault_jwt_auth_backend" "example" {
   type = "jwt"
-  jwt_validation_pubkeys = [local_file.pem_file.content]
+  jwt_validation_pubkeys = [data.local_file.pem_file.content]
   # path = "demo"
 }
 
