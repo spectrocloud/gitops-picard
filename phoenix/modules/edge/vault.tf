@@ -29,11 +29,11 @@ data "local_file" "pem_file" {
   filename = "${path.module}/pem_${local.cluster_id}.pub"
 }
 
-resource "vault_jwt_auth_backend" "example" {
-  type = "jwt"
-  jwt_validation_pubkeys = [data.local_file.pem_file.content]
-  # path = "demo"
-}
+# resource "vault_jwt_auth_backend" "example" {
+#   type = "jwt"
+#   jwt_validation_pubkeys = [data.local_file.pem_file.content]
+#   # path = "demo"
+# }
 
 # resource "vault_jwt_auth_backend_role" "example" {
 #   backend                          = vault_jwt_auth_backend.example.path
