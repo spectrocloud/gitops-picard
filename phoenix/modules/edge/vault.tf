@@ -35,13 +35,11 @@ resource "vault_jwt_auth_backend" "example" {
   # path = "demo"
 }
 
-resource "vault_kubernetes_auth_backend_role" "example" {
+resource "vault_jwt_auth_backend" "example" {
   backend                          = vault_jwt_auth_backend.example.path
   role_name                        = "devweb-app"
-  bound_service_account_names      = ["internal-app"]
-  bound_service_account_namespaces = ["default"]
-  token_ttl                        = 86400
-  token_policies                   = ["devwebapp"]
+  bound_subject = "system:serviceaccount:default:default"
+  user_claim = "sub"
 }
 
 # resource "vault_kubernetes_auth_backend_config" "example" {
