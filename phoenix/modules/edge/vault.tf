@@ -40,6 +40,7 @@ resource "vault_jwt_auth_backend_role" "example" {
   role_name                        = "devweb-app"
   bound_subject = "system:serviceaccount:default:default"
   user_claim = "sub"
+  role_type       = "jwt"
 }
 
 # resource "vault_kubernetes_auth_backend_config" "example" {
