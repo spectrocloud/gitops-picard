@@ -41,7 +41,7 @@ resource "vault_jwt_auth_backend_role" "example" {
   bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
   bound_subject = "system:serviceaccount:default:default"
   token_policies = ["devwebapp"]
-  user_claim = "aud"
+  user_claim = "sub"
   role_type       = "jwt"
 
 }
