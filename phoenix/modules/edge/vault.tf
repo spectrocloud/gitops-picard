@@ -44,11 +44,11 @@ resource "vault_kubernetes_auth_backend_role" "example" {
   token_policies                   = ["devwebapp"]
 }
 
-resource "vault_kubernetes_auth_backend_config" "example" {
-  backend                = vault_jwt_auth_backend.example.path
-  # kubernetes_host        = local.cluster_host
-  # kubernetes_ca_cert     = base64decode(local.cluster_ca)
-  # token_reviewer_jwt     = kubernetes_secret.vault_sa.data.token
-  # issuer                 = "https://kubernetes.default.svc.cluster.local"
-  jwt_validation_pubkeys=local_file.pem_file.content
-}
+# resource "vault_kubernetes_auth_backend_config" "example" {
+#   backend                = vault_jwt_auth_backend.example.path
+#   # kubernetes_host        = local.cluster_host
+#   # kubernetes_ca_cert     = base64decode(local.cluster_ca)
+#   # token_reviewer_jwt     = kubernetes_secret.vault_sa.data.token
+#   # issuer                 = "https://kubernetes.default.svc.cluster.local"
+
+# }
