@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket                      = "terraform-state"
+    bucket                      = "discovery-tf"
     key                         = "discovery/terraform.tfstate"
     region                      = "ignored"
-    endpoint                    = "http://10.10.184.99:9000"
+    endpoint                    = "http://10.10.184.99:9199"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
