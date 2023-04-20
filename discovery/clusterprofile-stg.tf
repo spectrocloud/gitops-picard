@@ -8,11 +8,11 @@ data "spectrocloud_pack" "nginx-stg" {
 }
 data "spectrocloud_pack" "cni-vsphere-stg" {
   name    = "cni-cilium-oss"
-  version = "1.10.9"
+  version = "1.12.6"
 }
 data "spectrocloud_pack" "k8s-vsphere-stg" {
   name    = "kubernetes"
-  version = "1.22.7"
+  version = "1.24.3"
 }
 
 data "spectrocloud_pack" "cilium-tetragon" {
@@ -40,13 +40,13 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   }
   pack {
     name   = "kubernetes"
-    tag    = "1.22.7"
+    tag    = "1.24.3"
     uid    = data.spectrocloud_pack.k8s-vsphere-stg.id
     values = data.spectrocloud_pack.k8s-vsphere-stg.values
   }
   pack {
     name   = "cni-cilium-oss"
-    tag    = "1.10.9"
+    tag    = "1.12.6"
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
@@ -59,7 +59,7 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   }
   pack {
     name   = "csi-vsphere-csi"
-    tag    = "2.3.x"
+    tag    = "2.6.x"
     uid    = data.spectrocloud_pack.csi-vsphere.id
     values = data.spectrocloud_pack.csi-vsphere.values
   }
