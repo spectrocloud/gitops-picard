@@ -170,6 +170,7 @@ charts:
     # @default -- Disabled by default.
     ingress:
       enabled: true
+      className: "nginx"
       annotations:
         # kubernetes.io/ingress.class: std-ingress-class
         # kubernetes.io/tls-acme: "true"

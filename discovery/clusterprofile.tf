@@ -4,11 +4,11 @@ data "spectrocloud_pack" "vault" {
 }
 data "spectrocloud_pack" "cni-vsphere" {
   name    = "cni-cilium-oss"
-  version = "1.10.9"
+  version = "1.12.6"
 }
 data "spectrocloud_pack" "k8s-vsphere" {
   name    = "kubernetes"
-  version = "1.22.7"
+  version = "1.23.9"
 }
 data "spectrocloud_pack" "dex" {
   name    = "dex"
@@ -16,7 +16,7 @@ data "spectrocloud_pack" "dex" {
 }
 data "spectrocloud_pack" "csi-vsphere" {
   name = "csi-vsphere-csi"
-  version  = "2.3.0"
+  version  = "2.6.0"
 }
 data "spectrocloud_pack" "ubuntu-vsphere" {
   name = "ubuntu-vsphere"
@@ -43,19 +43,19 @@ resource "spectrocloud_cluster_profile" "sc-npe" {
   }
   pack {
     name   = "kubernetes"
-    tag    = "1.22.7"
+    tag    = "1.23.9"
     uid    = data.spectrocloud_pack.k8s-vsphere.id
     values = data.spectrocloud_pack.k8s-vsphere.values
   }
   pack {
     name   = "cni-cilium-oss"
-    tag    = "1.10.9"
+    tag    = "1.12.6"
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
   pack {
     name   = "csi-vsphere-csi"
-    tag    = "2.3.x"
+    tag    = "2.6.x"
     uid    = data.spectrocloud_pack.csi-vsphere.id
     values = data.spectrocloud_pack.csi-vsphere.values
   }
