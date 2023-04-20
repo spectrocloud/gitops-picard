@@ -3,7 +3,7 @@ terraform {
     bucket                      = "discovery-tf"
     key                         = "discovery/terraform.tfstate"
     region                      = "ignored"
-    endpoint                    = "http://10.10.184.99:9199"
+    endpoint                    = "http://10.10.184.50:9199"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
@@ -18,7 +18,7 @@ locals {
   global_config = {
     # Domain
     dns_domain       = "discovery.spectrocloud.com"
-    pcg_id           = "63912b951a1c6214cead9ce0"
+    pcg_id           = "643dcacf4f008e28cc3f68c9"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
@@ -32,11 +32,11 @@ locals {
     networks = {
       "10.10.184" = {
         gateway = "10.10.128.1"
-        network = "VM Network"
+        network = "VM-NETWORK"
       },
       "10.10.183" = {
         gateway = "10.10.128.1"
-        network = "VM Network"
+        network = "VM-NETWORK"
       }/*,
       "10.10.242" = {
         gateway = "10.10.192.1"
@@ -58,7 +58,7 @@ locals {
 
     # VM properties
     datacenter     = "Datacenter"
-    vm_folder      = "SC_TMO"
+    vm_folder      = "sp-boobalan/discovery"
     ssh_public_key = "Demo"
 
     worker_node = {
@@ -78,17 +78,17 @@ locals {
     placements = [
       {
         cluster       = "Cluster1"
-        resource_pool = ""
-        datastore     = "vsanDatastore"
+        resource_pool = "rp-cluster1-palette-pax"
+        datastore     = "vsanDatastore1"
       },
       {
         cluster       = "Cluster2"
-        resource_pool = ""
+        resource_pool = "rp-cluster2-palette-pax"
         datastore     = "vsanDatastore2"
       },
       {
         cluster       = "Cluster3"
-        resource_pool = ""
+        resource_pool = "rp-cluster3-palette-pax"
         datastore     = "vsanDatastore3"
       }
     ]
@@ -96,5 +96,5 @@ locals {
 }
 
 data "spectrocloud_cloudaccount_vsphere" "default" {
-  name = "vsphere-admin"
+  name = "tmpadmin"
 }
