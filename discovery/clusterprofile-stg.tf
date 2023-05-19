@@ -12,7 +12,7 @@ data "spectrocloud_pack" "cni-vsphere-stg" {
 }
 data "spectrocloud_pack" "k8s-vsphere-stg" {
   name    = "kubernetes"
-  version = "1.24.3"
+  version = "1.23.9"
 }
 
 data "spectrocloud_pack" "cilium-tetragon" {
@@ -40,7 +40,7 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   }
   pack {
     name   = "kubernetes"
-    tag    = "1.24.3"
+    tag    = "1.23.9"
     uid    = data.spectrocloud_pack.k8s-vsphere-stg.id
     values = data.spectrocloud_pack.k8s-vsphere-stg.values
   }
