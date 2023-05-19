@@ -7,6 +7,8 @@ name: Terraform Apply
 on:
   # but only for the main branch
   push:
+    paths:
+    - 'sandbox/**'
     branches:
     - main
   #pull_request:
@@ -27,7 +29,9 @@ jobs:
         working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
     steps:
     - uses: actions/checkout@v2
-    - uses: hashicorp/setup-terraform@v1
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.2.9
 
     - name: Terraform fmt
       id: fmt
@@ -45,8 +49,6 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
-    
-
           
     - name: Terraform Apply
       id: apply

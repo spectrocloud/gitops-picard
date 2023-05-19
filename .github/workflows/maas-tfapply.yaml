@@ -1,0 +1,61 @@
+# This is a basic workflow that is manually triggered
+
+name: Terraform maas Apply
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  # but only for the main branch
+  push:
+    paths:
+    - 'maas-stores/**'
+    - 'maas-tf-scripts/**'
+    - '.github/workflows/maas-tfapply.yaml'
+    branches:
+    - main
+  #pull_request:
+    #types: [edited, opened, synchronize, reopened]
+
+env:
+  SPECTROCLOUD_TF_PATH: maas-tf-scripts
+  SPECTROCLOUD_WORKSPACE: default
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  apply:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.2.9
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config="endpoints=[\"${{ secrets.SC_ETCD_ENDPOINT }}\"]"
+
+    - name: Terraform Workspace
+      id: workspace
+      run: terraform workspace select ${{ env.SPECTROCLOUD_WORKSPACE }}
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Apply
+      id: apply
+      run: |
+        terraform apply -auto-approve -no-color -input=false \
+        -var 'sc_host=${{ secrets.SC_HOST }}' \
+        -var 'sc_project_name=FDefault' \
+        -var 'sc_api_key=${{ secrets.SC_API_KEY }}' \

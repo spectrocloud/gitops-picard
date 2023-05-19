@@ -6,21 +6,27 @@
 
 data "spectrocloud_pack" "csi-azure" {
   name = "csi-azure"
+  registry_uid = data.spectrocloud_registry.registry.id
+  version = "1.0.0"
   # version  = "1.0.x"
 }
 
 data "spectrocloud_pack" "cni-azure" {
   name    = "cni-calico-azure"
-  version = "3.16.0"
+  version = "3.24.1"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "k8s-azure" {
   name    = "kubernetes"
-  version = "1.18.15"
+  version = "1.20.14"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "ubuntu-azure" {
-  name = "ubuntu-azure"
+  name    = "ubuntu-azure"
+  version = "18.04"
+  registry_uid = data.spectrocloud_registry.registry.id
   # version  = "1.0.x"
 }
 
@@ -39,22 +45,22 @@ resource "spectrocloud_cluster_profile" "azure" {
   type        = "cluster"
 
   pack {
-    name   = "ubuntu-azure"
-    tag    = "LTS__18.4.x"
+    name   = data.spectrocloud_pack.ubuntu-azure.name
+    tag    = data.spectrocloud_pack.ubuntu-azure.version
     uid    = data.spectrocloud_pack.ubuntu-azure.id
     values = data.spectrocloud_pack.ubuntu-azure.values
   }
 
   pack {
-    name   = "kubernetes"
-    tag    = "1.18.15"
+    name   = data.spectrocloud_pack.k8s-azure.name
+    tag    = data.spectrocloud_pack.k8s-azure.version
     uid    = data.spectrocloud_pack.k8s-azure.id
     values = local.azure_k8s_values
   }
 
   pack {
-    name   = "cni-calico-azure"
-    tag    = "3.16.x"
+    name   = data.spectrocloud_pack.cni-azure.name
+    tag    = data.spectrocloud_pack.cni-azure.version
     uid    = data.spectrocloud_pack.cni-azure.id
     values = data.spectrocloud_pack.cni-azure.values
   }

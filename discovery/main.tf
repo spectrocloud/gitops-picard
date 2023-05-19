@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket                      = "terraform-state"
+    bucket                      = "discovery-tf"
     key                         = "discovery/terraform.tfstate"
     region                      = "ignored"
-    endpoint                    = "https://10.10.137.64:9000"
+    endpoint                    = "http://10.10.184.50:9199"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
@@ -18,26 +18,26 @@ locals {
   global_config = {
     # Domain
     dns_domain       = "discovery.spectrocloud.com"
-    pcg_id           = "603e528439ea6effbcd224d8"
+    pcg_id           = "643dcacf4f008e28cc3f68c9"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
-    vault_secrets_path            = "sc/env1/admin_creds"
-    vault_secrets_etcd_certs_path = "sc/env1/etcd-certs"
-    vault_ssh_keys_path           = "sc/env1/ssh-keys"
+    vault_secrets_path            = "secret/sc/discovery/kubeconfig"
+    vault_secrets_etcd_certs_path = "secret/sc/discovery/etcd-certs"
+    vault_ssh_keys_path           = "secret/sc/discovery/ssh-keys"
 
     # Network
     network_prefix               = 18
-    network_nameserver_addresses = ["10.10.128.8", "8.8.8.8"]
+    network_nameserver_addresses = ["10.10.128.8"]
     networks = {
-      "10.10.182" = {
+      "10.10.184" = {
         gateway = "10.10.128.1"
-        network = "VM Network"
+        network = "VM-NETWORK"
       },
       "10.10.183" = {
         gateway = "10.10.128.1"
-        network = "VM Network"
-      },
+        network = "VM-NETWORK"
+      }/*,
       "10.10.242" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
@@ -53,12 +53,12 @@ locals {
       "10.10.245" = {
         gateway = "10.10.192.1"
         network = "VM Network 2"
-      }
+      }*/
     }
 
     # VM properties
     datacenter     = "Datacenter"
-    vm_folder      = "Demo"
+    vm_folder      = "sp-boobalan/discovery"
     ssh_public_key = "Demo"
 
     worker_node = {
@@ -77,24 +77,24 @@ locals {
     # which is replaced with var.cluster_datastore
     placements = [
       {
-        cluster       = "cluster1"
-        resource_pool = ""
-        datastore     = "Datastore57"
+        cluster       = "Cluster1"
+        resource_pool = "rp-cluster1-palette-pax"
+        datastore     = "vsanDatastore1"
       },
       {
-        cluster       = "cluster2"
-        resource_pool = ""
-        datastore     = "Datastore58"
+        cluster       = "Cluster2"
+        resource_pool = "rp-cluster2-palette-pax"
+        datastore     = "vsanDatastore2"
       },
       {
-        cluster       = "cluster3"
-        resource_pool = ""
-        datastore     = "Datastore59"
+        cluster       = "Cluster3"
+        resource_pool = "rp-cluster3-palette-pax"
+        datastore     = "vsanDatastore3"
       }
     ]
   }
 }
 
 data "spectrocloud_cloudaccount_vsphere" "default" {
-  name = "npe"
+  name = "tmpadmin"
 }
