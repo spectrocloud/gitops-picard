@@ -20,10 +20,25 @@ variable "cluster_api_end_ip" {
 }
 
 variable "cluster_worker_start_ip" {
-  description = "Start IP of the Kube API Server (e.g: 10)"
+  description = "Start IP of the Worker (e.g: 10)"
 }
 variable "cluster_worker_end_ip" {
-  description = "End IP of the Kube API Server (e.g: 15)"
+  description = "End IP of the Worker (e.g: 15)"
+}
+
+variable "cluster_worker1_start_ip" {
+  description = "Start IP of the Worker (e.g: 10)"
+  default     = ""
+}
+variable "cluster_worker1_end_ip" {
+  description = "End IP of the Worker(e.g: 15)"
+  default     = ""
+}
+
+variable "cluster_workers1_per_az" {
+  type        = number
+  description = "Number of workers per zone (e.g: 3)"
+  default = 1.0
 }
 
 variable "cluster_profile_id" {
