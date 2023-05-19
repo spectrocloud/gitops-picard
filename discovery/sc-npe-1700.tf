@@ -3,13 +3,18 @@ module "sc-npe-1700" {
 
   cluster_name           = "sc-npe-1700"
   cluster_workers_per_az = 1
-  cluster_network        = "10.10.182"
+  cluster_network        = "10.10.184"
 
   # IP address (reserve 25-26 for 5-node CP)
-  cluster_api_start_ip    = "90"
-  cluster_api_end_ip      = "94"
-  cluster_worker_start_ip = "95"
-  cluster_worker_end_ip   = "105"
+  cluster_api_start_ip    = "110"
+  cluster_api_end_ip      = "114"
+  cluster_worker_start_ip = "115"
+  cluster_worker_end_ip   = "124"
+
+  #IP pool 2 - for az4, az5, az6
+  #cluster_workers1_per_az = 1
+  #cluster_worker1_start_ip = "135"
+  #cluster_worker1_end_ip   = "144"
 
   # Commenting below config to skip terraform from creating netscaler resources
   #netscaler_vip_api      = "10.10.182.2"
@@ -21,11 +26,11 @@ module "sc-npe-1700" {
   cluster_profile_id = spectrocloud_cluster_profile.sc-npe-stg.id
   cluster_packs = {
     k8s = {
-      tag  = "1.19.7"
+      tag  = "1.23.9"
       file = "config-stg/k8s.yaml"
     }
     dex = {
-      tag  = "2.28.0"
+      tag  = "2.35.1"
       file = "config-stg/dex.yaml"
     }
     namespace-labeler = {

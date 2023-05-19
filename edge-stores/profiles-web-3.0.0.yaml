@@ -1,0 +1,51 @@
+#############################################
+# Hipster 3.0.0
+#############################################
+- name: edge-apps-web
+  version: 3.0.0
+  charts:
+  - name: hello-world
+    version: 0.1.0
+    type: oci
+    registry: prod-azurecr
+    values: |
+      pack:
+        namespace: "hello-world"
+        spectrocloud.com/install-priority: "10"
+      values:
+        hello-world:
+          replicaCount: 1
+  - name: mongodb
+    version: 6.0.1
+    type: oci
+    registry: prod-azurecr
+    values: |
+      pack:
+        namespace: "mongodb"
+        spectrocloud.com/install-priority: "0"
+      values:
+        mongodb:
+          replicaCount: ${mongoreplicas}
+          storageClassName: default
+  - name: hipster
+    version: 0.3.0
+    type: oci
+    registry: prod-azurecr
+    values: |
+      pack:
+        namespace: "hipster-app"
+        spectrocloud.com/install-priority: "0"
+      values:
+        hipster:
+          replicaCount: 1
+          service:
+            type: ClusterIP
+            port: 80
+          # image:
+          #   repository: nginx
+          #   pullPolicy: IfNotPresent
+          #   # Overrides the image tag whose default is the chart appVersion.
+          #   tag: ""
+
+          imagePullSecrets: []
+

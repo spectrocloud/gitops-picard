@@ -6,22 +6,26 @@
 
 data "spectrocloud_pack" "csi-gcp" {
   name = "csi-gcp"
+  registry_uid = data.spectrocloud_registry.registry.id
   # version  = "1.0.x"
 }
 
 data "spectrocloud_pack" "cni-gcp" {
   name    = "cni-calico"
-  version = "3.16.0"
+  version = "3.19.0"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "k8s-gcp" {
   name    = "kubernetes"
-  version = "1.18.16"
+  version = "1.20.14"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 data "spectrocloud_pack" "ubuntu-gcp" {
-  name = "ubuntu-gcp"
-  # version  = "1.0.x"
+  name    = "ubuntu-gcp"
+  version = "18.04"
+  registry_uid = data.spectrocloud_registry.registry.id
 }
 
 locals {
@@ -41,22 +45,22 @@ resource "spectrocloud_cluster_profile" "prod-gcp" {
 
 
   pack {
-    name   = "ubuntu-gcp"
-    tag    = "LTS__18.4.x"
+    name   = data.spectrocloud_pack.ubuntu-gcp.name
+    tag    = data.spectrocloud_pack.ubuntu-gcp.version
     uid    = data.spectrocloud_pack.ubuntu-gcp.id
     values = data.spectrocloud_pack.ubuntu-gcp.values
   }
 
   pack {
-    name   = "kubernetes"
-    tag    = "1.18.16"
+    name   = data.spectrocloud_pack.k8s-gcp.name
+    tag    = data.spectrocloud_pack.k8s-gcp.version
     uid    = data.spectrocloud_pack.k8s-gcp.id
     values = local.gcp_k8s_values
   }
 
   pack {
-    name   = "cni-calico"
-    tag    = "3.16.x"
+    name   = data.spectrocloud_pack.cni-gcp.name
+    tag    = data.spectrocloud_pack.cni-gcp.version
     uid    = data.spectrocloud_pack.cni-gcp.id
     values = data.spectrocloud_pack.cni-gcp.values
   }
