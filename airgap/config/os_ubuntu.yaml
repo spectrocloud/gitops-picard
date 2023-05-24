@@ -7,13 +7,14 @@ kubeadmconfig:
   preKubeadmCommands:
     - echo "Executing pre kube admin config commands"
     - update-ca-certificates
-    - curl --user spectro:admin@airgap http://10.10.167.44/images/import-vsphere-k8s-images.sh -o /tmp/import-vsphere-k8s-images.sh
+    - curl --user spectro:admin@airgap http://10.10.244.90/images/import-vsphere-k8s-images.sh -o /tmp/import-vsphere-k8s-images.sh
     - bash /tmp/import-vsphere-k8s-images.sh
-    - 'systemctl restart containerd; sleep 3'
+    - "systemctl restart containerd; sleep 3"
     - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
   postKubeadmCommands:
     - echo "Executing post kube admin config commands"
     - '/etc/kubernetes/pwx-node-labeler.sh'
+    - '/etc/kubernetes/node-labeler.sh'
   files:
     - targetPath: /etc/kubernetes/pwx-node-labeler.sh
       targetOwner: "root:root"
@@ -35,27 +36,41 @@ kubeadmconfig:
         else
           echo "Skipping px-rack label for ControlPlane nodes"
         fi
-    - targetPath: /usr/local/share/ca-certificates/mycom.crt
+    - targetPath: /etc/kubernetes/node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          #For worker nodes, use kubelet.conf
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        else
+          #For control-plane nodes, use admin.conf
+          export KUBECONFIG=/etc/kubernetes/admin.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        fi
+    - targetPath: /usr/local/share/ca-certificates/root_ca.crt
       targetOwner: "root:root"
       targetPermissions: "0644"
       content: |
         -----BEGIN CERTIFICATE-----
-        MIIDXDCCAkSgAwIBAgIUV1lTWTLJM0e4bVIAT+kgGIo/EZgwDQYJKoZIhvcNAQEL
-        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjExMDAyMDkzMzIxWhcN
-        MzEwOTMwMDkzMzIxWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
-        KoZIhvcNAQEBBQADggEPADCCAQoCggEBAN8j8qG8Br1CarqzDKLvMZNcgrh06jh8
-        4NIpzWcTrbVCu4T1h/u1vhXuWytKCLR/XX5SRIhNIoV5IqNvh43Iey+AzXkkXXXP
-        ulKWIIvJI6Ofgpnmycj3vWZoIPWnND1hHp1t2Rok7iBJQKYgAAaSlKqDekm9yTtE
-        q/E4UMhFy4bl0U+AJQHKto9VE4uYl1cltcr63vPmkqXEXRTGlECeErV4e2ngYYzK
-        2wMh1i3+VcJ5PLloIwAjYeRwSapr7fqDN+leOy3/2c1HYmXmhE41jVBKmQpQoJrP
-        dzRaVfiCqy4VbfNNzeTQ/R7MvdD+hMLyf44rTYPLTxRGY5vk3zykmpsCAwEAAaOB
-        mzCBmDAdBgNVHQ4EFgQUfw3Bo7HIgyef7T2bpiaok1bEHn0wHwYDVR0jBBgwFoAU
-        fw3Bo7HIgyef7T2bpiaok1bEHn0wDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
-        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCqcsMBMGA1UdJQQM
-        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQDInkRDwgM6HXCyo4QKIRUV
-        ZaICy89cl6bQZ+eWlke+n2CYkGSmllle2VHOQMnbp/LZv6JauCRiPG7emRjGwSgm
-        53i84oZi1bgHmq+QfoOjdhR08se9ntaiF2TqVu5voGm784rq5NARuACHkY0WPirJ
-        BGPF0sMBcnvK/mXwW6VB0whm2e4o6TdqANmNM3Z+D2olAxSeAmVygnesQ7SdIH89
-        pa4BEDsc6mQvWz9OEtZf+H3l13lKPFm0rEQ5ZPFD1AF4EgUD+jWbjsusVA9Tgko3
-        pCLQ4CVxWJNwg1x52HzBZmCoTFaYVS6EKUXVrpRN+3aJzTIAtJuH6YbcnuTPKUuq
+        MIIDXDCCAkSgAwIBAgIUZlho4pSIaqJn67jFDFlSZLja4LYwDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOYWlyZ2FwLXNwZWN0cm8wHhcNMjMwNTE0MDQ1MjIyWhcN
+        MzMwNTExMDQ1MjIyWjAZMRcwFQYDVQQDDA5haXJnYXAtc3BlY3RybzCCASIwDQYJ
+        KoZIhvcNAQEBBQADggEPADCCAQoCggEBANrKqU6tIGQNqKT7WfU+4zfyg2pjuub1
+        qzteypFPIB9p7A39xJXTN6cOCqPwNF95gW4iqNjIWzdUoBrWWSO+bQDBbAEIkFN4
+        yxklMa2q/Sy5MsYxeGzjvjx+It07+hLXUjgPSp2oAnIJG/x9PzmQaN465BARjArL
+        DR458NdyHcL99ltZsPuIZgXly8uSI84UrRG0QLwXJpAd5oT9460ZTYzbtwInGc+R
+        aUM7uR0bj3/gmuktHEj1IKWAT0TI5DfOYQjHoESSfzVX6ytOFXcvMgEqfo5v74rX
+        43EShFe2fhNIlgNcc6zcyADH2EuxrUZW6uDfeZ2EHZSLIygwy708BVkCAwEAAaOB
+        mzCBmDAdBgNVHQ4EFgQU0+dRq7SEauHZSil0Hczz4UNRpiYwHwYDVR0jBBgwFoAU
+        0+dRq7SEauHZSil0Hczz4UNRpiYwDwYDVR0TAQH/BAUwAwEB/zAwBgNVHREEKTAn
+        ghlhaXJnYXAuc3BlY3Ryb2Nsb3VkLmxvY2FshwR/AAABhwQKCvRaMBMGA1UdJQQM
+        MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQDBQsZhf0W5uCCXWu0j48aS
+        CNmyIak5A0MVsOZanrXa0n04vgalMgHlRaCR0dTvtaPxKmZmxLwJP6Z0aU5dVTwZ
+        O6VFgA1+wAL95J8m1JVftLQrxQBQ561q2ZKTTdmDpoETtXCn0H7m6P7wzFXKLbPS
+        fOFmequgMA+O+MUGPkMmrWvqn5/atz7Y30l15Ejt8iTs/wN0iZMlffICFnIGZSOj
+        gIwC0q1yo6B3d+lvSCEghpw625zUKQfYtisuufoPmxY5vCpOXp0+Q1AzMmzPrxb9
+        RS0RVO9HTP86BajFrWiaB9/Ib8uGKAcbH+5HMd9fT8NRSONDFL/8aAXC5pkydrxH
         -----END CERTIFICATE-----
