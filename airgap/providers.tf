@@ -8,13 +8,18 @@ terraform {
     }
 
     spectrocloud = {
-      version = "~> 0.3.2"
+      version = "~> 0.5.7"
       source  = "spectrocloud/spectrocloud"
     }
 
     citrixadc = {
       source  = "citrix.com/test/citrixadc"
       version = "~> 0.12.44"
+    }
+
+    tls = {
+      source = "hashicorp/tls"
+      version = "3.4.0"
     }
   }
 }
