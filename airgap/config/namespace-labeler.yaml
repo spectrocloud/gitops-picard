@@ -46,7 +46,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: main
-          image: 10.10.167.44:8000/spectro-images-public/debug/spectro-util:1.0.0
+          image: gcr.io/spectro-images-public/debug/spectro-util:1.0.0
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
@@ -61,8 +61,8 @@ spec:
               declare -a spectro_namespaces_arr=(
               "cert-manager" "capi-kubeadm-bootstrap-system"
               "capi-kubeadm-control-plane-system" "capi-webhook-system"
-              "kube-node-lease" "kube-public" "kube-system"
-              "default" "test1" "tke-system" "dex" "vault" "reach-system")
+              "kube-node-lease" "kube-public" "kube-system" "test1"
+              "default" "tke-system" "dex" "vault" "reach-system")
 
               echo "$(date) Processing namespace label updates"
 

@@ -35,8 +35,9 @@ data:
       destination = "/vault/secrets/config"
       contents = <<-EOD
         {{ with secret "secret/ldap/creds" }}
-          export BINDDN="{{ .Data.data.bind_dn }}"
-          export BINDPW="{{ .Data.data.bind_pw }}"
+          # .Data.data for KV-V2, .Data for KV-v1
+          export BINDDN="{{ .Data.bind_dn }}"
+          export BINDPW="{{ .Data.bind_pw }}"
         {{ end }}
       EOD
     }
