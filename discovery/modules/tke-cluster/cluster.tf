@@ -52,14 +52,14 @@ resource "spectrocloud_cluster_vsphere" "this" {
   cloud_config {
     ssh_key    = local.public_key_openssh
     datacenter = var.global_config.datacenter
-    folder     = "${var.global_config.vm_folder}/${local.n}"
+    folder     = "${var.vm_folder}/${local.n}"
     static_ip  = true
   }
 
   machine_pool {
     control_plane = true
     name          = "master-pool"
-    count         = 3
+    count         = 1
 
     dynamic "placement" {
       for_each = local.placements
@@ -79,7 +79,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
   }
 
   dynamic "machine_pool" {
-    for_each = ["wp-az1", "wp-az2", "wp-az3"]
+    for_each = ["wp-az1"]
     content {
       name  = machine_pool.value
       count = var.cluster_workers_per_az

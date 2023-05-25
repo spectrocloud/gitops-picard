@@ -9,6 +9,9 @@ variable "cluster_datastore" {
   description = "Datastore (e.g: DS001)"
   default     = ""
 }
+variable "vm_folder" {
+  description = "The VM folder to place the nodes"
+}
 variable "cluster_network" {
   description = "The network first three octets (e.g: 10.142.149)"
 }
@@ -83,7 +86,6 @@ variable "global_config" {
 
     # VM properties
     datacenter     = string
-    vm_folder      = string
     ssh_public_key = string
 
     worker_node = object({
