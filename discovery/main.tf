@@ -58,7 +58,6 @@ locals {
 
     # VM properties
     datacenter     = "Datacenter"
-    vm_folder      = "sp-boobalan/discovery"
     ssh_public_key = "Demo"
 
     worker_node = {
@@ -78,18 +77,8 @@ locals {
     placements = [
       {
         cluster       = "Cluster1"
-        resource_pool = "rp-cluster1-palette-pax"
+        resource_pool = "rp-cluster1-portworx"
         datastore     = "vsanDatastore1"
-      },
-      {
-        cluster       = "Cluster2"
-        resource_pool = "rp-cluster2-palette-pax"
-        datastore     = "vsanDatastore2"
-      },
-      {
-        cluster       = "Cluster3"
-        resource_pool = "rp-cluster3-palette-pax"
-        datastore     = "vsanDatastore3"
       }
     ]
   }

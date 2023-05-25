@@ -2,7 +2,7 @@ module "sc-npe-1701" {
   source = "./modules/tke-cluster"
 
   cluster_name           = "sc-npe-1701"
-  cluster_workers_per_az = 1
+  cluster_workers_per_az = 3
   cluster_network        = "10.10.184"
 
   # IP address (reserve 25-26 for 5-node CP)
@@ -34,5 +34,10 @@ module "sc-npe-1701" {
     }
   }
 
+  #The VM folder to place the k8s cluster vm's
+  #Note: Palette will place vms under vmfolder/cluster_name
+  vm_folder = "sp-smjain"
+
   global_config = local.global_config
+
 }

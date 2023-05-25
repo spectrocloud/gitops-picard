@@ -39,5 +39,9 @@ module "sc-npe-1700" {
     }
   }
 
+  #The VM folder to place the k8s cluster vm's
+  #Note: Palette will place vms under vmfolder/cluster_name
+  vm_folder = "sp-boobalan/discovery"
+
   global_config = local.global_config
 }
