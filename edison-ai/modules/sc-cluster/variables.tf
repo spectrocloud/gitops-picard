@@ -19,16 +19,16 @@ variable "aws_vpc_id" {
 }
 variable "aws_master_azs_subnets_map" {
   description = "AWS Master / Fargate profile - comma-separate public,private subnets"
-  type = map(string)
+  type        = map(string)
 }
 variable "aws_worker_azs_subnets_map" {
   description = "worker node subnets - use private subnet"
-  type = map(string)
+  type        = map(string)
 }
 
 variable "worker_count" {
   description = "number of workers"
-  type = number
+  type        = number
 }
 
 # variable "cluster_packs" {
