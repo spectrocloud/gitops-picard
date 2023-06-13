@@ -42,7 +42,7 @@ resource "spectrocloud_addon_deployment" "depl" {
       registry_uid = data.spectrocloud_registry.Bitnami_registry.id
       tag          = data.spectrocloud_pack_simple.redis_pack.version
       uid          = data.spectrocloud_pack_simple.redis_pack.id
-      values = <<-EOT
+      values       = <<-EOT
       pack:
         namespace: "redis"
         spectrocloud.com/install-priority: "230"
