@@ -5,15 +5,15 @@ resource "spectrocloud_cluster_eks" "this" {
   name               = local.n
   cluster_profile {
     id = var.cluster_profile_id
-    pack {
-      name   = "spectro-rbac"
-      tag    = "1.0.0"
-      values = <<-EOT
-        charts:
-          spectro-rbac:
-            ${indent(4, local.rbac_yaml)}
-      EOT
-    }
+    # pack {
+    #   name   = "spectro-rbac"
+    #   tag    = "1.0.0"
+    #   values = <<-EOT
+    #     charts:
+    #       spectro-rbac:
+    #         ${indent(4, local.rbac_yaml)}
+    #   EOT
+    # }
   }
 
   cloud_account_id   = var.cluster_cloud_account_id
@@ -36,25 +36,25 @@ resource "spectrocloud_cluster_eks" "this" {
 
   machine_pool {
     name          = "worker-basic"
-    count         = 1
+    count         = var.worker_count
     instance_type = "t3.large"
     az_subnets    = var.aws_worker_azs_subnets_map
     disk_size_gb  = 60
   }
 
-  fargate_profile {
-    name    = "fg-1"
-    subnets = values(var.aws_worker_azs_subnets_map)
-    additional_tags = {
-      hello = "test1"
-    }
-    selector {
-      namespace = "fargate"
-      # labels = {
-      #   abc = "cool"
-      # }
-    }
-  }
+  # fargate_profile {
+  #   name    = "fg-1"
+  #   subnets = values(var.aws_worker_azs_subnets_map)
+  #   additional_tags = {
+  #     hello = "test1"
+  #   }
+  #   selector {
+  #     namespace = "fargate"
+  #     # labels = {
+  #     #   abc = "cool"
+  #     # }
+  #   }
+  # }
 
   # machine_pool {
   #   control_plane = true
