@@ -1,5 +1,9 @@
 ################################  Clusters   ####################################################
 
+output "cluster_id" {
+  value = spectrocloud_cluster_eks.this.id
+}
+
 # Create the VMware cluster
 resource "spectrocloud_cluster_eks" "this" {
   name = local.n
