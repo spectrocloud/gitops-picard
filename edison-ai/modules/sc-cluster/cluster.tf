@@ -2,7 +2,7 @@
 
 # Create the VMware cluster
 resource "spectrocloud_cluster_eks" "this" {
-  name               = local.n
+  name = local.n
   cluster_profile {
     id = var.cluster_profile_id
     # pack {
@@ -16,13 +16,13 @@ resource "spectrocloud_cluster_eks" "this" {
     # }
   }
 
-  cloud_account_id   = var.cluster_cloud_account_id
+  cloud_account_id = var.cluster_cloud_account_id
 
   cloud_config {
     # ssh_key_name = var.cluster_ssh_public_key_name
-    region       = var.aws_region
-    vpc_id       = var.aws_vpc_id
-    az_subnets   = var.aws_master_azs_subnets_map
+    region     = var.aws_region
+    vpc_id     = var.aws_vpc_id
+    az_subnets = var.aws_master_azs_subnets_map
   }
   # pack {
   #   name = "kubernetes"
