@@ -8,7 +8,7 @@ on:
   # but only for the main branch
   push:
     paths:
-    - 'edison/**'
+    - 'edison-ai/**'
     - '.github/workflows/edison-tfapply.yaml'
     branches:
     - main
