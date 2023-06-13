@@ -1,4 +1,13 @@
 terraform {
+  required_version = ">= 0.14.0"
+
+  required_providers {
+    spectrocloud = {
+      #version = "> 0.4.1"
+      source = "spectrocloud/spectrocloud"
+    }
+  }
+
   backend "s3" {
     bucket = "terraform-state-spectro"
     key    = "project-edison-ai/terraform.tfstate"
@@ -10,6 +19,17 @@ terraform {
     #force_path_style            = true
     #access_key, secret_key initialize with backend-config
   }
+}
+
+# Spectro Cloud
+variable "sc_host" {}
+variable "sc_api_key" {}
+variable "sc_project_name" {}
+
+provider "spectrocloud" {
+  host         = var.sc_host
+  api_key      = var.sc_api_key
+  project_name = var.sc_project_name
 }
 
 data "spectrocloud_cloudaccount_aws" "default" {
