@@ -2,50 +2,48 @@ terraform {
   required_version = ">= 0.14.0"
 
   required_providers {
-    vault = {
-      version = "~> 2.18.0"
-      source  = "hashicorp/vault"
-    }
+    # vault = {
+    #   version = "~> 2.18.0"
+    #   source  = "hashicorp/vault"
+    # }
 
     spectrocloud = {
-      version = "~> 0.4.1"
-      source  = "spectrocloud/spectrocloud"
+      #version = "> 0.4.1"
+      source = "spectrocloud/spectrocloud"
     }
 
   }
 }
 
 # Vault
-variable "vault_address" {}
-variable "vault_approle_role_id" {}
-variable "vault_approle_secret_id" {}
-variable "vault_ldap_role_id" {}
-variable "vault_ldap_secret_id" {}
+# variable "vault_address" {}
+# variable "vault_approle_role_id" {}
+# variable "vault_approle_secret_id" {}
+# variable "vault_ldap_role_id" {}
+# variable "vault_ldap_secret_id" {}
 
-provider "vault" {
-  address               = var.vault_address
-  token_name            = "sc_child"
-  max_lease_ttl_seconds = 3 * 60 * 60
-  auth_login {
-    path = "auth/approle/login"
+# provider "vault" {
+#   address               = var.vault_address
+#   token_name            = "sc_child"
+#   max_lease_ttl_seconds = 3 * 60 * 60
+#   auth_login {
+#     path = "auth/approle/login"
 
-    parameters = {
-      role_id   = var.vault_approle_role_id
-      secret_id = var.vault_approle_secret_id
-    }
-  }
-}
+#     parameters = {
+#       role_id   = var.vault_approle_role_id
+#       secret_id = var.vault_approle_secret_id
+#     }
+#   }
+# }
 
 # Spectro Cloud
 variable "sc_host" {}
-variable "sc_username" {}
-variable "sc_password" {}
+variable "sc_api" {}
 variable "sc_project_name" {}
 
 provider "spectrocloud" {
   host         = var.sc_host
-  username     = var.sc_username
-  password     = var.sc_password
+  api_key      = var.sc_api
   project_name = var.sc_project_name
 }
 

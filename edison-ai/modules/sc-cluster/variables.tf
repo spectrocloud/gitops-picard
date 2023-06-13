@@ -7,10 +7,10 @@ variable "cluster_profile_id" {
 variable "cluster_cloud_account_id" {
   description = "the cloud account id"
 }
-variable "cluster_rbac" {
-  description = "RBAC mapping"
-  type = any
-}
+# variable "cluster_rbac" {
+#   description = "RBAC mapping"
+#   type = any
+# }
 variable "aws_region" {
   description = "AWS Region (e.g: us-west-2)"
 }
@@ -26,6 +26,11 @@ variable "aws_worker_azs_subnets_map" {
   type = map(string)
 }
 
+variable "worker_count" {
+  description = "number of workers"
+  type = number
+}
+
 # variable "cluster_packs" {
 #   type = map(object({
 #     tag = string
@@ -37,6 +42,6 @@ locals {
   n = var.cluster_name
 
   # Replace all the funky quotes
-  rbac_yaml = replace(yamlencode(var.cluster_rbac), "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
+  # rbac_yaml = replace(yamlencode(var.cluster_rbac), "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
 
 }
