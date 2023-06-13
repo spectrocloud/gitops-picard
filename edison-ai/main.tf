@@ -20,3 +20,4 @@ data "spectrocloud_cluster_profile" "sc" {
   name    = "ProdEKS-minimum"
   version = "1.0.1"
 }
+
