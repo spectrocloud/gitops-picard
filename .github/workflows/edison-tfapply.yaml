@@ -16,7 +16,7 @@ on:
     #types: [edited, opened, synchronize, reopened]
 
 env:
-  SPECTROCLOUD_TF_PATH: edison
+  SPECTROCLOUD_TF_PATH: edison-ai
   SPECTROCLOUD_WORKSPACE: default
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
