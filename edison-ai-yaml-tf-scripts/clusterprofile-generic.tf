@@ -30,7 +30,7 @@ locals {
 locals {
   profile_ids = merge({
     // TODO rename to aws
-    ProdEKS-minimum    = data.spectrocloud_cluster_profile.prodeks_min.id
+    ProdEKS-minimum = data.spectrocloud_cluster_profile.prodeks_min.id
     # ProdEKS-1    = spectrocloud_cluster_profile.this.id
     # ProdVMware-1 = data.spectrocloud_cluster_profile.vmware.id
     }, {
