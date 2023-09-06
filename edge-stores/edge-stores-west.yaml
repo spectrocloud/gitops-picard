@@ -40,7 +40,7 @@
         - "edge-672e1a42584b98026ec65a4b2557bf0f"
   profiles:
     - name: ubuntu-k3s
-      tag: 1.0.0
+      tag: 2.0.0
       context: project
     # - name: edge-apps-web
     #   tag: 2.5.0
