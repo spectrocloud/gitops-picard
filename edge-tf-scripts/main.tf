@@ -1,14 +1,30 @@
-
 terraform {
   required_version = ">= 0.14.0"
 
   required_providers {
     spectrocloud = {
-      version = ">= 0.11.0"
-      source  = "spectrocloud/spectrocloud"
+      #version = "> 0.4.1"
+      source = "spectrocloud/spectrocloud"
     }
   }
+
+  backend "s3" {
+    bucket = "terraform-state-spectro"
+    key    = "project-edge-stores/terraform.tfstate"
+    region = "us-east-1"
+    #endpoint                    = "https://10.10.137.64:9000"
+    #skip_credentials_validation = true
+    #skip_metadata_api_check     = true
+    #skip_region_validation      = true
+    #force_path_style            = true
+    #access_key, secret_key initialize with backend-config
+  }
 }
+
+# Spectro Cloud
+variable "sc_host" {}
+variable "sc_api_key" {}
+variable "sc_project_name" {}
 
 provider "spectrocloud" {
   host         = var.sc_host
@@ -16,31 +32,6 @@ provider "spectrocloud" {
   project_name = var.sc_project_name
 }
 
-
-# Spectro Cloud
-variable "sc_host" {}
-variable "sc_api_key" {}
-variable "sc_project_name" {}
-
-terraform {
-  required_version = ">= 0.15.0"
-  backend "etcdv3" {
-    lock   = true
-    prefix = "/spectrocloud-edge/"
-    #endpoints  = ["ip:2379"] # Passed in from terraform
-    cacert_path = "certs/ca.crt"
-    cert_path   = "certs/client.crt"
-    key_path    = "certs/client.key"
-  }
-
-
-  required_providers {
-    spectrocloud = {
-      version = "=0.10.5"
-      source  = "spectrocloud/spectrocloud"
-    }
-  }
-}
 
 locals {
   # TODO remove?
