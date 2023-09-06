@@ -42,7 +42,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init
+      run: terraform init -backend-config="access_key=${{ secrets.SC_S3_ACCESS_KEY }}" -backend-config="secret_key=${{ secrets.SC_S3_SECRET_KEY }}"
 
     - name: Terraform Workspace
       id: workspace
