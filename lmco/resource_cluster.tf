@@ -6,9 +6,17 @@ resource "spectrocloud_cluster_aws" "cluster" {
   # Tags to be set in AWS for the cluster
   tags = ["owner:bob"]
 
+  # Infra profile
   cluster_profile {
     id = data.spectrocloud_cluster_profile.infra_demo.id
   }
+
+  # Addon profile
+  cluster_profile {
+    id = spectrocloud_cluster_profile.addon_profile.id
+  }
+
+  # Cloud account to use for cluster provisioning
   cloud_account_id = data.spectrocloud_cloudaccount_aws.demo_cloudaccount.id
 
   cloud_config {
@@ -18,20 +26,11 @@ resource "spectrocloud_cluster_aws" "cluster" {
     vpc_id           = "vpc-04906e2f9614976bf"
   }
 
-  /*backup_policy {
-    schedule                  = "0 0 * * SUN"
-    backup_location_id        = data.spectrocloud_backup_storage_location.bsl.id
-    prefix                    = "prod-backup"
-    expiry_in_hour            = 7200
-    include_disks             = true
-    include_cluster_resources = true
-  }
-
   scan_policy {
     configuration_scan_schedule = "0 0 * * SUN"
     penetration_scan_schedule   = "0 0 * * SUN"
     conformance_scan_schedule   = "0 0 1 * *"
-  }*/
+  }
 
   machine_pool {
     # Labels to be set on the nodes in this pool
