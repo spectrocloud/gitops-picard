@@ -22,7 +22,6 @@ kubeadmconfig:
       # Note : secure-port flag is used during kubeadm init. Do not change this flag on a running cluster
       secure-port: "6443"
       anonymous-auth: "true"
-      insecure-port: "0"
       profiling: "false"
       disable-admission-plugins: "AlwaysAdmit"
       default-not-ready-toleration-seconds: "60"

@@ -1,23 +1,23 @@
 data "spectrocloud_pack" "vault-stg" {
-  name    = "vault"
-  version = "0.17.1"
+  name    = var.vault_name
+  version = var.vault_version
 }
 data "spectrocloud_pack" "nginx-stg" {
-  name    = "nginx"
-  version = "1.2.1"
+  name    = var.nginx_name
+  version = var.nginx_version
 }
 data "spectrocloud_pack" "cni-vsphere-stg" {
-  name    = "cni-cilium-oss"
-  version = "1.12.6"
+  name    = var.cni_name
+  version = var.cni_version
 }
 data "spectrocloud_pack" "k8s-vsphere-stg" {
-  name    = "kubernetes"
-  version = "1.23.9"
+  name    = var.k8s_name
+  version = var.k8s_version
 }
 
 data "spectrocloud_pack" "cilium-tetragon" {
-  name    = "tetragon"
-  version = "0.8.3"
+  name    = var.tetragon_name
+  version = var.tetragon_version
 }
 locals {
   vault_values_stg = replace(
@@ -32,47 +32,47 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   cloud       = "vsphere"
   type        = "cluster"
   pack {
-    name = "ubuntu-vsphere"
-    tag  = "LTS__20.4.x"
+    name = var.os_name
+    tag  = var.os_version
     uid  = data.spectrocloud_pack.ubuntu-vsphere.id
     #values = data.spectrocloud_pack.ubuntu-vsphere.values
     values = file("config-stg/os_ubuntu.yaml")
   }
   pack {
-    name   = "kubernetes"
-    tag    = "1.23.9"
+    name   = var.k8s_name
+    tag    = var.k8s_version
     uid    = data.spectrocloud_pack.k8s-vsphere-stg.id
     values = data.spectrocloud_pack.k8s-vsphere-stg.values
   }
   pack {
-    name   = "cni-cilium-oss"
-    tag    = "1.12.6"
+    name   = var.cni_name
+    tag    = var.cni_version
     uid    = data.spectrocloud_pack.cni-vsphere.id
     values = data.spectrocloud_pack.cni-vsphere.values
   }
 
   pack {
-    name   = "tetragon"
-    tag    = "0.8.3"
+    name   = var.tetragon_name
+    tag    = var.tetragon_version
     uid    = data.spectrocloud_pack.cilium-tetragon.id
     values = data.spectrocloud_pack.cilium-tetragon.values
   }
   pack {
-    name   = "csi-vsphere-csi"
-    tag    = "2.6.x"
+    name   = var.csi_name
+    tag    = var.csi_version
     uid    = data.spectrocloud_pack.csi-vsphere.id
     values = data.spectrocloud_pack.csi-vsphere.values
   }
   pack {
-    name   = "vault"
-    tag    = "0.17.1"
+    name   = var.vault_name
+    tag    = var.vault_version
     uid    = data.spectrocloud_pack.vault-stg.id
     values = local.vault_values_stg
   }
 
   pack {
-    name   = "nginx"
-    tag    = "1.2.1"
+    name   = var.nginx_name
+    tag    = var.nginx_version
     uid    = data.spectrocloud_pack.nginx-stg.id
     values = file("config-stg/nginx.yaml")
 
@@ -89,8 +89,8 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   }
 
   pack {
-    name   = "dex"
-    tag    = "2.35.1"
+    name   = var.dex_name
+    tag    = var.dex_version
     uid    = data.spectrocloud_pack.dex.id
     values = file("config-stg/dex.yaml")
 

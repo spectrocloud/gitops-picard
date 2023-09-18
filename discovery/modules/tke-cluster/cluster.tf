@@ -54,12 +54,17 @@ resource "spectrocloud_cluster_vsphere" "this" {
     datacenter = var.global_config.datacenter
     folder     = "${var.vm_folder}/${local.n}"
     static_ip  = true
+    #ntp_servers = ["time.nist.gov","time.google.com"]
   }
 
   machine_pool {
     control_plane = true
     name          = "master-pool"
     count         = 1
+    #additional_labels = {
+      #"k8s.t-mobile.com/cmdb_app_id" = "APP0005963",
+      #"k8s.t-mobile.com/cmdb_app" = "TKE-test"
+    #}
 
     dynamic "placement" {
       for_each = local.placements
@@ -82,6 +87,9 @@ resource "spectrocloud_cluster_vsphere" "this" {
     for_each = ["wp-az1"]
     content {
       name  = machine_pool.value
+      additional_labels = {
+        "k8s.t-mobile.com/cmdb_app_id" = "APP0005963"
+      }
       count = var.cluster_workers_per_az
       placement {
         cluster           = local.placements[machine_pool.key].cluster
