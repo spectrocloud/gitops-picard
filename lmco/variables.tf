@@ -10,7 +10,7 @@ variable "aws_ssh_key_name" {
   description = "The SSH key to use for cluster provisioning"
 }
 variable "control_plane_lb" {
-  default     = "internal"  # [ internal, ]
+  default     = ""  # [ Use `internal` for private API server]
   description = "The ControlPlane API Server LoadBalancer type to use for cluster provisioning"
 }
 
