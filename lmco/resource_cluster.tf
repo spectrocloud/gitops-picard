@@ -22,8 +22,8 @@ resource "spectrocloud_cluster_aws" "cluster" {
   cloud_config {
     ssh_key_name     = var.aws_ssh_key_name
     control_plane_lb = var.control_plane_lb
-    region           = "us-gov-east-1"
-    vpc_id           = "vpc-04906e2f9614976bf"
+    region           = var.aws_region
+    vpc_id           = var.aws_vpcid
   }
 
   scan_policy {
@@ -42,8 +42,8 @@ resource "spectrocloud_cluster_aws" "cluster" {
     #additional_security_groups = []
     name          = "master-pool"
     count         = 1
-    instance_type = "t3.xlarge"
-    disk_size_gb  = 60
+    instance_type = var.default_instance_type
+    disk_size_gb  = var.default_disk_size
     az_subnets = {
       "us-gov-east-1a" = "subnet-017ef5ac4267b5730,subnet-053f4a19e6b358731"
     }
@@ -57,8 +57,8 @@ resource "spectrocloud_cluster_aws" "cluster" {
     #additional_security_groups = []
     name          = "worker-pool"
     count         = 1
-    instance_type = "t3.xlarge"
-    disk_size_gb  = 60
+    instance_type = var.default_instance_type
+    disk_size_gb  = var.default_disk_size
     az_subnets = {
       "us-gov-east-1a" = "subnet-017ef5ac4267b5730"
     }

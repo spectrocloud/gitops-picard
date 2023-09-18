@@ -6,8 +6,8 @@ resource "spectrocloud_cluster_profile" "addon_profile" {
   type        = "add-on"
 
   pack {
-    name   = var.argocd_name
-    tag    = var.argocd_version
+    name   = var.pack_name_argocd
+    tag    = var.pack_version_argocd
     uid    = data.spectrocloud_pack.argo-cd.id
     values = file("config/argocd.yaml")
   }
