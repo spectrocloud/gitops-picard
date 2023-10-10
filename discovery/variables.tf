@@ -4,7 +4,7 @@ variable "os_name" {
   description = "The Kubernetes pack version to use for the profile & cluster"
 }
 variable "os_version" {
-  default = "LTS__20.4.x"
+  default = "22.04"
   description = "The OS pack version/tag to use for the profile & cluster"
 }
 
@@ -13,7 +13,7 @@ variable "k8s_name" {
   description = "The Kubernetes pack name to use for the profile & cluster"
 }
 variable "k8s_version" {
-  default = "1.24.10"
+  default = "1.25.9"
   description = "The Kubernetes pack version to use for the profile & cluster"
 }
 
