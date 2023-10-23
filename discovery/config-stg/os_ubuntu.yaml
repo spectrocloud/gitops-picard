@@ -6,6 +6,8 @@
 kubeadmconfig:
   preKubeadmCommands:
     - echo "Executing pre kube admin config commands"
+    - 'ethtool -K eth0 tx-udp_tnl-segmentation off'
+    - 'ethtool -K eth0 tx-udp_tnl-csum-segmentation off'
     - update-ca-certificates
     - "systemctl restart containerd; sleep 3"
     - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
