@@ -13,7 +13,7 @@ variable "k8s_name" {
   description = "The Kubernetes pack name to use for the profile & cluster"
 }
 variable "k8s_version" {
-  default = "1.25.9"
+  default = "1.25.10"
   description = "The Kubernetes pack version to use for the profile & cluster"
 }
 
