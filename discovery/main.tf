@@ -61,13 +61,13 @@ locals {
     ssh_public_key = "Demo"
 
     worker_node = {
-      cpu       = 4
+      cpu       = 5
       memory_mb = 8192
       disk_gb   = 60
     }
 
     api_node = {
-      cpu       = 4
+      cpu       = 5
       memory_mb = 8192
       disk_gb   = 60
     }

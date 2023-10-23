@@ -2,6 +2,9 @@ pack:
   #The namespace (on the target cluster) to install this chart
   #When not found, a new namespace will be created
   namespace: "nginx"
+  namespaceLabels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: v1.25
 
 charts:
   ingress-nginx:
@@ -217,6 +220,10 @@ charts:
           operator: "Equal"
           value: ""
           effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
 
       # -- Affinity and anti-affinity rules for server scheduling to nodes
       ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -283,7 +290,7 @@ charts:
       ##
       nodeSelector:
         kubernetes.io/os: linux
-        node-role.kubernetes.io/master: ""
+        node-role.kubernetes.io/control-plane: ""
 
       ## Liveness and readiness probe values
       ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes

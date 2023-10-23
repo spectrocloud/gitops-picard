@@ -16,13 +16,12 @@ kubeadmconfig:
       oidc-client-id: "spectrocloud"
       oidc-groups-claim: "groups"
       oidc-issuer-url: "https://${issuerURL}"
-      oidc-username-claim: "name"
+      oidc-username-claim: "email"
       oidc-username-prefix: "-"
 
       # Note : secure-port flag is used during kubeadm init. Do not change this flag on a running cluster
       secure-port: "6443"
       anonymous-auth: "true"
-      insecure-port: "0"
       profiling: "false"
       disable-admission-plugins: "AlwaysAdmit"
       default-not-ready-toleration-seconds: "60"
