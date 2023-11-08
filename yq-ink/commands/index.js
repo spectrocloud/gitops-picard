@@ -17,7 +17,7 @@ import { exec } from "child_process";
 
 
 
-const TAG_SEPARATOR = /: ?/;
+const TAG_SEPARATOR = ":";
 
 function getStoreTagValue(store, key) {
   const tagString = (store?.cluster_tags || []).find((tag) => {
@@ -267,7 +267,7 @@ export default function CliForm() {
     async function submit() {
       const conditions = data.filters.map((filter, index) => {
         let includes = (filter?.value || []).map(
-          (val) => `contains({"cluster_tags": ["${filter.tag}: ${val}"]})`
+          (val) => `contains({"cluster_tags": ["${filter.tag}${TAG_SEPARATOR}${val}"]})`
         );
         const template = `${includes.join(" or ")}`;
 
@@ -282,7 +282,7 @@ export default function CliForm() {
         data.operation === "infra" ? 0 : 1
       }].tag = "${data.newTag}"`;
 
-
+      console.log(`yq -i '[.[] | select(${conditions.join(" ")}).${operation}]'`);
       const executions = data.files.map((file) => {
         return executeCommand(
           `yq -i '[.[] | select(${conditions.join(" ")}).${operation}]'`,
