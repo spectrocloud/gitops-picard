@@ -1,6 +1,3 @@
-# #############################################
-# # 501
-# #############################################
 - name: store-501-pa-phil
   cluster_vip: 10.10.171.171
   cluster_tags:
@@ -11,16 +8,16 @@
   node_pools:
     - name: control-plane
       control_plane: true
-      edge_host_uid: 
+      edge_host_uid:
         - "edge-59d71a421bed182e3ee7215e0558ddc0"
   profiles:
     - name: ubuntu-k3s
       tag: 1.0.0
       context: project
-    # - name: edge-apps-web
-    #   tag: 2.5.0
-    #   context: project
-  location: 
+      # - name: edge-apps-web
+      #   tag: 2.5.0
+      #   context: project
+  location:
     latitude: 39.952583
     longitude: -75.165222
 ##############################################
@@ -36,16 +33,16 @@
   node_pools:
     - name: control-plane
       control_plane: true
-      edge_host_uid: 
+      edge_host_uid:
         - "edge-78c91a42a12849ff7679d2dd7d7b4e5a"
   profiles:
     - name: ubuntu-k3s
       tag: 1.0.0
       context: project
-    # - name: edge-apps-web
-    #   tag: 2.5.0
-    #   context: project
-  location: 
+      # - name: edge-apps-web
+      #   tag: 2.5.0
+      #   context: project
+  location:
     latitude: 40.735657
     longitude: -74.172363
 ##############################################
@@ -61,69 +58,15 @@
   node_pools:
     - name: control-plane
       control_plane: true
-      edge_host_uid: 
+      edge_host_uid:
         - "edge-92371a428923d05ce4228043fa1114f2"
   profiles:
     - name: ubuntu-k3s
       tag: 1.0.0
       context: project
-    # - name: edge-apps-web
-    #   tag: 2.5.0
-    #   context: project
-  location: 
+      # - name: edge-apps-web
+      #   tag: 2.5.0
+      #   context: project
+  location:
     latitude: 40.440624
     longitude: -79.995888
-##############################################
-## 504
-#############################################
-#- name: store-504-ga-atl
-#  cluster_vip: 10.10.171.174
-#  cluster_tags:
-#    - "type: reserve" # drive-thru, reserve,edge_host_uid combo
-#    - "stage: true"
-#    - "vm-name: picard-edge-4"
-#    - "region: east"
-#  node_pools:
-#    - name: control-plane
-#      control_plane: true
-#      edge_host_uid: 
-#        - "edge-aca6384272e8e66eec5b6768ffb8bb72"
-#      # edge_host_tags:
-#      #   name: ga-atl-01
-#  profiles:
-#    - name: ubuntu-k3s
-#      tag: 1.25.2
-#      context: project
-#    - name: edge-apps-web
-#      tag: 2.5.0
-#      context: project
-#  location: 
-#    latitude: 33.748997
-#    longitude: -84.387985
-##############################################
-## 505
-#############################################
-#- name: store-505-fl-miami
-#  cluster_vip: 10.10.171.175
-#  cluster_tags:
-#    - "type: reserve" # drive-thru, reserve,edge_host_uid combo
-#    - "stage: true"
-#    - "vm-name: picard-edge-5"
-#    - "region: east"
-#  node_pools:
-#    - name: control-plane
-#      control_plane: true
-#      edge_host_uid: 
-#        - "edge-673138421edf4b61ff40426b00ab40ef"
-#      # edge_host_tags:
-#      #   name: fl-mia-01
-#  profiles:
-#    - name: ubuntu-k3s
-#      tag: 1.25.2
-#      context: project
-#    - name: edge-apps-web
-#      tag: 2.5.0
-#      context: project
-#  location: 
-#    latitude: 25.761681
-#    longitude: -80.191788
