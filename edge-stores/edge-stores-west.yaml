@@ -9,9 +9,9 @@
     - name: control-plane
       control_plane: true
       edge_host_uid:
-        - "edge-bf7e1a420afb00bb326c86087f5b1196"
+        - "edge-dfe01142855ab77a002e4ae8ced805b0"
   profiles:
-    - name: ubuntu-k3s
+    - name: edge-ubuntu-k3s
       tag: 1.0.0
       context: project
       # - name: edge-apps-web
@@ -34,10 +34,10 @@
     - name: control-plane
       control_plane: true
       edge_host_uid:
-        - "edge-672e1a42584b98026ec65a4b2557bf0f"
+        - "edge-84f31142135c554246d171784e144786"
   profiles:
-    - name: ubuntu-k3s
-      tag: 2.0.0
+    - name: edge-ubuntu-k3s
+      tag: 1.0.0
       context: project
       # - name: edge-apps-web
       #   tag: 2.5.0
@@ -59,9 +59,9 @@
     - name: control-plane
       control_plane: true
       edge_host_uid:
-        - "edge-45381a4272084fd8a4c5228b076eb3dc"
+        - "edge-3a911142cf728c273e1097012403e026"
   profiles:
-    - name: ubuntu-k3s
+    - name: edge-ubuntu-k3s
       tag: 1.0.0
       context: project
       # - name: edge-apps-web
