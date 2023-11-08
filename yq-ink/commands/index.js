@@ -17,7 +17,7 @@ import { exec } from "child_process";
 
 
 
-const TAG_SEPARATOR = ": ";
+const TAG_SEPARATOR = /: ?/;
 
 function getStoreTagValue(store, key) {
   const tagString = (store?.cluster_tags || []).find((tag) => {
