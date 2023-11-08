@@ -1,11 +1,11 @@
-data "spectrocloud_registry_oci" "prod-azure" {
-  name = "picard-prod-azure"
-}
+# data "spectrocloud_registry_oci" "prod-azure" {
+#   name = "picard-prod-azure"
+# }
 
 locals {
-  cp_files = fileset("${path.module}/config", "profiles-*.yaml")
+  cp_files = fileset("${path.module}/config/profiles", "profiles-*.yaml")
 
-  cp_list = yamldecode(join("\n", [for i in local.cp_files : file("config/${i}")]))
+  cp_list = yamldecode(join("\n", [for i in local.cp_files : file("config/profiles/${i}")]))
 
   cp = {
     for e in local.cp_list :
