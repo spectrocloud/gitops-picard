@@ -14,9 +14,9 @@
     - name: edge-ubuntu-k3s
       tag: 1.0.0
       context: project
-      # - name: edge-apps-web
-      #   tag: 2.5.0
-      #   context: project
+    - name: Shopping-Assistant
+      tag: 1.0.0
+      context: project
   location:
     latitude: 47.608013
     longitude: -122.335167
@@ -39,9 +39,9 @@
     - name: edge-ubuntu-k3s
       tag: 1.0.0
       context: project
-      # - name: edge-apps-web
-      #   tag: 2.5.0
-      #   context: project
+    - name: Shopping-Assistant
+      tag: 1.0.0
+      context: project
   location:
     latitude: 37.342205
     longitude: -121.851990
@@ -64,9 +64,9 @@
     - name: edge-ubuntu-k3s
       tag: 1.0.0
       context: project
-      # - name: edge-apps-web
-      #   tag: 2.5.0
-      #   context: project
+    - name: Shopping-Assistant
+      tag: 1.0.0
+      context: project
   location:
     latitude: 36.188110
     longitude: -115.176468
