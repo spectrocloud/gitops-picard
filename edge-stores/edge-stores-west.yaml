@@ -12,7 +12,7 @@
         - "edge-dfe01142855ab77a002e4ae8ced805b0"
   profiles:
     - name: edge-ubuntu-k3s
-      tag: 2.0.0
+      tag: 1.0.0
       context: project
     - name: Shopping-Assistant
       tag: 1.0.0
@@ -37,7 +37,7 @@
         - "edge-84f31142135c554246d171784e144786"
   profiles:
     - name: edge-ubuntu-k3s
-      tag: 2.0.0
+      tag: 1.0.0
       context: project
     - name: Shopping-Assistant
       tag: 1.0.0
