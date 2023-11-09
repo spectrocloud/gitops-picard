@@ -1,7 +1,7 @@
 - name: store-601-wa-seattle
   cluster_vip: 10.10.171.176
   cluster_tags:
-    - "type:reserve" # drive-thru, reserve, combo
+    - "type:drive-thru" # drive-thru, reserve, combo
     - "stage:true"
     - "vm-name:edge-store-1"
     - "region:west"
@@ -26,7 +26,7 @@
 - name: store-602-ca-sjc
   cluster_vip: 10.10.171.177
   cluster_tags:
-    - "type:reserve" # drive-thru, reserve, combo
+    - "type:drive-thru" # drive-thru, reserve, combo
     - "stage:true"
     - "vm-name:edge-store-2"
     - "region:west"
