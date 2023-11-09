@@ -26,7 +26,7 @@
 - name: store-502-nj-newark
   cluster_vip: 10.10.171.172
   cluster_tags:
-    - "type:reserve" # drive-thru, reserve,edge_host_uid combo
+    - "type:drive-thru" # drive-thru, reserve,edge_host_uid combo
     - "stage:true"
     - "vm-name:edge-store-5"
     - "region:east"
