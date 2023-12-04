@@ -9,8 +9,6 @@ kubeadmconfig:
     - update-ca-certificates
     - "systemctl restart containerd; sleep 3"
     - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
-    - echo "Fetch image cred provider"
-    - '/etc/kubernetes/deploy-cred-provider.sh'
   postKubeadmCommands:
     - echo "Executing post kube admin config commands"
     - '/etc/kubernetes/pwx-node-labeler.sh'
@@ -50,59 +48,6 @@ kubeadmconfig:
           #For control-plane nodes, use admin.conf
           export KUBECONFIG=/etc/kubernetes/admin.conf;
           kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
-        fi
-    - targetPath: "/etc/kubernetes/kubelet-credential-provider.yaml"
-      targetOwner: "root:root"
-      targetPermissions: "0644"
-      content: |
-        apiVersion: kubelet.config.k8s.io/v1alpha1
-        kind: CredentialProviderConfig
-        providers:
-          - name: get-image-credentials
-            matchImages:
-            - "*.gitlab.com*"
-            defaultCacheDuration: "1m"
-            apiVersion: credentialprovider.kubelet.k8s.io/v1alpha1
-            args:
-             - get-credentials
-            env:
-             - name: NAMESPACE
-               value: images
-             - name: GITLAB_USERNAME
-               value: kubelet
-             - name: KUBECONFIG_LOCATION
-               value: /etc/kubernetes/kubelet.conf
-             - name: GITLAB_TOKEN_SECRET_LOCATION
-               value: gat
-    - targetPath: "/etc/kubernetes/deploy-cred-provider.sh"
-      targetOwner: "root:root"
-      targetPermissions: "0700"
-      content: |
-        #!/bin/bash
-        # Stage the binary file that will fetch the image pull token for kubelet
-        # NOTE:  This token is not sensitive and ONLY allows a pull from a specific repo; and there is no business specific information inside the repo.
-        CRED_PROVIDER_BIN_GAT="glpat-4ezoCyYykp6-wjfSTd35"
-        CRED_PROVIDER_BIN="/usr/bin/get-image-credentials"
-        # Find out if we are in an environment that needs proxy to get to gitlab
-        USE_PROXY="false"
-        ENV=$(hostname | awk -F '-' '{print substr($2,1,3)}' )
-        if [ "$ENV" = "snd" ] || [ "$ENV" = "npe" ] || [ "$ENV" = "nmn" ] || [ "$ENV" = "enc" ]; then
-            USE_PROXY="true"
-        fi
-        
-        if [ "$USE_PROXY" = "true" ]; then
-            /usr/bin/curl -L -s --proxy proxy.internal.t-mobile.com:9090 -m 300 --header "Private-Token: $CRED_PROVIDER_BIN_GAT" https://gitlab.com/api/v4/projects/37411584/repository/files/get-image-credentials%2Fget-image-credentials/?ref=tmo/\main | /usr/bin/jq -r '.content' | /usr/bin/base64 -d > "$CRED_PROVIDER_BIN"
-            chmod 755 "$CRED_PROVIDER_BIN"
-        else
-            /usr/bin/curl -L -s -m 300 --header "Private-Token: $CRED_PROVIDER_BIN_GAT" https://gitlab.com/api/v4/projects/37411584/repository/files/get-image-credentials%2Fget-image-credentials/?ref=tmo/\main | /usr/bin/jq -r '.content' | /usr/bin/base64 -d > "$CRED_PROVIDER_BIN"
-            chmod 755 "$CRED_PROVIDER_BIN"
-        fi
-        
-        if [ -x "$CRED_PROVIDER_BIN" ] && [ -s "$CRED_PROVIDER_BIN" ]; then
-            exit 0
-        else
-            echo "$CRED_PROVIDER_BIN not installed correctly."
-            exit 1
         fi
     - targetPath: /usr/local/share/ca-certificates/root_ca.crt
       targetOwner: "root:root"
