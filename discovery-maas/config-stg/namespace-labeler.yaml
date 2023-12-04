@@ -1,0 +1,163 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: namespace-labeler
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: namespace-labeler
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: namespace-labeler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: namespace-labeler
+subjects:
+  - kind: ServiceAccount
+    name: namespace-labeler
+    namespace: default
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: namespace-labeler
+spec:
+  template:
+    metadata:
+      name: namespace-labeler
+    spec:
+      serviceAccountName: namespace-labeler
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: main
+          image: gcr.io/spectro-images-public/debug/spectro-util:1.0.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -xc
+            - |
+
+              declare -a labels_arr=(
+              "k8s.t-mobile.com/akmid=APM0103270"
+              "k8s.t-mobile.com/director=KSchmid22"
+              "k8s.t-mobile.com/slack_alerts_channel=k8s_alerts"
+              )
+
+              declare -a annotation_arr=(
+              "collectord.io/logs-index=kubernetes_admin"
+              "collectord.io/events-index=kubernetes_admin"
+              )
+
+              declare -a spectro_namespaces_arr=(
+              "cert-manager" "capi-kubeadm-bootstrap-system"
+              "capi-kubeadm-control-plane-system" "capi-webhook-system"
+              "kube-node-lease" "kube-public" "kube-system"
+              "dex" "vault" "default" "tke-system" "reach-system")
+
+              echo "$(date) Processing namespace label updates"
+
+              #Sleep for 5 mins for all the addon namespaces to be processed
+              echo "$(date) Sleep for 5m for all addon namespaces to be created"
+              sleep 5m
+
+              export KUBECONFIG=/etc/kubernetes/admin.conf
+              CLUSTER_NAME=$(kubectl config current-context)
+              output=$(echo "$CLUSTER_NAME" | sed -n 's/.\{20\}\(.\{3\}\).*/\1/p')
+              echo $CLUSTER_NAME
+              LABEL_KEY="k8s.t-mobile.com/cmdb_app_id"
+
+              case "$output" in
+                "snd" | "npe")
+                  export LABEL_VALUE="APP0005963"
+                  ;;
+                "prd" | "cde" | "enc" | "nmn")
+                  export LABEL_VALUE="APP0004600"
+                  ;;
+                "stg")
+                  export LABEL_VALUE="APP0017032"
+                  ;;
+              esac
+
+              #Find the special cluster namespace
+              cluster_ns=$(kubectl get ns --output=custom-columns="Name:.metadata.name" --no-headers=true -l 'spectrocloud.com/cluster-name')
+              echo "Cluster ns is ${cluster_ns}"
+
+              #Add the cluster namespace to the existing array
+              spectro_namespaces_arr+=($cluster_ns)
+
+              echo "Namespaces to process : ${spectro_namespaces_arr[@]}"
+              echo "Labels to process : ${labels_arr[@]}"
+              echo "Annotations to process : ${annotation_arr[@]}"
+              echo "Labels to process : ${LABEL_VALUE}"
+
+              for ns in "${spectro_namespaces_arr[@]}"
+              do
+                #Check if namespace exists
+                if kubectl get ns "${ns}" >/dev/null 2>&1; then
+                  echo "$(date) Updating labels for namespace ${ns}"
+                  kubectl label namespace "${ns}" "${labels_arr[@]}" --overwrite
+                  kubectl label namespace "${ns}" "$LABEL_KEY"="$LABEL_VALUE" --overwrite
+                  
+                  #Label deployments and daemonsets
+                  resources=$(kubectl get deployments,daemonsets -n "${ns}" --no-headers=true --output=custom-columns=KIND:.kind,NAME:.metadata.name)
+                  if [[ -n $resources ]]; then
+                    while IFS= read -r line; do
+                      kind=$(echo "$line" | awk '{print $1}')
+                      name=$(echo "$line" | awk '{print $2}')
+
+                      echo "$(date) Updating label ${label} for ${kind} ${name} in namespace ${ns}"
+                      kubectl label "${kind}" "${name}" -n "${ns}" "$LABEL_KEY"="$LABEL_VALUE" --overwrite
+                      kubectl patch "${kind}" "${name}" -n "${ns}"  --type='json' -p='[{"op": "add", "path": "/spec/template/metadata/labels/k8s.t-mobile.com~1cmdb_app_id", "value":"'"$LABEL_VALUE"'"}]'
+                    done <<< "$resources"
+                  else
+                    echo "No deployment or DaemonSet in namespace ${ns}"
+                  fi
+
+                  #Add Annotations
+                  for annotation in "${annotation_arr[@]}"
+                  do
+                   echo "$(date) Updating annotations ${annotation} for ${ns}"
+                   kubectl annotate namespace ${ns} ${annotation} --overwrite
+                  done
+                else
+                  echo "Namespace ${ns} doesn't exist, skipping label updates"
+                fi
+              done
+
+          volumeMounts:
+            - mountPath: /etc/kubernetes/admin.conf
+              name: k8s-config
+              readOnly: true
+      restartPolicy: OnFailure
+      volumes:
+        - name: k8s-config
+          hostPath:
+            path: /etc/kubernetes/admin.conf
+---
