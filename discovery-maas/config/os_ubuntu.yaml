@@ -1,0 +1,197 @@
+# Spectro Golden images includes most of the hardening standards recommended by CIS benchmarking v1.5
+# Uncomment below section to
+# 1. Include custom files to be copied over to the nodes and/or
+# 2. Execute list of commands before or after kubeadm init/join is executed
+#
+kubeadmconfig:
+  preKubeadmCommands:
+    - echo "Executing pre kube admin config commands"
+    - update-ca-certificates
+    - "systemctl restart containerd; sleep 3"
+    - 'while [ ! -S /var/run/containerd/containerd.sock ]; do echo "Waiting for containerd..."; sleep 1; done'
+    # Install common packages that Portworx wants but sometimes fails to install itself
+    - apt update
+    - apt install -y nfs-common dbus rpcbind nfs-kernel-server
+    # Build 0.9.5 of multipath-tools as the 0.8.x versions that come with Ubuntu have issues
+    - |
+      apt install -y make pkg-config gcc libmount-dev libdevmapper-dev libaio-dev libudev-dev libjson-c-dev liburcu-dev libsystemd-dev
+      mkdir /tmp/mptools
+      cd /tmp/mptools
+      wget "https://github.com/opensvc/multipath-tools/archive/0.9.5.tar.gz" -O multipath-tools-0.9.5.tar.gz
+      tar xvf multipath-tools-0.9.5.tar.gz
+      cd multipath-tools-0.9.5
+      make
+      make install
+      ldconfig /lib64
+    # Start multipath-tools and containerd with new configuration
+    - systemctl daemon-reload
+    - systemctl restart containerd
+    - systemctl restart multipathd
+  postKubeadmCommands:
+    - echo "Executing post kube admin config commands"
+    - '/etc/kubernetes/pwx-node-labeler.sh'
+    - '/etc/kubernetes/node-labeler.sh'
+  files:
+    - targetPath: /etc/kubernetes/pwx-node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+          while [ -z $zone ]; do
+            echo "Waiting for zone label to get populated in the node $(hostname)...";
+            sleep 10;
+            zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.topology\.kubernetes\.io\/zone}");
+            #Check beta label as a fallback
+            [ -z "$zone" ] && zone=$(kubectl get node `hostname` -o jsonpath="{.metadata.labels.failure-domain\.beta\.kubernetes\.io\/zone}");
+          done;
+          echo "Zone label populated on the node is $zone";
+          kubectl label node `hostname` "px/rack=$zone";
+        else
+          echo "Skipping px-rack label for ControlPlane nodes"
+        fi
+    - targetPath: /etc/kubernetes/node-labeler.sh
+      targetOwner: "root:root"
+      targetPermissions: "0700"
+      content: |
+        #!/bin/bash
+        echo "Applying Cluster.name label to nodes"
+        if [[ ! -f /etc/kubernetes/admin.conf ]]; then
+          #For worker nodes, use kubelet.conf
+          export KUBECONFIG=/etc/kubernetes/kubelet.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        else
+          #For control-plane nodes, use admin.conf
+          export KUBECONFIG=/etc/kubernetes/admin.conf;
+          kubectl label node `hostname` "cluster.name={{ .spectro.system.cluster.name }}";
+        fi
+    - targetPath: /usr/local/share/ca-certificates/root_ca.crt
+      targetOwner: "root:root"
+      targetPermissions: "0644"
+      content: |
+        -----BEGIN CERTIFICATE-----
+        MIIIlzCCBn+gAwIBAgITYQAAAAZIEDGEWMDvewAAAAAABjANBgkqhkiG9w0BAQsF
+        ADAqMSgwJgYDVQQDEx9ULU1vYmlsZSBVU0EgRW50ZXJwcmlzZSBSb290IENBMB4X
+        DTE5MDkzMDE3MjMzNloXDTI0MDkzMDE3MzMzNlowXjETMBEGCgmSJomT8ixkARkW
+        A29yZzEXMBUGCgmSJomT8ixkARkWB2dzbTE5MDAxLjAsBgNVBAMTJVQtTW9iaWxl
+        IFVTQSBFbnRlcnByaXNlIElzc3VpbmcgQ0EgMDEwggEiMA0GCSqGSIb3DQEBAQUA
+        A4IBDwAwggEKAoIBAQCq7vgnZTlBzBxJVZHXW3H+PKToQTxM5gpbHC/eKxbZCuc1
+        m9Qik3sC6fXVWS0GBUUBqWv3Cg5wsvtDzbjTlnFvrFoE/kd4jXTjBrSU6trAa0zy
+        k8+wJs2rIzrj0qJYs/h4qqKS71eNCbc2bLgvqiVIGscWqwiEqwwXwy1gxXmL5B4e
+        x5FZDFasCXqt0DN8jBlTFdjnhjTRTN1hs5hRZvet8cLnS6v+/ZGya7wChidR4pBK
+        Q813xoInTmg4sYkftTD9EEHbsuoQCk/ekLnV7Vl0PNUukUju1fdjIW5qeLBbSGBK
+        MzpjS52Fm+e8mxUkEqHF1hEV5334Q2oi2akbS6QbAgMBAAGjggSAMIIEfDAOBgNV
+        HQ8BAf8EBAMCAQYwEgYJKwYBBAGCNxUBBAUCAwEAATAjBgkrBgEEAYI3FQIEFgQU
+        gqWYadTdnVYp8MnMLe3KljR+yT4wHQYDVR0OBBYEFFXoCpiPcvFsoRJtwdWDxwEU
+        WsMQMIIDAQYDVR0gBIIC+DCCAvQwggLwBgwrBgEEAZpWAR0gAgIwggLeMIICpAYI
+        KwYBBQUHAgIwggKWHoICkgBUAGgAaQBzACAAQwBlAHIAdABpAGYAaQBjAGEAdABp
+        AG8AbgAgAEEAdQB0AGgAbwByAGkAdAB5ACAAaQBzACAAYQAgAFQALQBNAG8AYgBp
+        AGwAZQAgAGkAbgB0AGUAcgBuAGEAbAAgAHIAZQBzAG8AdQByAGMAZQAuACAAIABD
+        AGUAcgB0AGkAZgBpAGMAYQB0AGUAcwAgAGkAcwBzAHUAZQBkACAAYgB5ACAAdABo
+        AGkAcwAgAEMAQQAgAGEAcgBlACAAaQBuAHQAZQBuAGQAZQBkACAAZgBvAHIAIABp
+        AG4AdABlAHIAbgBhAGwAIABUAC0ATQBvAGIAaQBsAGUAIAB1AHMAZQAgAG8AbgBs
+        AHkALgAgACAAQQAgAG4AbwBuAC0AVAAtAE0AbwBiAGkAbABlACAAcABhAHIAdAB5
+        ACAAcwBoAGEAbABsACAAcgBlAGwAeQAgAG8AbgAgAHQAaABpAHMAIABDAEEAIABh
+        AHQAIAB0AGgAZQBpAHIAIABvAHcAbgAgAHIAaQBzAGsALgAgACAARgBvAHIAIABt
+        AG8AcgBlACAAaQBuAGYAbwByAG0AYQB0AGkAbwBuACwAIABwAGwAZQBhAHMAZQAg
+        AHIAZQBmAGUAcgAgAHQAbwAgAHQAaABlACAAVAAtAE0AbwBiAGkAbABlACAAQwBl
+        AHIAdABpAGYAaQBjAGEAdABpAG8AbgAgAFAAcgBhAGMAdABpAGMAZQAgAFMAdABh
+        AHQAZQBtAGUAbgB0ACAAYQB0ACAAaAB0AHQAcAA6AC8ALwBjAHIAbAAuAHQALQBt
+        AG8AYgBpAGwAZQAuAGMAbwBtAC8AcABrAGkALwB0AG0AdQBzAGMAcABzAC4AaAB0
+        AG0wNAYIKwYBBQUHAgEWKGh0dHA6Ly9jcmwudC1tb2JpbGUuY29tL3BraS90bXVz
+        Y3BzLmh0bQAwGQYJKwYBBAGCNxQCBAweCgBTAHUAYgBDAEEwEgYDVR0TAQH/BAgw
+        BgEB/wIBADAfBgNVHSMEGDAWgBQcIw4eDJmgjChaoTO47fDeViOSizBYBgNVHR8E
+        UTBPME2gS6BJhkdodHRwOi8vY3JsLnQtbW9iaWxlLmNvbS9QS0kvVC1Nb2JpbGUl
+        MjBVU0ElMjBFbnRlcnByaXNlJTIwUm9vdCUyMENBLmNybDBjBggrBgEFBQcBAQRX
+        MFUwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwudC1tb2JpbGUuY29tL3BraS9ULU1v
+        YmlsZSUyMFVTQSUyMEVudGVycHJpc2UlMjBSb290JTIwQ0EuY3J0MA0GCSqGSIb3
+        DQEBCwUAA4ICAQBfZsEagcN+1l1lU+l3dI8FdLRff5c5fRdoUr5WGjPow3u06wrr
+        Pdbgcie4yWs4yuTvikvjGgDjtmGH2AWYx0xyav+BoEJhzsj7JcIh9IZ0ZXap9f8j
+        DKUSU61g220RNuPc995ZFoQfwNPLXE9d0Qzh3N8TUp4GmW92M2p7IgMwGa3kKqyC
+        reSV0iEvb2nAh4k1y1uG6zZNHBx72GEOAXq/ygc3ZmTpSL4AypopCdSAE1Uo0CpI
+        IoRxfuvTF9VgpmEmcBbgfrtvaJF18GaUuRrQhm4983G/HYsA0tUodYHgkYYlIqBd
+        nWEmFD+zQXiQmKDr+YNBXQHWTuuw8XFAdQOU0qw9nu8P6/j8EWmvHcOIcvRTPek6
+        pWR231qjd5IRTNj/mQB9H32gb3TkjqA6jbbBmLkcNRmE47iKOPsP8DouKdCNXBz2
+        jm7Eq/klgzbCwH4sragtCHH1qm/S3G7H8xloNxeBXTKbo1mnHh6MUTdgigTpzv82
+        IvgiXijwveTDGApigT14do1B2EbW8i/VluAVDKyWJmmdf5Llto57CsbJhP+p3PPS
+        1AHlr8UrmixzjW9skYnrbCQU3e7mwWZ1ZguhNf9JuTQsq2Biw+z6mwFlnRhHpSyC
+        OojrwhSnH2PecJlWriRhvq+XcXjRHyLuMJr5/aQDbl9isPl0E9Mry/EzoQ==
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        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
+        -----END CERTIFICATE-----
+    - targetPath: /etc/multipath.conf
+      targetOwner: "root:root"
+      targetPermissions: "0644"
+      content: |
+        defaults {
+          find_multipaths     yes
+          polling_interval    10
+        }
+        blacklist {
+          devnode "^pxd[0-9]*"
+          devnode "^pxd*"
+          device {
+            vendor "VMware"
+            product "Virtual disk"
+          }
+        }
+        devices {
+          device {
+            vendor                      "NVME"
+            product                     "Pure Storage FlashArray"
+            path_selector               "queue-length 0"
+            path_grouping_policy        group_by_prio
+            prio                        ana
+            failback                    immediate
+            fast_io_fail_tmo            10
+            user_friendly_names         no
+            no_path_retry               0
+            features                    0
+            dev_loss_tmo                60
+          }
+          device {
+            vendor                   "PURE"
+            product                  "FlashArray"
+            path_selector            "service-time 0"
+            hardware_handler         "1 alua"
+            path_grouping_policy     group_by_prio
+            prio                     alua
+            failback                 immediate
+            path_checker             tur
+            fast_io_fail_tmo         10
+            user_friendly_names      no
+            no_path_retry            0
+            features                 0
+            dev_loss_tmo             600
+          }
+        }
