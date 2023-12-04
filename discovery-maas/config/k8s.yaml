@@ -12,7 +12,6 @@ kubeadmconfig:
   apiServer:
     certSANs: ["${certSAN}"]
     extraArgs:
-      encryption-provider-config: "/etc/kubernetes/data-encryption.config"
       oidc-client-id: "spectrocloud"
       oidc-groups-claim: "groups"
       oidc-issuer-url: "https://${issuerURL}"
@@ -126,21 +125,6 @@ kubeadmconfig:
       content: |
         fs.inotify.max_user_watches=524288
         fs.inotify.max_user_instances=8192
-    - targetPath: /etc/kubernetes/data-encryption.config
-      targetOwner: "root:root"
-      targetPermissions: "0644"
-      content: |
-        apiVersion: apiserver.config.k8s.io/v1
-        kind: EncryptionConfiguration
-        resources:
-          - resources:
-            - secrets
-            providers:
-            - aescbc:
-                keys:
-                - name: key1
-                  secret: +cuzr6eA0QqKlQVLhsSGtUcFQ4UJ59BlTOFyOuO2vGM=
-            - identity: {}
   preKubeadmCommands:
     # For enabling 'protect-kernel-defaults' flag to kubelet, kernel parameters changes are required
     - 'echo "====> Applying kernel parameters for Kubelet"'
