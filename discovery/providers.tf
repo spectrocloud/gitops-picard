@@ -25,12 +25,6 @@ terraform {
 }
 
 # Vault
-variable "vault_address" {}
-variable "vault_approle_role_id" {}
-variable "vault_approle_secret_id" {}
-variable "vault_ldap_role_id" {}
-variable "vault_ldap_secret_id" {}
-
 provider "vault" {
   address               = var.vault_address
   token_name            = "sc_child"
@@ -48,11 +42,6 @@ provider "vault" {
 }
 
 # Spectro Cloud
-variable "sc_host" {}
-variable "sc_username" {}
-variable "sc_password" {}
-variable "sc_project_name" {}
-
 provider "spectrocloud" {
   host         = var.sc_host
   username     = var.sc_username
@@ -62,29 +51,8 @@ provider "spectrocloud" {
 }
 
 # Citrix ADC/Netscaler
-variable "ns_user" {}
-variable "ns_password" {}
-variable "ns_endpoint" {}
-
 provider "citrixadc" {
   username = var.ns_user
   password = var.ns_password
   endpoint = var.ns_endpoint
 }
-
-# Secrets from Vault (not supported when read operations are blocked)
-# data "vault_generic_secret" "sc_mgmt" {
-#   path = "secrets/mgmt-cluster"
-# }
-# # provider "spectrocloud"
-#   username = data.vault_generic_secret.sc_mgmt.data.username
-#   password = data.vault_generic_secret.sc_mgmt.data.password
-#   host     = data.vault_generic_secret.sc_mgmt.data.host
-
-# data "vault_generic_secret" "netscaler" {
-#   path = "secrets/netscaler"
-# }
-# provider "citrixadc"
-#   username = data.vault_generic_secret.netscaler.data.username
-#   password = data.vault_generic_secret.netscaler.data.password
-#   endpoint = data.vault_generic_secret.netscaler.data.endpoint

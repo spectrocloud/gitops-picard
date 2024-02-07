@@ -16,14 +16,14 @@ terraform {
 locals {
 
   global_config = {
-    
+
     # Domain
-    dns_domain       = "tke.t-mobile.com"
+    dns_domain = "tke.t-mobile.com"
 
     maas_domain = "maas"
 
     # Use the PCG or System cloud gateway id 
-    pcg_id           = "6463c66d6c0a8685c1390718"
+    pcg_id = "6463c66d6c0a8685c1390718"
 
     cloud_account_id = data.spectrocloud_cloudaccount_maas.default.id
 
