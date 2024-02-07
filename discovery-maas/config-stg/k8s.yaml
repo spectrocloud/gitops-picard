@@ -7,6 +7,10 @@ pack:
   # Note : This must not overlap with any IP ranges assigned to nodes for pods.
   serviceClusterIpRange: "198.19.0.0/16"
 
+cloud:
+  maas:
+    customEndpoint: "${cluster_api_endpoint}"
+
 # KubeAdm customization for kubernetes hardening. Below config will be ignored if k8sHardening property above is disabled
 kubeadmconfig:
   apiServer:
