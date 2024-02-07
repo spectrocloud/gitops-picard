@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket                      = "tke-prd-spectrocloud-tf-automation"
-    key                         = "prd6001/terraform.tfstate"
-    region                      = "us-west-2"
-    endpoint                    = "https://pxeit-fb02.pe.t-mobile.com"
+    bucket                      = "discovery-tf"
+    key                         = "discovery-maas/terraform.tfstate"
+    region                      = "ignored"
+    endpoint                    = "http://10.10.184.50:9199"
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
