@@ -19,7 +19,8 @@ resource "spectrocloud_cluster_maas" "this" {
       values = templatefile(var.cluster_packs["k8s"].file, {
         certSAN : "api-${local.fqdn}",
         issuerURL : "dex.${local.fqdn}",
-        etcd_encryption_key : random_id.etcd_encryption_key.b64_std
+        etcd_encryption_key : random_id.etcd_encryption_key.b64_std,
+        cluster_api_endpoint: var.cluster_api_endpoint
       })
     }
     pack {

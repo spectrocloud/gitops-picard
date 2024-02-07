@@ -9,6 +9,7 @@ module "tt-prd6102" {
   netscaler_vip_api      = "10.139.142.27"
   netscaler_vip_nodeport = "10.139.142.36"
   netscaler_vip_ingress  = "10.139.142.36"
+  cluster_api_endpoint   = "10.10.10.10"
 
   cluster_profile_id  = spectrocloud_cluster_profile.tt-prd6001-cilium.id
 

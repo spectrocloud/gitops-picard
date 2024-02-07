@@ -17,6 +17,11 @@ variable "maas_api_key" {
 }
 
 # Cluster
+variable "cluster_api_endpoint" {
+  description = "The API endpoint for the MAAS cluster"
+  default     = ""
+}
+
 variable "private_cloud_gateway_id" {
   description = "The private cloud gateway or the system gateway (for on-prem cases) id to connect to for provisioning the clusters"
   default     = ""
