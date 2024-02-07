@@ -4,14 +4,14 @@ module "tt-prd6102" {
   cluster_name           = "tt-prd6102"
   cluster_workers_per_az = 4
 
-  maas_resource_pool      = "TKE2_WP"
+  maas_resource_pool = "TKE2_WP"
 
   netscaler_vip_api      = "10.139.142.27"
   netscaler_vip_nodeport = "10.139.142.36"
   netscaler_vip_ingress  = "10.139.142.36"
   cluster_api_endpoint   = "10.10.10.10"
 
-  cluster_profile_id  = spectrocloud_cluster_profile.tt-prd6001-cilium.id
+  cluster_profile_id = spectrocloud_cluster_profile.tt-prd6001-cilium.id
 
   cluster_packs = {
     k8s = {

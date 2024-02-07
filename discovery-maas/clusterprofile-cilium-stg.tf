@@ -37,9 +37,9 @@ resource "spectrocloud_cluster_profile" "tt-prd6001-cilium-stg" {
   type        = "cluster"
 
   pack {
-    name = var.os_name
-    tag  = var.os_version
-    uid  = data.spectrocloud_pack.os-maas-stg.id
+    name   = var.os_name
+    tag    = var.os_version
+    uid    = data.spectrocloud_pack.os-maas-stg.id
     values = file("config-stg/os_ubuntu.yaml")
   }
   pack {
