@@ -8,7 +8,7 @@ terraform {
     }
 
     spectrocloud = {
-      version = "0.14.2"
+      version = "0.14.0"
       source  = "spectrocloud/spectrocloud"
     }
 

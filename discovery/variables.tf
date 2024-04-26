@@ -3,8 +3,12 @@ variable "os_name" {
   default = "ubuntu-vsphere"
   description = "The Kubernetes pack version to use for the profile & cluster"
 }
-variable "os_version" {
+variable "os_version_22_04" {
   default = "22.04"
+  description = "The OS pack version/tag to use for the profile & cluster"
+}
+variable "os_version_20_04" {
+  default = "20.04"
   description = "The OS pack version/tag to use for the profile & cluster"
 }
 
@@ -13,7 +17,7 @@ variable "k8s_name" {
   description = "The Kubernetes pack name to use for the profile & cluster"
 }
 variable "k8s_version" {
-  default = "1.25.10"
+  default = "1.24.13"
   description = "The Kubernetes pack version to use for the profile & cluster"
 }
 

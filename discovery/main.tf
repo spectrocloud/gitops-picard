@@ -4,6 +4,7 @@ terraform {
     key                         = "discovery/terraform.tfstate"
     region                      = "ignored"
     endpoint                    = "http://10.10.184.50:9199"
+    skip_requesting_account_id  = true
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
@@ -18,7 +19,7 @@ locals {
   global_config = {
     # Domain
     dns_domain       = "discovery.spectrocloud.com"
-    pcg_id           = "643dcacf4f008e28cc3f68c9"
+    pcg_id           = "66289d253c0a285a8e88a105"
     cloud_account_id = data.spectrocloud_cloudaccount_vsphere.default.id
 
     # Vault
@@ -61,13 +62,13 @@ locals {
     ssh_public_key = "Demo"
 
     worker_node = {
-      cpu       = 5
+      cpu       = 4
       memory_mb = 8192
       disk_gb   = 60
     }
 
     api_node = {
-      cpu       = 5
+      cpu       = 4
       memory_mb = 8192
       disk_gb   = 60
     }
@@ -77,8 +78,18 @@ locals {
     placements = [
       {
         cluster       = "Cluster1"
-        resource_pool = "rp-cluster1-portworx"
+        resource_pool = "rp-cluster1-palette-pax"
         datastore     = "vsanDatastore1"
+      },
+      {
+        cluster       = "Cluster2"
+        resource_pool = "rp-cluster2-palette-pax"
+        datastore     = "vsanDatastore2"
+      },
+      {
+        cluster       = "Cluster3"
+        resource_pool = "rp-cluster3-palette-pax"
+        datastore     = "vsanDatastore3"
       }
     ]
   }

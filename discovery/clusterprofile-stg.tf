@@ -16,7 +16,7 @@ data "spectrocloud_pack" "k8s-vsphere-stg" {
 }
 data "spectrocloud_pack" "os-vsphere-stg" {
   name    = var.os_name
-  version = var.os_version
+  version = var.os_version_20_04
 }
 data "spectrocloud_pack" "cilium-tetragon" {
   name    = var.tetragon_name
@@ -36,7 +36,7 @@ resource "spectrocloud_cluster_profile" "sc-npe-stg" {
   type        = "cluster"
   pack {
     name = var.os_name
-    tag  = var.os_version
+    tag  = var.os_version_20_04
     uid  = data.spectrocloud_pack.os-vsphere-stg.id
     #values = data.spectrocloud_pack.ubuntu-vsphere.values
     values = file("config-stg/os_ubuntu.yaml")
