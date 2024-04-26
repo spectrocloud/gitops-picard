@@ -84,7 +84,7 @@ resource "spectrocloud_cluster_vsphere" "this" {
   }
 
   dynamic "machine_pool" {
-    for_each = ["wp-az1"]
+    for_each = ["wp-az1","wp-az2","wp-az3"]
     content {
       name  = machine_pool.value
       additional_labels = {
