@@ -14,7 +14,7 @@
       resource_pool: picard-demo
     - name: worker
       control_plane: false
-      count: 4
+      count: 3
       resource_pool: picard-demo
     # - name: worker
     #   control_plane: true
