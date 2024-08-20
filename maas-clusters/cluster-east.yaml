@@ -1,7 +1,7 @@
 # #############################################
 # # 501
 # #############################################
-- name: maas-501-pa-phil
+- name: maas-cluster-501
   cluster_tags:
     - "type: reserve" # drive-thru, reserve, combo
     - "stage: true"
@@ -11,7 +11,11 @@
     - name: control-plane
       control_plane: true
       count: 1
-      resource_pool: BareMetal-GPU
+      resource_pool: picard-demo
+    - name: worker
+      control_plane: false
+      count: 3
+      resource_pool: picard-demo
     # - name: worker
     #   control_plane: true
     #   count: 1
@@ -22,24 +26,24 @@
 #############################################
 # 502
 #############################################
-- name: maas-502-nj-newark
-  cluster_tags:
-    - "type: reserve" # drive-thru, reserve, combo
-    - "stage: true"
-    - "vm-name: picard-edge-2"
-    - "region: east"
-  node_pools:
-    - name: control-plane
-      control_plane: true
-      count: 1
-      resource_pool: BareMetal-GPU
-    # - name: worker
-    #   control_plane: true
-    #   count: 1
-    #   resource_pool: BareMetal-GPU
-  profiles:
-    - name: DevMaas
-      tag: 1.0.0
+# - name: maas-502-nj-newark
+#   cluster_tags:
+#     - "type: reserve" # drive-thru, reserve, combo
+#     - "stage: true"
+#     - "vm-name: picard-edge-2"
+#     - "region: east"
+#   node_pools:
+#     - name: control-plane
+#       control_plane: true
+#       count: 1
+#       resource_pool: BareMetal-GPU
+#     # - name: worker
+#     #   control_plane: true
+#     #   count: 1
+#     #   resource_pool: BareMetal-GPU
+#   profiles:
+#     - name: DevMaas
+#       tag: 1.0.0
 ##############################################
 ## 503
 ##############################################

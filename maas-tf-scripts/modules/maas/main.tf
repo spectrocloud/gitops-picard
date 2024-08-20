@@ -28,7 +28,7 @@ resource "spectrocloud_cluster_maas" "cluster" {
   name            = var.name
   tags            = var.cluster_tags
 
-  cloud_account_id = "62166854f62df85d6cf9bd9d"
+  cloud_account_id = "6501b663afe6ad52c94c3043"
   #skip_completion = var.skip_wait_for_completion
   cloud_config {
     domain = "maas.sc"
@@ -47,11 +47,11 @@ resource "spectrocloud_cluster_maas" "cluster" {
       }
 
       instance_type {
-        min_memory_mb = 4096
-        min_cpu       = 2
+        min_memory_mb = 8096
+        min_cpu       = 4
       }
 
-      azs = ["az1", "az2", "az3"]
+      azs = ["az1"]
     }
   }
 
