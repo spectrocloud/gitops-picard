@@ -1,23 +1,25 @@
 terraform {
-  required_version = ">= 0.15.0"
-  backend "etcdv3" {
-    lock   = true
-    prefix = "/spectrocloud-maas/"
-    #endpoints  = ["ip:2379"] # Passed in from terraform
-    cacert_path = "certs/ca.crt"
-    cert_path   = "certs/client.crt"
-    key_path    = "certs/client.key"
-  }
-
+  required_version = ">= 0.14.0"
 
   required_providers {
     spectrocloud = {
-      version = "=0.10.5"
-      source  = "spectrocloud/spectrocloud"
+      #version = "> 0.4.1"
+      source = "spectrocloud/spectrocloud"
     }
   }
-}
 
+  backend "s3" {
+    bucket = "terraform-state-spectro"
+    key    = "project-maas-clusters/terraform.tfstate"
+    region = "us-east-1"
+    #endpoint                    = "https://10.10.137.64:9000"
+    #skip_credentials_validation = true
+    #skip_metadata_api_check     = true
+    #skip_region_validation      = true
+    #force_path_style            = true
+    #access_key, secret_key initialize with backend-config
+  }
+}
 locals {
   # TODO remove?
   datacenter             = "Datacenter"
