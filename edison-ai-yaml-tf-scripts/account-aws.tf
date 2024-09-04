@@ -7,7 +7,7 @@ locals {
 
   # TODO refactor to separate file
   account_ids = merge({
-    aws-eks = "609c506e2bfeae8682408ffb"
+    aws-stage-picard = "60972a2f3b53444f87f22e25"
     }, {
     for k, v in spectrocloud_cloudaccount_aws.this :
     v.name => v.id

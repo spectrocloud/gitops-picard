@@ -1,5 +1,5 @@
 name: tools-prod-1
-cloud_account: aws-eks
+cloud_account: aws-stage-picard
 profiles:
   infra: ProdEKS
 cloud_config:
