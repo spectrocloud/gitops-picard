@@ -33,11 +33,11 @@ provider "spectrocloud" {
 }
 
 data "spectrocloud_cloudaccount_aws" "default" {
-  name = "aws-eks"
+  name = "aws-stage-picard"
 }
 
 data "spectrocloud_cluster_profile" "sc" {
-  name    = "ProdEKS-minimum"
-  version = "1.0.1"
+  name    = "ProdEKS"
+  version = "1.0.0"
 }
 
