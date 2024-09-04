@@ -57,5 +57,5 @@ jobs:
       run: |
         terraform apply -auto-approve -no-color -input=false \
         -var 'sc_host=${{ secrets.SC_HOST }}' \
-        -var 'sc_project_name=FDefault' \
+        -var 'sc_project_name=Default' \
         -var 'sc_api_key=${{ secrets.SC_API_KEY }}' \

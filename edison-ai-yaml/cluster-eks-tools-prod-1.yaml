@@ -1,7 +1,7 @@
 name: tools-prod-1
 cloud_account: aws-eks
 profiles:
-  infra: ProdEKS-minimum
+  infra: ProdEKS
 cloud_config:
   aws_region: us-east-1
   ssh_key: default
