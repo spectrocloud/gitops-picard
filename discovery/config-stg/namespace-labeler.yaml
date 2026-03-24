@@ -65,8 +65,6 @@ spec:
             - |
 
               declare -a labels_arr=(
-              "k8s.t-mobile.com/akmid=APM0103270"
-              "k8s.t-mobile.com/director=RMcguir4"
               )
 
               declare -a spectro_namespaces_arr=(

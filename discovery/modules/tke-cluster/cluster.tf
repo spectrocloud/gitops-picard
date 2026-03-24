@@ -61,11 +61,6 @@ resource "spectrocloud_cluster_vsphere" "this" {
     control_plane = true
     name          = "master-pool"
     count         = 1
-    #additional_labels = {
-      #"k8s.t-mobile.com/cmdb_app_id" = "APP0005963",
-      #"k8s.t-mobile.com/cmdb_app" = "TKE-test"
-    #}
-
     dynamic "placement" {
       for_each = local.placements
       content {
@@ -87,9 +82,6 @@ resource "spectrocloud_cluster_vsphere" "this" {
     for_each = ["wp-az1","wp-az2","wp-az3"]
     content {
       name  = machine_pool.value
-      additional_labels = {
-        "k8s.t-mobile.com/cmdb_app_id" = "APP0005963"
-      }
       count = var.cluster_workers_per_az
       placement {
         cluster           = local.placements[machine_pool.key].cluster
