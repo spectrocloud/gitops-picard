@@ -67,6 +67,11 @@ spec:
               declare -a labels_arr=(
               )
 
+              if [ ${#labels_arr[@]} -eq 0 ]; then
+                echo "$(date) No namespace labels configured; exiting without changes"
+                exit 0
+              fi
+
               declare -a spectro_namespaces_arr=(
               "cert-manager" "capi-kubeadm-bootstrap-system"
               "capi-kubeadm-control-plane-system" "capi-webhook-system"
