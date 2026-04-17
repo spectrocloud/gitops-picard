@@ -22,14 +22,17 @@ env:
 jobs:
   # This workflow contains a single job called "greet"
   apply:
+    permissions:
+      contents: read
+      pull-requests: write
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: hashicorp/setup-terraform@v2
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
       with:
         terraform_version: 1.2.9
 
@@ -59,10 +62,21 @@ jobs:
         -var 'sc_username=${{ secrets.SC_USERNAME }}' \
         -var 'sc_password=${{ secrets.SC_PASSWORD }}'
       continue-on-error: true
-    - uses: jwalton/gh-find-current-pr@v1
+    - name: Find PR for this commit
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       id: findPr
-  
-    - uses: actions/github-script@v3
+      with:
+        script: |
+          const { data: pulls } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+          });
+          const pr = pulls[0];
+          core.setOutput('pr', pr ? String(pr.number) : '');
+          core.setOutput('number', pr ? String(pr.number) : '');
+
+    - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       if: success() && steps.findPr.outputs.number
       env:
         PLAN: "terraform\n${{ steps.apply.outputs.stdout }}"
@@ -85,9 +99,9 @@ jobs:
 
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
-          github.issues.createComment({
-            issue_number: ${process.env.PR},
+          await github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: output
-          })
+            issue_number: parseInt(process.env.PR, 10),
+            body: output,
+          });
