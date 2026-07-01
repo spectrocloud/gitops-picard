@@ -53,10 +53,12 @@ spec:
             - -xc
             - |
 
-              declare -a labels_arr=(
-              "k8s.customer.com/akmid=APM0103270"
-              "k8s.customer.com/director=RMcguir4"
-              )
+              declare -a labels_arr=()
+
+              if [[ ${#labels_arr[@]} -eq 0 ]]; then
+                echo "No labels configured, skipping"
+                exit 0
+              fi
 
               declare -a spectro_namespaces_arr=(
               "cert-manager" "capi-kubeadm-bootstrap-system"
