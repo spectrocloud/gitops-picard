@@ -1,0 +1,6 @@
+# PS-1386: gitlab-pat detected in historic commits on the (now deleted) maas-tf branch.
+# The token was confirmed inactive (GitLab API returned 401) and the commits below
+# were made unreachable by deleting the branch. Fingerprints are kept here so
+# historic-scan tooling does not re-flag the remediated finding.
+872533159f5e4fe09a2f7c3ae1d556d7948532fb:discovery-maas/config-stg/os_ubuntu.yaml:gitlab-pat:84
+ccbe3bea7c213bddebd44bbfa0ff98c7888cafed:discovery-maas/config-stg/os_ubuntu.yaml:gitlab-pat:84
