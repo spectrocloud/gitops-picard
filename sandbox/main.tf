@@ -1,12 +1,10 @@
 terraform {
   required_version = ">= 0.14.0"
-  backend "etcdv3" {
-    lock   = true
-    prefix = "/spectrocloud/"
-    #endpoints  = ["ip:2379"] # Passed in from terraform
-    cacert_path = "certs/ca.crt"
-    cert_path   = "certs/client.crt"
-    key_path    = "certs/client.key"
+  backend "s3" {
+    bucket = "terraform-state-spectro"
+    key    = "project-sandbox/terraform.tfstate"
+    region = "us-east-1"
+    #access_key, secret_key initialize with backend-config
   }
 
 
