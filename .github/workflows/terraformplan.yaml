@@ -18,14 +18,21 @@ env:
 jobs:
   # This workflow contains a single job called "greet"
   plan:
+    permissions:
+      contents: read
+      pull-requests: write
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: hashicorp/setup-terraform@v1
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+    - uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
+      with:
+        terraform_version: 1.2.9
 
     - name: Terraform fmt
       id: fmt
@@ -34,7 +41,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config="endpoints=[\"${{ secrets.SC_ETCD_ENDPOINT }}\"]"
+      run: terraform init -backend-config="access_key=${{ secrets.SC_S3_ACCESS_KEY }}" -backend-config="secret_key=${{ secrets.SC_S3_SECRET_KEY }}"
 
     - name: Terraform Workspace
       id: workspace
@@ -53,16 +60,24 @@ jobs:
         -var 'sc_username=${{ secrets.SC_USERNAME }}' \
         -var 'sc_password=${{ secrets.SC_PASSWORD }}'
       continue-on-error: true
-    - uses: actions/github-script@v3
+    - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        FMT_OUTCOME: ${{ steps.fmt.outcome }}
+        INIT_OUTCOME: ${{ steps.init.outcome }}
+        VALIDATE_STDOUT: ${{ steps.validate.outputs.stdout }}
+        PLAN_OUTCOME: ${{ steps.plan.outcome }}
+        ACTOR: ${{ github.actor }}
+        EVENT_NAME: ${{ github.event_name }}
+        TF_PATH: ${{ env.SPECTROCLOUD_TF_PATH }}
+        WORKFLOW_NAME: ${{ github.workflow }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
-          #### Terraform Plan 📖 \`${{ steps.plan.outcome }}\`
+          const output = `#### Terraform Format and Style 🖌 \`${process.env.FMT_OUTCOME}\`
+          #### Terraform Initialization ⚙️ \`${process.env.INIT_OUTCOME}\`
+          #### Terraform Validation 🤖 ${process.env.VALIDATE_STDOUT}
+          #### Terraform Plan 📖 \`${process.env.PLAN_OUTCOME}\`
 
           <details open><summary>Show Plan</summary>
 
@@ -72,11 +87,11 @@ jobs:
 
           </details>
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
+          *Pusher: @${process.env.ACTOR}, Action: \`${process.env.EVENT_NAME}\`, Working Directory: \`${process.env.TF_PATH}\`, Workflow: \`${process.env.WORKFLOW_NAME}\`*`;
 
-          github.issues.createComment({
+          await github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
-          })
+          });
