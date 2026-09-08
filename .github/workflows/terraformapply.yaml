@@ -32,6 +32,8 @@ jobs:
         working-directory: ${{ env.SPECTROCLOUD_TF_PATH }}
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
     - uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
       with:
         terraform_version: 1.2.9
@@ -81,13 +83,21 @@ jobs:
       env:
         PLAN: "terraform\n${{ steps.apply.outputs.stdout }}"
         PR: ${{ steps.findPr.outputs.pr }}
+        FMT_OUTCOME: ${{ steps.fmt.outcome }}
+        INIT_OUTCOME: ${{ steps.init.outcome }}
+        VALIDATE_STDOUT: ${{ steps.validate.outputs.stdout }}
+        APPLY_OUTCOME: ${{ steps.apply.outcome }}
+        ACTOR: ${{ github.actor }}
+        EVENT_NAME: ${{ github.event_name }}
+        TF_PATH: ${{ env.SPECTROCLOUD_TF_PATH }}
+        WORKFLOW_NAME: ${{ github.workflow }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌 \`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️ \`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖 ${{ steps.validate.outputs.stdout }}
-          #### Terraform Apply 📖 \`${{ steps.apply.outcome }}\`
+          const output = `#### Terraform Format and Style 🖌 \`${process.env.FMT_OUTCOME}\`
+          #### Terraform Initialization ⚙️ \`${process.env.INIT_OUTCOME}\`
+          #### Terraform Validation 🤖 ${process.env.VALIDATE_STDOUT}
+          #### Terraform Apply 📖 \`${process.env.APPLY_OUTCOME}\`
 
           <details open><summary>Show Plan</summary>
 
@@ -97,7 +107,7 @@ jobs:
 
           </details>
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.SPECTROCLOUD_TF_PATH }}\`, Workflow: \`${{ github.workflow }}\`*`;
+          *Pusher: @${process.env.ACTOR}, Action: \`${process.env.EVENT_NAME}\`, Working Directory: \`${process.env.TF_PATH}\`, Workflow: \`${process.env.WORKFLOW_NAME}\`*`;
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,
